@@ -1,0 +1,3014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alan Belim P.S. | VATTEN</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;800&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: #050505;
+            font-family: 'Manrope', sans-serif;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            height: auto;
+            min-height: 100%;
+            scroll-behavior: smooth; 
+        }
+
+        body.locked {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0; 
+            transition: opacity 1.5s ease;
+            pointer-events: auto; 
+        }
+        
+        #canvas-container canvas {
+            display: block;
+        }
+
+        #main-content-wrapper {
+            position: relative;
+            width: 100%;
+            z-index: 2;
+        }
+
+        /* --- CINEMATIC TITLE SCREEN --- */
+        #title-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #050505;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: default;
+            transition: opacity 1s ease 0.5s, visibility 1s 1.5s;
+        }
+
+        .massive-title {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            font-size: 18vw; 
+            line-height: 0.8;
+            color: #fff;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: -0.06em;
+            white-space: nowrap;
+            will-change: transform, opacity, filter, letter-spacing;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 1.2s ease, 
+                        filter 1.2s ease, 
+                        letter-spacing 1.2s ease;
+        }
+
+        .scroll-prompt {
+            position: absolute;
+            bottom: 50px;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+
+        #title-screen.disintegrate .massive-title {
+            transform: scale(5); 
+            opacity: 0;
+            filter: blur(20px); 
+            letter-spacing: 0.5em; 
+        }
+
+        #title-screen.disintegrate {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* --- UI LAYER --- */
+        .ui-layer {
+            position: relative;
+            z-index: 10;
+            pointer-events: none;
+            mix-blend-mode: normal; 
+            opacity: 0; 
+            transition: opacity 2s ease 1s;
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 60px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100; 
+            pointer-events: none;
+            background-color: #050505; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            mix-blend-mode: normal; 
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 1s ease 1.5s, transform 1s ease 1.5s;
+        }
+
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            pointer-events: auto;
+            color: #fff;
+        }
+
+        .role {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            margin-top: 2px;
+            color: #ccc;
+        }
+
+        .menu-links {
+            display: flex;
+            gap: 30px;
+            pointer-events: auto;
+        }
+
+        .nav-dropdown-container {
+            position: relative;
+            pointer-events: auto;
+        }
+        
+        .menu-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            padding: 5px 0 15px 0; 
+            display: block; 
+            cursor: default; 
+        }
+
+        .menu-link:hover {
+            opacity: 1;
+        }
+        
+        .nav-dropdown {
+            position: absolute;
+            top: 100%; 
+            left: 50%;
+            transform: translateX(-50%) translateY(0); 
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 0;
+            border-radius: 8px;
+            min-width: 150px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 100;
+            pointer-events: none; 
+            margin-top: -10px; 
+        }
+        
+        .nav-dropdown-container:hover .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0); 
+            pointer-events: auto; 
+        }
+        
+        .nav-dropdown a {
+            padding: 8px 15px;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: block;
+            color: #ccc; 
+            opacity: 0.8; 
+            transition: background 0.2s, opacity 0.2s, color 0.2s;
+            text-align: center;
+        }
+        
+        .nav-dropdown a:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff; 
+        }
+
+        /* --- SECTIONS --- */
+        section {
+            min-height: 100vh; 
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 0 10%;
+            box-sizing: border-box;
+            position: relative;
+            pointer-events: auto;
+        }
+
+        .blend-text {
+            color: #fff;
+            text-shadow: 0 0 1px #000000, 0 0 2px #000000; 
+        }
+
+        /* 1. PERSONAL BRANDING HERO */
+        #personal-hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center; 
+            padding-top: 80px;
+            perspective: 1000px; 
+        }
+
+        .hero-text-col {
+            flex: 1;
+            z-index: 2;
+            will-change: transform;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .hero-image-col {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end; 
+            align-items: flex-end; 
+            position: relative;
+            z-index: 2;
+            height: 100vh; 
+            padding-top: 80px; 
+            box-sizing: border-box;
+        }
+
+        .greeting {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            opacity: 0;
+            color: #fff;
+        }
+
+        h1.main-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 6rem;
+            font-weight: 400;
+            line-height: 0.9;
+            margin: 0;
+            color: #fff;
+            opacity: 0;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .hero-subtitle {
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 200;
+            margin-top: 30px;
+            max-width: 500px;
+            line-height: 1.4;
+            color: #ccc;
+            opacity: 0;
+        }
+
+        .portrait-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            border-radius: 0; 
+            opacity: 0;
+            transform: translateY(30px);
+            box-shadow: -40px 0 100px rgba(0,0,0,0.9), 0 0 100px rgba(0,0,0,0.9) inset;
+            z-index: 5; 
+            position: absolute; 
+            top: 0;
+            left: 0;
+            filter: grayscale(100%) brightness(1.2); 
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 5%; 
+            transform: translateX(0); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+        }
+        
+        @media (min-width: 769px) {
+            #personal-hero .scroll-hint {
+                left: 10%; 
+            }
+        }
+        
+        .line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, #fff, transparent);
+        }
+
+        /* 1.5 SKILLS SECTION */
+        #skills {
+            min-height: 150vh; /* BREATHING SPACE */
+            align-items: center; 
+            display: flex; 
+            flex-direction: row;
+            justify-content: center; 
+            gap: 30px; 
+            pointer-events: auto; 
+            padding-top: 150px; 
+        }
+        
+        .skills-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem; 
+            margin-bottom: 30px;
+            color: #fff;
+            line-height: 1;
+        }
+        
+        .skills-content {
+            flex: 0 0 450px; 
+            max-width: 50%; 
+            z-index: 2;
+        }
+        
+        .philosophy-text {
+            font-size: 1.15rem; 
+            line-height: 1.7;
+            color: #ddd;
+            margin-bottom: 50px;
+            font-weight: 300;
+            border-left: 1px solid rgba(255,255,255,0.2);
+            padding-left: 20px;
+        }
+
+        .skills-grid-container {
+             display: flex;
+             gap: 40px;
+             align-items: flex-start; 
+        }
+
+        .skills-visual {
+             flex: 1;
+             height: 500px; 
+             position: relative;
+             z-index: 2;
+             pointer-events: none; 
+             display: flex; 
+             align-items: center;
+             justify-content: center;
+        }
+
+        .skills-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #aaa;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .skill-category {
+            margin-bottom: 30px;
+        }
+
+        .skill-cat-title {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+            display: inline-block;
+            margin-bottom: 15px; 
+        }
+
+        .skill-item {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 0.5rem; 
+            opacity: 0.9;
+            cursor: pointer; 
+            position: relative;
+            transition: color 0.2s;
+            pointer-events: auto; 
+            line-height: 1; 
+            padding: 5px 0; 
+        }
+        
+        .skill-item:hover {
+            color: #dccbb5;
+        }
+
+        .skill-logo-placeholder {
+            position: absolute;
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            width: 450px; 
+            height: 450px; 
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .skill-logo-placeholder img {
+            width: 100%; 
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+            filter: drop-shadow(0 0 10px rgba(0, 150, 255, 0.4)) drop-shadow(0 0 20px rgba(0, 150, 255, 0.2));
+            transition: filter 0.3s ease;
+        }
+        
+        .skill-item:hover + .skills-visual .skill-logo-placeholder {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.02); 
+        }
+
+        #experience {
+            display: flex;
+            flex-direction: row;
+            justify-content: center; 
+            align-items: center;
+            gap: 50px;
+        }
+
+        .experience-content {
+            flex: 1;
+            z-index: 5;
+        }
+        
+        .experience-list {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            background: rgba(5, 5, 5, 0.6); 
+            backdrop-filter: blur(20px);    
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .exp-item {
+            position: relative;
+            padding-left: 30px;
+            border-left: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 10px; 
+        }
+
+        .exp-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 10px;
+            width: 11px;
+            height: 11px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .exp-role {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 5px;
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .exp-company {
+            font-size: 1rem;
+            color: #dccbb5; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: block;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.9);
+        }
+
+        .exp-date {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 15px;
+            font-family: 'Manrope', monospace;
+        }
+
+        .exp-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #ddd; 
+            max-width: 600px;
+            font-weight: 300;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.9);
+        }
+        
+        .certificate-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s, transform 0.2s;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 8px;
+            pointer-events: auto; 
+        }
+        
+        .certificate-btn:hover {
+            background: #fff;
+            color: #050505;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .experience-visual {
+            flex: 1;
+            height: 600px; 
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto; 
+            z-index: 5;
+        }
+        
+        #experience-blob-container {
+            width: 100%;
+            height: 100%;
+        }
+        
+        #collection-hero {
+            align-items: flex-start;
+            justify-content: center; 
+        }
+
+        .explore-btn {
+            background: #fff;
+            color: #050505;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            pointer-events: auto;
+        }
+
+        .explore-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+        }
+
+        .collection-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #8899aa;
+            margin-bottom: 20px;
+        }
+
+        h2.collection-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 8rem;
+            line-height: 0.9;
+            margin: 0;
+            color: #fff;
+            opacity: 1; 
+        }
+
+        .concept-text {
+            max-width: 500px;
+            margin-top: 40px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #aaa;
+            font-weight: 300;
+            border-left: 1px solid rgba(255,255,255,0.2);
+            padding-left: 20px;
+        }
+
+        .product-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            padding-top: 150px;
+            padding-bottom: 150px;
+            gap: 50px;
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        .product-text-col {
+            flex: 0 0 40%; 
+            display: flex; 
+            flex-direction: column;
+            z-index: 21; 
+            flex-shrink: 0;
+        }
+        
+        .product-image-col {
+            flex: 0 0 50%; 
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            isolation: isolate;
+            flex-shrink: 0;
+            height: auto; 
+            overflow: visible;
+        }
+
+        .product-section.right-align {
+            flex-direction: row-reverse;
+        }
+        
+        .product-section:not(.right-align) .product-text-col {
+             text-align: left;
+             align-items: flex-start;
+        }
+        .product-section.right-align .product-text-col {
+             text-align: right;
+             align-items: flex-end;
+        }
+        
+        .product-section.right-align .specs-box {
+            margin-left: auto; 
+            margin-right: 0;
+        }
+        
+        .product-section:not(.right-align) .specs-box {
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+        .product-img {
+            width: 100%;
+            height: auto; 
+            object-fit: contain; 
+            opacity: 1;
+            border-radius: 30px; 
+            box-shadow: 0 40px 100px rgba(0,0,0,0.9); 
+            transform: translateY(50px); 
+            transition: transform 0.1s linear;
+            mix-blend-mode: normal; 
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 20; 
+        }
+
+        .brightness-fix {
+            filter: brightness(0.85); 
+        }
+
+        .state-label {
+            font-size: 4rem;
+            font-family: 'Playfair Display', serif;
+            color: rgba(255,255,255,0.15); 
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            pointer-events: none;
+            z-index: 5; 
+        }
+        
+        .water-interaction-area {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 300px; 
+            pointer-events: all; 
+            z-index: 2; 
+        }
+
+        .product-number {
+            font-size: 0.9rem;
+            color: #aa8877;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            margin: 0;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .product-subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #ccc;
+            margin-bottom: 30px;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .product-desc {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #aaa;
+            margin-bottom: 30px;
+            max-width: 400px;
+        }
+
+        .specs-box {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 20px;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #888;
+            max-width: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .spec-row span {
+            display: inline-block; 
+            width: auto; 
+            box-sizing: border-box; 
+            text-align: left; 
+            flex-grow: 1;
+            color: #888; 
+        }
+
+        .spec-row span:last-child {
+            flex-grow: 0;
+            width: auto;
+            color: #ccc; 
+            font-weight: 500;
+            text-align: right; 
+        }
+
+        .product-section.right-align .spec-row span {
+             text-align: left;
+        }
+        
+        .product-section.right-align .spec-row span:last-child {
+            text-align: right; 
+        }
+
+        #family-section {
+            min-height: 100vh; 
+            align-items: center;
+            text-align: center;
+            justify-content: flex-start; 
+            padding-top: 150px; 
+        }
+        
+        .family-img-container {
+            width: 90%;
+            max-width: 1400px;
+            height: auto;
+            margin: 30px auto; 
+            position: relative;
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+        }
+
+        .family-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            border-radius: 30px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.1);
+            mix-blend-mode: normal;
+        }
+
+        /* SCROLL HINT */
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 5%; 
+            transform: translateX(0); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+        }
+        
+        @media (min-width: 769px) {
+            #personal-hero .scroll-hint {
+                left: 10%; 
+            }
+        }
+        
+        .line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, #fff, transparent);
+        }
+
+        /* 3D TRIGGER BUTTON */
+        .view-3d-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            z-index: 30;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-image-col:hover .view-3d-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .view-3d-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* 3D MODAL STYLES */
+        #model-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #050505;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #model-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #modal-canvas-container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            color: #fff;
+            background: none;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 210;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: #fff;
+            color: #000;
+        }
+        
+        .modal-overlay-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 220; 
+            pointer-events: none;
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            opacity: 0; 
+            transition: opacity 0.5s;
+        }
+        
+        .modal-overlay-message.visible {
+            opacity: 1;
+        }
+
+        .loading-text {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #888;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            z-index: 210;
+        }
+        
+        .modal-overlay-message strong {
+            color: #00ffff;
+            font-weight: 600;
+        }
+        .modal-overlay-message p {
+            margin-bottom: 10px;
+        }
+
+
+        /* --- NEW VIDEO MODAL STYLES --- */
+        #video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 300; 
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #video-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9; 
+            max-height: 90vh;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.8);
+        }
+        
+        #video-player {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 310;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .video-modal-close:hover {
+            background: #fff;
+            color: #000;
+        }
+        
+        .play-icon-overlay {
+            position: absolute; 
+            inset: 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: rgba(0,0,0,0.2); 
+            opacity: 1; 
+            transition: opacity 0.3s ease;
+        }
+        
+        /* HOVER EFFECTS FOR GALLERY ITEMS (Moved to global CSS to fix errors) */
+        .project-ad:hover img {
+             transform: scale(1.05); 
+             filter: brightness(1.0); 
+        }
+        
+        .project-item:hover .play-icon-overlay {
+            opacity: 0.8;
+        }
+        
+        .project-item:hover .project-overlay {
+            opacity: 1;
+        }
+        
+        .project-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Grid Layout */
+        .project-grid {
+            /* Standard 3-column grid for stability */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .project-item {
+            position: relative;
+            display: block;
+            overflow: hidden;
+            /* Uniform height for a consistent grid */
+            height: 350px; 
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .project-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            filter: brightness(0.85);
+        }
+
+        /* Responsive handling for the large ad item (Now treated as a standard item) */
+        .project-ad {
+            position: relative;
+            display: block;
+            overflow: hidden;
+            height: 350px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            text-decoration: none;
+        }
+
+        @media (min-width: 769px) {
+            /* We remove the column span rule to keep the grid uniform and stable */
+            /* .project-ad { grid-column: span 2; } */
+        }
+        
+        .project-title-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%); 
+            padding: 20px;
+            padding-top: 50px; 
+            color: #fff;
+        }
+        .project-title-overlay h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .project-title-overlay span {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #00ffff;
+            opacity: 0.8;
+        }
+
+
+        /* --- TABLET RESPONSIVE STYLES --- */
+        @media (max-width: 768px) and (min-width: 481px) {
+            .nav-bar { padding: 20px 30px; }
+            h1.profile-name, h1.main-name { font-size: 3rem; }
+            h2.collection-title { font-size: 5rem; }
+            .product-title { font-size: 3.5rem; }
+            .loader-title { font-size: 18vw; }
+            .product-section, .product-section.right-align { flex-direction: column-reverse; text-align: left; padding-top: 50px; gap: 30px; }
+            .product-image-col { flex: 0 0 100%; width: 100%; height: auto; }
+            .product-text-col { flex: 0 0 100%; width: 100%; align-items: flex-start; text-align: left; }
+            .specs-box, .product-section.right-align .specs-box { margin-left: 0; margin-right: 0; }
+            /* Tablet Grid - 2 columns */
+            .project-grid { grid-template-columns: 1fr 1fr; }
+            .project-ad { grid-column: span 1; }
+            .family-img-container { width: 100%; }
+            #personal-hero { flex-direction: column; justify-content: center; gap: 40px; text-align: center; padding-top: 100px; }
+            .hero-image-col { justify-content: center; }
+            .portrait-img { width: 80%; height: auto; }
+            .hero-subtitle { margin: 20px auto; }
+            #experience { flex-direction: column-reverse; gap: 50px; }
+            .experience-visual { width: 100%; height: 300px; }
+        }
+
+        /* --- MOBILE PORTRAIT RESPONSIVE STYLES (Targeted Fixes) --- */
+        @media (max-width: 480px) {
+            /* Navbar adjustments */
+            .nav-bar { 
+                padding: 15px 20px;
+                height: auto; /* Allow height to grow with content */
+                flex-direction: column; /* Stack elements vertically */
+                align-items: center; /* Center elements */
+                background: rgba(5,5,5,0.98);
+                gap: 10px;
+                position: fixed; /* Ensure it sticks */
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 9999; /* Top z-index */
+                box-sizing: border-box; /* Include padding in width */
+            }
+            
+            .brand { 
+                font-size: 1.2rem; 
+                height: auto; /* Reset height */
+                white-space: normal; /* Allow wrapping if needed */
+                text-align: center;
+                margin-bottom: 0; /* Reset margin */
+                width: 100%; /* Full width for centering */
+            }
+            .role { 
+                display: none; /* Hide role to reduce clutter */
+            } 
+            
+            .menu-links {
+                gap: 15px; /* Reduced gap */
+                width: 100%;
+                justify-content: center; /* Center links */
+                font-size: 0.7rem; /* Smaller font size */
+                flex-wrap: wrap; /* Allow wrapping on very small screens */
+            }
+
+            /* Typography Scaling (Aggressively reduced) */
+            h1.main-name { font-size: 2rem; line-height: 1.1; margin-bottom: 10px; } /* Further reduced */
+            h2.collection-title { font-size: 2.5rem; }
+            .product-title { font-size: 2rem; }
+            .skills-heading { font-size: 1.6rem; text-align: center; margin-bottom: 20px; } /* Further reduced */
+            .massive-title { font-size: 18vw; }
+            .hero-subtitle { font-size: 0.9rem; line-height: 1.4; max-width: 100%; margin: 10px auto 0; } /* Full width */
+            .greeting { font-size: 0.9rem; margin-bottom: 5px; }
+            .product-desc { font-size: 0.9rem; max-width: 100%; } /* Full width */
+            
+            /* Global Section Styling */
+            section { 
+                padding: 40px 20px; 
+                min-height: auto; 
+                align-items: center;
+                text-align: center;
+                width: 100%; /* Ensure full width */
+                box-sizing: border-box; /* Include padding */
+            }
+            
+            /* Hero Section Mobile */
+            #personal-hero { 
+                flex-direction: column; 
+                justify-content: flex-start; /* Align to top */
+                padding-top: 110px; /* Spacing for fixed nav */
+                gap: 20px;
+                min-height: 100vh; 
+            }
+            
+            .hero-text-col {
+                order: 1; /* Text first */
+                width: 100%;
+                padding-top: 0;
+                margin-bottom: 10px;
+            }
+            
+            .hero-image-col {
+                order: 2; /* Image second */
+                width: 100%;
+                height: 350px; /* Fixed height for image container */
+                position: relative;
+                justify-content: center;
+                align-items: center; /* Center image */
+                padding-top: 0;
+                margin-bottom: 20px;
+            }
+            
+            .portrait-img {
+                position: relative;
+                width: auto; 
+                max-width: 100%; /* Allow full width */
+                height: 100%; /* Fill container height */
+                object-fit: contain; 
+                transform: none !important;
+                box-shadow: none; 
+                background-color: transparent; /* Remove background */
+                border: none;
+            }
+
+            /* Skills Section Mobile (Overlapping Fix) */
+            #skills {
+                flex-direction: column;
+                padding-top: 40px; /* Reduced padding */
+                min-height: auto; /* Remove fixed height constraint */
+                padding-bottom: 40px;
+                gap: 30px; 
+            }
+            
+            .skills-content {
+                max-width: 100%;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .philosophy-text {
+                border-left: none;
+                border-top: 1px solid rgba(255,255,255,0.2);
+                padding-left: 0;
+                padding-top: 20px;
+                margin-top: 0; 
+                font-size: 0.9rem; 
+                margin-bottom: 30px; /* Space before grid */
+            }
+            
+            .skills-grid-container {
+                /* CRITICAL FIX: Force single column stacking */
+                flex-direction: column; 
+                gap: 30px; 
+                align-items: center;
+                width: 100%;
+            }
+            
+            .skill-category {
+                width: 100%; 
+                text-align: center;
+                margin-bottom: 0;
+            }
+            
+            .skill-item {
+                font-size: 1.8rem; /* Further reduced */
+                text-align: center; 
+            }
+            
+            .skill-cat-title {
+                text-align: center;
+                display: block; 
+                width: 100%;
+                border-bottom: 1px solid #444;
+                padding-bottom: 5px;
+                margin-bottom: 15px;
+            }
+            
+            .skills-visual {
+                height: 150px; /* Further reduced height */
+                width: 100%;
+                margin-top: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .skill-logo-placeholder {
+                width: 120px; /* Smaller placeholder */
+                height: 120px;
+            }
+
+            /* Experience Section Mobile (Broken alignment fix) */
+            #experience {
+                flex-direction: column-reverse;
+                gap: 30px;
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+            
+            .experience-list {
+                padding: 20px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            .experience-visual {
+                height: 200px; 
+                width: 100%;
+            }
+            
+            .exp-role {
+                font-size: 1.5rem;
+            }
+
+            /* VATTEN Intro */
+            #collection-hero {
+                padding-top: 60px;
+                padding-bottom: 60px;
+            }
+
+            /* Product Sections Mobile (VATTEN - Text/Specs Fix) */
+            .product-section, 
+            .product-section.right-align { 
+                flex-direction: column-reverse; 
+                text-align: center; 
+                padding-top: 40px; 
+                padding-bottom: 40px;
+                gap: 20px; 
+            }
+            
+            .product-image-col { 
+                width: 100%; 
+                height: auto; 
+                flex: 0 0 auto;
+                margin-bottom: 10px; 
+                display: flex;
+                flex-direction: column; /* Stack image and button */
+                align-items: center;
+            }
+            
+            .product-img {
+                transform: none !important; 
+                max-height: 250px; /* Further constrained */
+                width: auto;
+                max-width: 100%;
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+            }
+            
+            .product-text-col { 
+                width: 100%; 
+                align-items: center; 
+                text-align: center; 
+                flex: 0 0 auto;
+            }
+            
+            /* Reset alignment for mobile text */
+            .product-section.right-align .product-text-col {
+                align-items: center;
+                text-align: center;
+            }
+            
+            .specs-box,
+            .product-section.right-align .specs-box { 
+                margin-left: auto; 
+                margin-right: auto; 
+                width: 100%;
+                max-width: 100%; /* Full width box */
+                margin-top: 20px;
+                padding-top: 15px; 
+                align-items: stretch; /* FIX: Resetting to stretch for spec rows */
+            }
+            
+            /* FIX: Ensure spec rows justify correctly even when centered */
+            .spec-row {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+
+            .state-label {
+                font-size: 1.5rem; /* Slightly larger for readability */
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 0.2; /* More subtle */
+                white-space: nowrap;
+                position: relative; /* Move relative to flow */
+                margin-bottom: 10px;
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Gallery Mobile */
+            #other-projects {
+                padding-top: 60px;
+                padding-bottom: 60px;
+            }
+
+            .project-grid { 
+                grid-template-columns: 1fr; 
+                gap: 20px; 
+                width: 100%;
+            }
+            
+            .project-ad { 
+                height: 250px; /* Slight increase for better visibility */
+                grid-column: span 1;
+            }
+            
+            .project-item {
+                height: 250px;
+            }
+
+            .family-img-container { width: 100%; margin: 30px 0; }
+            
+            .view-3d-btn {
+                padding: 10px 20px;
+                font-size: 0.8rem;
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin-top: 15px;
+                transform: none;
+                opacity: 1;
+                justify-content: center;
+                width: auto; /* Auto width */
+                display: inline-flex; /* Keep content centered */
+            }
+            
+            /* Adjust Contact Form */
+            #contact-section {
+                padding-top: 60px;
+                min-height: auto;
+            }
+            
+            .contact-form-container {
+                padding: 20px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            .form-group input, .form-group textarea {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+            
+            .submit-btn {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* --- NEW IMAGE MODAL STYLES --- */
+        #image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 300; 
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #image-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .image-container {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #modal-image-display {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 90vh;
+            display: block;
+            object-fit: contain;
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 310;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .image-modal-close:hover {
+            background: #fff;
+            color: #000;
+        }
+        /* --- END IMAGE MODAL STYLES --- */
+        
+        /* --- CONTACT FORM STYLES (NEW SECTION 9) --- */
+        #contact-section {
+            padding-top: 150px;
+            min-height: 80vh;
+            justify-content: flex-start;
+        }
+        
+        .contact-form-container {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 30px;
+            background: rgba(5, 5, 5, 0.6); 
+            backdrop-filter: blur(10px);    
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            pointer-events: auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: rgba(255,255,255,0.05);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Manrope', sans-serif;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #dccbb5;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            background: #dccbb5;
+            color: #050505;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(220, 203, 181, 0.3);
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.5);
+        }
+        /* --- END CONTACT FORM STYLES --- */
+
+
+        /* ANIMATIONS Classes */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        
+        .fade-up-active {
+            animation: fadeInUp 1.2s ease-out forwards;
+        }
+        
+        .fade-in-active {
+             animation: fadeIn 1.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="locked">
+
+    <div id="title-screen">
+        <div class="massive-title">ALAN BELIM</div>
+        <div class="scroll-prompt">SCROLL TO ENTER</div>
+    </div>
+    
+    <!-- FIXED Canvas Background -->
+    <div id="canvas-container"></div>
+    
+    <!-- 3D MODAL -->
+    <div id="model-modal">
+        <div id="modal-canvas-container"></div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="loading-text" id="modal-status">Initializing...</div>
+        
+        <div class="modal-overlay-message" id="model-warning-message">
+            <p style="color: #ff5555; font-size: 1.1rem; margin-bottom: 20px;">** FILE NOT FOUND **</p>
+            <p>Could not load the .glb file. Please ensure it is in the same folder as index.html.</p>
+        </div>
+
+    </div>
+    
+    <!-- NEW: Video Modal for iPhone Ad -->
+    <div id="video-modal">
+        <div class="video-container">
+            <button class="video-modal-close" onclick="closeVideoModal()">✕</button>
+            <!-- CRITICAL FIX: Added playsinline attribute -->
+            <video id="video-player" controls loop playsinline>
+                <!-- Source will be dynamically added in JS via videoPlayer.src = videoSrc -->
+            </video>
+        </div>
+    </div>
+    
+    <!-- NEW: Image Modal for Renders -->
+    <div id="image-modal">
+        <div class="image-container">
+            <button class="image-modal-close" onclick="closeImageModal()">✕</button>
+            <img id="modal-image-display" src="" alt="Full size render">
+        </div>
+    </div>
+
+
+    <div id="main-content-wrapper">
+        <div class="nav-bar">
+            <div>
+                <div class="brand">Alan Belim P.S.</div>
+                <div class="role">Product Designer & Modeler</div>
+            </div>
+            
+            <div class="menu-links">
+                <div class="nav-dropdown-container">
+                    <a href="javascript:void(0)" class="menu-link" onclick="return false;">Projects</a> 
+                    <div class="nav-dropdown">
+                        <a href="javascript:void(0)" onclick="scrollToElement('collection-hero'); return false;">Featured: VATTEN</a>
+                        <a href="javascript:void(0)" onclick="scrollToElement('other-projects'); return false;">Other Works</a> 
+                    </div>
+                </div>
+                <a href="javascript:void(0)" class="menu-link" onclick="scrollToElement('skills'); return false;">About</a>
+                <a href="javascript:void(0)" class="menu-link" onclick="scrollToElement('contact-section'); return false;">Contact</a>
+            </div>
+        </div>
+
+        <div class="ui-layer">
+            
+            <!-- 0. PERSONAL BRANDING HERO (Index 0) -->
+            <section id="personal-hero">
+                <div class="hero-text-col">
+                    <div class="greeting blend-text">Hello, I am</div>
+                    <h1 class="main-name blend-text">Alan Belim</h1>
+                    <p class="hero-subtitle blend-text">
+                        I translate complex, human narratives into physical and digital forms. I specialize in craft-driven modeling and experiential design that tells a story.
+                    </p>
+                </div>
+                <div class="hero-image-col">
+                    <!-- PATH: ME.png in the root folder -->
+                    <img src="ME.png" 
+                         onerror="this.onerror=null;this.src='ME.png';" 
+                         alt="Alan Belim Portrait" 
+                         class="portrait-img">
+                </div>
+                
+                <div class="scroll-hint" style="opacity: 0.7; animation: pulse 2s infinite;">
+                    <div class="line"></div>
+                    <span style="font-size: 0.7rem; letter-spacing: 2px; margin-top: 10px; color:#fff;">EXPLORE</span>
+                </div>
+            </section>
+
+            <!-- 1. SKILLS / TOOLBOX (Index 1) -->
+            <section id="skills">
+                <div class="skills-content">
+                    <h2 class="skills-heading blend-text">My Philosophy & Toolbox</h2>
+                    <span class="section-label blend-text">Skills & Software</span>
+                    
+                    <p class="philosophy-text blend-text">
+                        I design to uncover meaning. For me, objects aren’t just made; they’re narrated. I’m drawn to the quiet details in form, material and behaviour that reveal why something should exist at all. My strength in 3D modelling helps me translate abstract ideas into tangible experiences that feel intentional and emotionally aware. I care about designing things that leave an impression not through noise, but through clarity, honesty and purpose.
+                    </p>
+                    
+                    <div class="skills-grid-container blend-text">
+                        <div class="skill-category">
+                            <div class="skill-item" data-tool="Blender">Blender</div>
+                            <div class="skill-item" data-tool="Rhino">Rhino</div>
+                        </div>
+                        <div class="skill-category">
+                            <div class="skill-cat-title">Visual & 2D</div>
+                            <div class="skill-item" data-tool="Photoshop">Photoshop</div>
+                            <div class="skill-item" data-tool="Illustrator">Illustrator</div>
+                            <div class="skill-item" data-tool="Procreate">Procreate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skills-visual">
+                     <div class="skills-container">
+                        <div class="skill-logo-placeholder" id="logo-placeholder"></div>
+                     </div>
+                </div>
+            </section>
+
+            <!-- 2. EXPERIENCE SECTION (Index 2) -->
+            <section id="experience">
+                <div class="experience-content">
+                    <span class="section-label blend-text" style="margin-bottom: 20px;">Experience</span>
+                    <div class="experience-list">
+                        <div class="exp-item">
+                            <h3 class="exp-role">Freelance 3D Artist</h3>
+                            <span class="exp-company">ADA Möbelwerke, Austria</span>
+                            <div class="exp-date">2024 — Present</div>
+                            <p class="exp-desc">
+                                Delivering high-fidelity 3D visualizations and product modeling solutions for upcoming furniture collections. Collaborating remotely with the design team to translate concepts into marketing-ready assets.
+                            </p>
+                        </div>
+                        <div class="exp-item">
+                            <h3 class="exp-role">3D Modeller Intern</h3>
+                            <span class="exp-company">ADA Möbelwerke, Austria</span>
+                            <div class="exp-date">June 2025 — Aug 2025</div>
+                            <p class="exp-desc">
+                                Key role in digitizing the bedding furniture catalog for the online configurator using Blender. Responsible for precision modeling, UV unwrapping, and ensuring asset optimization for real-time web deployment.
+                            </p>
+                            <!-- PATH: alan_certificate.pdf in the root folder -->
+                            <a href="alan_certificate.pdf" target="_blank" class="certificate-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award">
+                                    <circle cx="12" cy="8" r="7"/>
+                                    <path d="M8.21 13.89 7 22l5-2 5 2-1.21-8.11"/>
+                                </svg>
+                                View Certificate
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="experience-visual" id="experience-blob-container"></div>
+            </section>
+
+            <!-- 3. VATTEN INTRO HERO (Index 3) -->
+            <section id="collection-hero">
+                <div class="collection-tag blend-text">Featured Collection</div>
+                <h2 class="collection-title blend-text">VATTEN</h2>
+                <p class="concept-text blend-text">
+                    Exploring the physical and emotional states of water: Flow, Expansion, and Stillness. 
+                    Bridging the gap between organic chaos and Scandinavian rigidity.
+                </p>
+                <button class="explore-btn" onclick="scrollToElement('section-strom')">Explore the Journey</button>
+            </section>
+
+            <!-- 4. STRÖM (FLOW) (Index 4) -->
+            <section class="product-section right-align" id="section-strom">
+                <div class="state-label">THE STREAM / FLOW</div>
+                <div class="product-text-col">
+                    <span class="product-number">01 — FLOW</span>
+                    <h2 class="product-title">Ström</h2>
+                    <div class="product-subtitle">The Continuous Current</div>
+                    <p class="product-desc">
+                        The Journey Begins: Embodying the fast, directional energy of a river current. Ström is a study in continuous movement, defined by a single, uninterrupted loop of steam-bent Ash, urging the eye forward.
+                    </p>
+                    <div class="specs-box">
+                        <div class="spec-row"><span>Material</span> <span>Steam-bent Ash</span></div>
+                        <div class="spec-row"><span>Finish</span> <span>Smoked Matte Oil</span></div>
+                    </div>
+                </div>
+                <div class="product-image-col">
+                    <!-- PATH: strom.png in the root folder -->
+                    <img src="strom.png" 
+                         onerror="this.onerror=null;this.src='strom.png';" 
+                         alt="Strom Chair" 
+                         class="product-img brightness-fix" 
+                         data-speed="0.5">
+                    <button class="view-3d-btn" onclick="openModal('strom')"><span>360° View</span></button>
+                </div>
+                <div class="water-interaction-area" data-water-type="flow" id="water-area-strom"></div>
+            </section>
+
+            <!-- 5. VÅG (RIPPLE) (Index 5) -->
+            <section class="product-section right-align" id="section-vag">
+                <div class="state-label">THE RIPPLE / IMPACT</div>
+                <div class="product-text-col">
+                    <span class="product-number">02 — IMPACT</span>
+                    <h2 class="product-title">Våg</h2>
+                    <div class="product-subtitle">The Point of Resonance</div>
+                    <p class="product-desc">
+                        A Moment of Force: Capturing the impact that breaks the surface. The design features deep, concentric reliefs mimicking the radial energy of a powerful water drop, spreading outward in measured resonance.
+                    </p>
+                    <div class="specs-box">
+                        <div class="spec-row"><span>Material</span> <span>Solid Ash Block</span></div>
+                        <div class="spec-row"><span>Weight</span> <span>Heavy Base Anchor</span></div>
+                    </div>
+                </div>
+                <div class="product-image-col">
+                    <!-- PATH: vag.png in the root folder -->
+                    <img src="vag.png" 
+                         onerror="this.onerror=null;this.src='vag.png';" 
+                         alt="Vag Table" 
+                         class="product-img" 
+                         data-speed="0.3">
+                    <button class="view-3d-btn" onclick="openModal('vag')"><span>360° View</span></button>
+                </div>
+                <div class="water-interaction-area" data-water-type="ripple" id="water-area-vag"></div>
+            </section>
+
+            <!-- 6. VILA (STILLNESS) (Index 6) -->
+            <section class="product-section right-align" id="section-vila">
+                <div class="state-label" style="left: 3%;">THE POOL / STILLNESS</div>
+                <div class="product-text-col">
+                    <span class="product-number">03 — STILLNESS</span>
+                    <h2 class="product-title">Vila</h2>
+                    <div class="product-subtitle">The Final Calm</div>
+                    <p class="product-desc">
+                        The Destination of Reflection: An island of calm reached after the flow and impact. The organic oak base cradles a soft bouclé landscape, mirroring the silent, perfect surface of a deep, undisturbed pool.
+                    </p>
+                    <div class="specs-box">
+                        <div class="spec-row"><span>Material</span> <span>Smoked Ash / Bouclé</span></div>
+                        <div class="spec-row"><span>Function</span> <span>Push-to-open Storage</span></div>
+                    </div>
+                </div>
+                <div class="product-image-col">
+                    <!-- PATH: vila.png in the root folder -->
+                    <img src="vila.png" 
+                         onerror="this.onerror=null;this.src='vila.png';" 
+                         alt="Vila Daybed" 
+                         class="product-img" 
+                         data-speed="0.4">
+                    <button class="view-3d-btn" onclick="openModal('vila')"><span>360° View</span></button>
+                </div>
+                <div class="water-interaction-area" data-water-type="stillness" id="water-area-vila"></div>
+            </section>
+
+            <!-- 7. FAMILY / CONCLUSION (Index 7) -->
+            <section id="family-section">
+                <h2 class="product-title blend-text" style="font-size: 3rem;">The Vatten Collection</h2>
+                <p class="product-desc blend-text" style="margin: 20px auto;">A unified study in fluid dynamics and the complete journey of VATTEN.</p>
+                <div class="family-img-container">
+                     <!-- PATH: family.png in the root folder -->
+                    <img src="family.png" 
+                         onerror="this.onerror=null;this.src='family.png';" 
+                         alt="Vatten Collection" 
+                         class="family-img">
+                </div>
+            </section>
+            
+            <!-- 8. REBUILT: OTHER PROJECTS GALLERY (Index 8) -->
+            <section id="other-projects" style="min-height: 100vh; padding-top: 150px; padding-bottom: 100px;">
+                <span class="section-label blend-text">Design & Visualization</span>
+                <h2 class="product-title blend-text" style="font-size: 3rem; margin-bottom: 50px;">Selected Works</h2>
+                
+                <div class="project-grid">
+                    
+                    <!-- 8.1 FEATURED: iPhone 16e 3D Ad (Video - Standard Item) -->
+                    <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/iphone_ad.mp4');" class="project-item">
+                         <img src="works/iphone_ad_poster.png" 
+                              onerror="this.onerror=null;this.src='works/iphone_ad_poster.png';"
+                              alt="iPhone Ad Cinematic Thumbnail">
+
+                         <div class="play-icon-overlay">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                <path d="m15.5 12-5-3v6z"/>
+                            </svg>
+                         </div>
+                         
+                         <div class="project-title-overlay">
+                            <span>COMMERCIAL 3D AD</span>
+                            <h4>iPhone 16e - Product Launch</h4>
+                         </div>
+                    </a>
+
+                    <!-- 8.2 MARSHALL SPEAKER AD (Video Project) -->
+                    <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/marshall_speaker_ad.mp4');" class="project-item">
+                        <img src="works/marshall_speaker_poster.png" onerror="this.onerror=null;this.src='works/marshall_speaker_poster.png'" alt="Marshall Speaker Ad">
+                        <div class="play-icon-overlay">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                <path d="m15.5 12-5-3v6z"/>
+                            </svg>
+                         </div>
+                        <div class="project-title-overlay">
+                            <span>COMMERCIAL VISUAL</span>
+                            <h4>Marshall Speaker Ad</h4>
+                        </div>
+                    </a>
+
+                    <!-- 8.3 SOMETHING SLIPPER AD (Video Project) -->
+                    <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/something_slipper_ad.mp4');" class="project-item">
+                        <img src="works/something_slipper_poster.png" onerror="this.onerror=null;this.src='works/something_slipper_poster.png'" alt="Something Slipper Ad">
+                        <div class="play-icon-overlay">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                <path d="m15.5 12-5-3v6z"/>
+                            </svg>
+                         </div>
+                        <div class="project-title-overlay">
+                            <span>CONCEPT DESIGN</span>
+                            <h4>Something Slipper Ad</h4>
+                        </div>
+                    </a>
+                    
+                    <!-- 8.4 CYBERMOUSE CONCEPT (VIDEO FIX) -->
+                    <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/cybermouse_concept.mp4');" class="project-item">
+                        <img src="works/cybermouse_poster.png" onerror="this.onerror=null;this.src='works/cybermouse_poster.png'" alt="Cybermouse Concept">
+                         <div class="play-icon-overlay">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                <path d="m15.5 12-5-3v6z"/>
+                            </svg>
+                         </div>
+                        <div class="project-title-overlay">
+                            <span>HARD SURFACE MODELLING</span>
+                            <h4>Cybermouse Concept</h4>
+                        </div>
+                    </a>
+
+                    <!-- 8.5 WALKMAN ANIMATION (Video) -->
+                    <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/walkman_animation.mp4');" class="project-item">
+                        <img src="works/walkman_animation_poster.png" onerror="this.onerror=null;this.src='works/walkman_animation_poster.png'" alt="Walkman Animation Poster">
+                        <div class="play-icon-overlay">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                <path d="m15.5 12-5-3v6z"/>
+                            </svg>
+                        </div>
+                        <div class="project-title-overlay">
+                            <span>PRODUCT ANIMATION</span>
+                            <h4>Walkman - Cinematic</h4>
+                        </div>
+                    </a>
+                    
+                    <!-- 8.6 BOAT IN OCEAN ANIMATION (Video) -->
+                    <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/boat_ocean_animation.mp4');" class="project-item">
+                        <img src="works/boat_ocean_poster.png" onerror="this.onerror=null;this.src='works/boat_ocean_poster.png'" alt="Boat Ocean Animation Poster">
+                        <div class="play-icon-overlay">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                                <path d="m15.5 12-5-3v6z"/>
+                            </svg>
+                        </div>
+                        <div class="project-title-overlay">
+                            <span>ENVIRONMENTAL STUDY</span>
+                            <h4>Ocean Boat Simulation</h4>
+                        </div>
+                    </a>
+
+                    <!-- 8.7 iPhone 17 Pro Max (Shot 1) -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/iphone_17_pro_max_1.png');" class="project-item">
+                        <img src="works/iphone_17_pro_max_1.png" onerror="this.onerror=null;this.src='works/iphone_17_pro_max_1.png'" alt="iPhone 17 Pro Max Render 1">
+                         <div class="project-title-overlay">
+                            <span>PRODUCT RENDER</span>
+                            <h4>iPhone 17 Pro Max (1)</h4>
+                        </div>
+                    </a>
+                    
+                    <!-- 8.8 iPhone 17 Pro Max (Shot 2) -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/iphone_17_pro_max_2.png');" class="project-item">
+                        <img src="works/iphone_17_pro_max_2.png" onerror="this.onerror=null;this.src='works/iphone_17_pro_max_2.png'" alt="iPhone 17 Pro Max Render 2">
+                        <div class="project-title-overlay">
+                            <span>PRODUCT RENDER</span>
+                            <h4>iPhone 17 Pro Max (2)</h4>
+                        </div>
+                    </a>
+
+                    <!-- 8.9 Daily Objects Powerbank (Shot 1) -->
+                    <!-- UPDATED LABEL: COMMISSIONED WORK -> PRODUCT RENDER -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/powerbank_daily_objects_1.png');" class="project-item">
+                        <img src="works/powerbank_daily_objects_1.png" onerror="this.onerror=null;this.src='works/powerbank_daily_objects_1.png'" alt="Daily Objects Powerbank 1">
+                        <div class="project-title-overlay">
+                            <span>PRODUCT RENDER</span>
+                            <h4>Powerbank Study (1)</h4>
+                        </div>
+                    </a>
+                    
+                    <!-- 8.10 Daily Objects Powerbank (Shot 2) -->
+                    <!-- UPDATED LABEL: COMMISSIONED WORK -> PRODUCT RENDER -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/powerbank_daily_objects_2.png');" class="project-item">
+                        <img src="works/powerbank_daily_objects_2.png" onerror="this.onerror=null;this.src='works/powerbank_daily_objects_2.png'" alt="Daily Objects Powerbank 2">
+                        <div class="project-title-overlay">
+                            <span>PRODUCT RENDER</span>
+                            <h4>Powerbank Study (2)</h4>
+                        </div>
+                    </a>
+
+                    <!-- 8.11 LARQ Water Bottle (Shot 1) -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/larq_bottle_1.png');" class="project-item">
+                        <img src="works/larq_bottle_1.png" onerror="this.onerror=null;this.src='works/larq_bottle_1.png'" alt="LARQ Bottle 1">
+                        <div class="project-title-overlay">
+                            <span>PRODUCT RENDER</span>
+                            <h4>LARQ Bottle (1)</h4>
+                        </div>
+                    </a>
+                    
+                    <!-- 8.12 LARQ Water Bottle (Shot 2) -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/larq_bottle_2.png');" class="project-item">
+                        <img src="works/larq_bottle_2.png" onerror="this.onerror=null;this.src='works/larq_bottle_2.png'" alt="LARQ Bottle 2">
+                        <div class="project-title-overlay">
+                            <span>PRODUCT RENDER</span>
+                            <h4>LARQ Bottle (2)</h4>
+                        </div>
+                    </a>
+
+                    <!-- 8.13 Springer Pet Bottle -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/springer_pet_bottle.png');" class="project-item">
+                        <img src="works/springer_pet_bottle.png" onerror="this.onerror=null;this.src='works/springer_pet_bottle.png'" alt="Springer Pet Bottle">
+                         <div class="project-title-overlay">
+                            <span>PRODUCT RENDER</span>
+                            <h4>Springer Pet Bottle</h4>
+                        </div>
+                    </a>
+                    
+                    <!-- 8.14 Ptron Power Bank -->
+                    <!-- UPDATED LABEL: COMMISSIONED WORK -> PRODUCT RENDER -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/ptron_mobile_power_bank.png');" class="project-item">
+                        <img src="works/ptron_mobile_power_bank.png" onerror="this.onerror=null;this.src='works/ptron_mobile_power_bank.png'" alt="Ptron Mobile Power Bank">
+                         <div class="project-title-overlay">
+                            <span>PRODUCT RENDER</span>
+                            <h4>Ptron Power Bank</h4>
+                        </div>
+                    </a>
+
+                    <!-- 8.15 Perfume Bottle Study (1) -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/perfume_render_1.png');" class="project-item">
+                        <img src="works/perfume_render_1.png" onerror="this.onerror=null;this.src='works/perfume_render_1.png'" alt="Perfume Render 1">
+                         <div class="project-title-overlay">
+                            <span>VISUAL STUDY</span>
+                            <h4>Perfume Study (1)</h4>
+                        </div>
+                    </a>
+                    
+                    <!-- 8.16 Perfume Bottle Study (2) -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/perfume_render_2.png');" class="project-item">
+                        <img src="works/perfume_render_2.png" onerror="this.onerror=null;this.src='works/perfume_render_2.png'" alt="Perfume Render 2">
+                        <div class="project-title-overlay">
+                            <span>VISUAL STUDY</span>
+                            <h4>Perfume Study (2)</h4>
+                        </div>
+                    </a>
+
+                    <!-- 8.17 Perfume Bottle Study (3) -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/perfume_render_3.png');" class="project-item">
+                        <img src="works/perfume_render_3.png" onerror="this.onerror=null;this.src='works/perfume_render_3.png'" alt="Perfume Render 3">
+                        <div class="project-title-overlay">
+                            <span>VISUAL STUDY</span>
+                            <h4>Perfume Study (3)</h4>
+                        </div>
+                    </a>
+
+                    <!-- 8.18 Roger Pradier Light Render -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/roger_pradier_light.png');" class="project-item">
+                        <img src="works/roger_pradier_light.png" onerror="this.onerror=null;this.src='works/roger_pradier_light.png'" alt="Roger Pradier Light Render">
+                        <div class="project-title-overlay">
+                            <span>ARCHITECTURAL VIS.</span>
+                            <h4>Pradier Light Render</h4>
+                        </div>
+                    </a>
+
+                    <!-- 8.19 Studio Microphone Render -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/studio_microphone.png');" class="project-item">
+                        <img src="works/studio_microphone.png" onerror="this.onerror=null;this.src='works/studio_microphone.png'" alt="Studio Microphone Render">
+                        <div class="project-title-overlay">
+                            <span>PRODUCT RENDER</span>
+                            <h4>Studio Microphone</h4>
+                        </div>
+                    </a>
+                    
+                    <!-- 8.20 Walkman Renders (Static) -->
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_1.png');" class="project-item">
+                        <img src="works/walkman_render_1.png" onerror="this.onerror=null;this.src='works/walkman_render_1.png'" alt="Walkman Render 1">
+                        <div class="project-title-overlay">
+                            <span>HARD SURFACE</span>
+                            <h4>Walkman Study (1)</h4>
+                        </div>
+                    </a>
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_2.png');" class="project-item">
+                        <img src="works/walkman_render_2.png" onerror="this.onerror=null;this.src='works/walkman_render_2.png'" alt="Walkman Render 2">
+                        <div class="project-title-overlay">
+                            <span>HARD SURFACE</span>
+                            <h4>Walkman Study (2)</h4>
+                        </div>
+                    </a>
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_3.png');" class="project-item">
+                        <img src="works/walkman_render_3.png" onerror="this.onerror=null;this.src='works/walkman_render_3.png'" alt="Walkman Render 3">
+                        <div class="project-title-overlay">
+                            <span>HARD SURFACE</span>
+                            <h4>Walkman Study (3)</h4>
+                        </div>
+                    </a>
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_4.png');" class="project-item">
+                        <img src="works/walkman_render_4.png" onerror="this.onerror=null;this.src='works/walkman_render_4.png'" alt="Walkman Render 4">
+                        <div class="project-title-overlay">
+                            <span>HARD SURFACE</span>
+                            <h4>Walkman Study (4)</h4>
+                        </div>
+                    </a>
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_5.png');" class="project-item">
+                        <img src="works/walkman_render_5.png" onerror="this.onerror=null;this.src='works/walkman_render_5.png'" alt="Walkman Render 5">
+                        <div class="project-title-overlay">
+                            <span>HARD SURFACE</span>
+                            <h4>Walkman Study (5)</h4>
+                        </div>
+                    </a>
+                    <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_6.png');" class="project-item">
+                        <img src="works/walkman_render_6.png" onerror="this.onerror=null;this.src='works/walkman_render_6.png'" alt="Walkman Render 6">
+                        <div class="project-title-overlay">
+                            <span>HARD SURFACE</span>
+                            <h4>Walkman Study (6)</h4>
+                        </div>
+                    </a>
+                    
+                </div>
+            </section>
+            <!-- END GALLERY SECTION -->
+            
+            <!-- 9. NEW CONTACT SECTION (Index 9) -->
+            <section id="contact-section">
+                <span class="section-label blend-text">Get in Touch</span>
+                <h2 class="product-title blend-text" style="font-size: 3rem; margin-bottom: 20px;">Contact Me</h2>
+                
+                <p class="product-desc blend-text" style="max-width: 700px; margin-bottom: 40px; color: #aaa;">
+                    Interested in collaboration, commissions, or just want to say hello? Use the form below to send me a message directly.
+                    *(Note: This form uses Formspree to ensure reliable delivery to your email address.)
+                </p>
+
+                <div class="contact-form-container">
+                    <!-- Formspree Endpoint Integrated: https://formspree.io/f/xnnejgdy -->
+                    <form action="https://formspree.io/f/xnnejgdy" method="post" id="contact-form">
+                        
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required placeholder="John Doe">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Your Email Address</label>
+                            <input type="email" id="email" name="_replyto" required placeholder="your.email@example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required placeholder="Project Inquiry / Collaboration">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <!-- Changed name="body" to name="message" for Formspree compatibility -->
+                            <textarea id="message" name="message" required placeholder="I saw your work on VATTEN and would love to discuss..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+            </section>
+
+
+            <!-- 10. FOOTER SECTION (Index 10 - Updated index) -->
+            <section style="height: 30vh; min-height: 30vh; align-items: center; text-align: center; justify-content: center;">
+                <p class="blend-text" style="opacity: 0.5; letter-spacing: 2px;">ALAN BELIM P.S. © 2025</p>
+            </section>
+
+        </div>
+    </div> 
+
+    <!-- DEPENDENCIES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.min.js"></script>
+
+    <script>
+        // --- SCROLL JUMP FIX VARIABLES ---
+        let lastScrollY = 0; // Global variable to store scroll position before modal opens
+        
+        const ALL_SECTIONS = document.querySelectorAll('section');
+        let currentPage = 0;
+        const GALLERY_SECTION_INDEX = 8; 
+        const CONTACT_SECTION_INDEX = 9; 
+
+        // --- TITLE SCREEN LOGIC ---
+        let titleDismissed = false;
+        const titleScreen = document.getElementById('title-screen');
+        let scrollY = 0; 
+        let targetScrollY = 0;
+
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+
+        function updateTarget(y) {
+            targetScrollY = y;
+            currentPage = Math.round(targetScrollY / window.innerHeight);
+        }
+        updateTarget(window.scrollY);
+        
+        // Add Native Scroll Listener to update the 3D scene target
+        window.addEventListener('scroll', () => {
+             updateTarget(window.scrollY);
+        });
+
+        function dismissTitle() {
+            if(titleDismissed) return;
+            titleDismissed = true;
+            titleScreen.classList.add('disintegrate');
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    document.body.classList.remove('locked');
+                    document.getElementById('canvas-container').style.opacity = 1;
+                    document.querySelector('.ui-layer').style.opacity = 1;
+                    document.querySelector('.nav-bar').style.opacity = 1;
+                    document.querySelector('.nav-bar').style.transform = 'translateY(0)';
+                    const heroElements = document.querySelectorAll('#personal-hero .greeting, #personal-hero .main-name, #personal-hero .hero-subtitle, #personal-hero .portrait-img');
+                    heroElements.forEach(el => el.classList.add('fade-up-active'));
+                    initExperienceBlob();
+                    updateTarget(0); 
+                    window.scrollTo({ top: 0, behavior: 'instant' }); 
+                });
+            }, 800);
+        }
+
+        // --- UPDATED: Handle initial interaction solely to dismiss title screen ---
+        function handleInitialInteraction(e) {
+            if (!titleDismissed) {
+                dismissTitle();
+            }
+        }
+        
+        // We keep listeners but only for the first interaction check
+        window.addEventListener('wheel', handleInitialInteraction, { passive: false });
+        window.addEventListener('touchmove', handleInitialInteraction, { passive: false });
+        
+        document.getElementById('title-screen').addEventListener('click', (e) => {
+            if (!titleDismissed) { dismissTitle(); e.preventDefault(); }
+        });
+        document.addEventListener('click', (e) => {
+            if (!titleDismissed && !e.target.closest('#title-screen')) { dismissTitle(); e.preventDefault(); }
+        }, true);
+
+        // --- NEW: ROBUST SCROLL TO ELEMENT FUNCTION ---
+        window.scrollToElement = function(elementId) {
+            if (!titleDismissed) dismissTitle();
+            const element = document.getElementById(elementId);
+            if(element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
+        // --- PATHS: Now pointing to the logos/ folder ---
+        const LOGO_DATA = {
+            'Blender': { src: 'logos/blender.png' },      
+            'Rhino': { src: 'logos/rhino.png' },          
+            'Photoshop': { src: 'logos/photoshop.png' },  
+            'Illustrator': { src: 'logos/illustrator.png' }, 
+            'Procreate': { src: 'logos/procreate.png' }   
+        };
+
+        const logoPlaceholder = document.getElementById('logo-placeholder');
+        
+        document.querySelectorAll('.skill-item').forEach(item => {
+            item.addEventListener('mouseenter', (e) => {
+                const tool = e.target.getAttribute('data-tool');
+                const logo = LOGO_DATA[tool];
+                
+                if (logo) {
+                    // Inject only the <img> tag
+                    logoPlaceholder.innerHTML = `<img src="${logo.src}" alt="${tool} Logo" onerror="this.onerror=null;this.src='https://placehold.co/100x100/333/fff?text=${tool}';" >`;
+                } else {
+                    logoPlaceholder.innerHTML = '';
+                }
+
+                logoPlaceholder.style.opacity = 1;
+                logoPlaceholder.style.transform = 'translate(-50%, -50%) scale(1.0)';
+            });
+            item.addEventListener('mouseleave', () => {
+                logoPlaceholder.innerHTML = '';
+                logoPlaceholder.style.opacity = 0;
+                logoPlaceholder.style.transform = 'translate(-50%, -50%) scale(0.95)';
+            });
+        });
+        
+        // --- IMAGE MODAL LOGIC (UPDATED to accept event e) ---
+        const imageModal = document.getElementById('image-modal');
+        const modalImageDisplay = document.getElementById('modal-image-display');
+
+        window.openImageModal = function(e, imageSrc) {
+            e.preventDefault(); // CRITICAL FIX: Stop navigation
+            lastScrollY = window.scrollY; // SAVE SCROLL POSITION
+            currentPage = GALLERY_SECTION_INDEX;
+            modalImageDisplay.src = imageSrc;
+            imageModal.classList.add('active');
+            document.body.classList.add('locked');
+        };
+
+        window.closeImageModal = function() {
+            imageModal.classList.remove('active');
+            modalImageDisplay.src = ''; 
+            document.body.classList.remove('locked');
+            window.scrollTo(0, lastScrollY); // RESTORE SCROLL POSITION
+        };
+        // --- END IMAGE MODAL LOGIC ---
+        
+        // --- VIDEO MODAL LOGIC (UPDATED to accept event e) ---
+        const videoModal = document.getElementById('video-modal');
+        const videoPlayer = document.getElementById('video-player');
+        
+        window.openVideoModal = function(e, videoSrc) {
+            e.preventDefault(); // CRITICAL FIX: Stop navigation
+            lastScrollY = window.scrollY; // SAVE SCROLL POSITION
+            currentPage = GALLERY_SECTION_INDEX;
+            
+            // Set the video source
+            videoPlayer.src = videoSrc;
+
+            videoModal.classList.add('active');
+            
+            // Play the video on interaction
+            videoPlayer.muted = false; 
+            videoPlayer.loop = true; 
+            
+            // CRITICAL: Force playback on click, required by most browsers
+            videoPlayer.play().catch(error => {
+                console.error("Video playback failed:", error);
+                // Fallback: If play() fails (e.g., due to strict mobile policies), keep it muted and show controls
+                videoPlayer.muted = true;
+                videoPlayer.play();
+            });
+            
+            document.body.classList.add('locked');
+        };
+        
+        window.closeVideoModal = function() {
+            videoPlayer.pause();
+            videoPlayer.src = ''; // Clear source to stop download
+            videoModal.classList.remove('active');
+            document.body.classList.remove('locked');
+            window.scrollTo(0, lastScrollY); // RESTORE SCROLL POSITION
+        };
+        // --- END VIDEO MODAL LOGIC ---
+
+        
+        // --- RESIZE HANDLERS ---
+        function resizeModalCanvas() {
+            if (modalRenderer && modalCamera) {
+                const container = document.getElementById('modal-canvas-container');
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                modalRenderer.setSize(width, height);
+                modalCamera.aspect = width / height;
+                modalCamera.updateProjectionMatrix();
+                
+                if (currentModel) {
+                     modalControls.update();
+                }
+            }
+        }
+
+        function handleWindowResize() {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            
+            resizeModalCanvas();
+        }
+
+        window.addEventListener('resize', handleWindowResize);
+
+
+        // --- MAIN BACKGROUND SCENE (FLUID) ---
+        const canvasContainer = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x050505, 0.01); 
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 8); 
+        
+        const camLight = new THREE.PointLight(0xffffff, 1, 100);
+        camera.add(camLight);
+        scene.add(camera);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.physicallyCorrectLights = true;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        canvasContainer.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0x222222, 3.0); 
+        scene.add(ambientLight);
+        const light1 = new THREE.PointLight(0x88aacc, 200, 100);
+        light1.position.set(5, 10, 5);
+        scene.add(light1);
+        const light2 = new THREE.PointLight(0xccaa88, 120, 100);
+        light2.position.set(-10, 2, 5);
+        scene.add(light2);
+        const light3 = new THREE.DirectionalLight(0xffffff, 3.0);
+        light3.position.set(0, 5, -10);
+        light3.lookAt(0,0,0);
+        scene.add(light3);
+
+        const particlesGeo = new THREE.BufferGeometry();
+        const particlesCount = 1500;
+        const pArray = new Float32Array(particlesCount * 3);
+        const pSpeeds = new Float32Array(particlesCount);
+        for(let i=0; i<particlesCount * 3; i+=3) {
+            pArray[i] = (Math.random() - 0.5) * 40;     
+            pArray[i+1] = (Math.random() - 0.5) * 40;   
+            pArray[i+2] = (Math.random() - 0.5) * 100;
+            pSpeeds[i/3] = Math.random();
+        }
+        particlesGeo.setAttribute('position', new THREE.BufferAttribute(pArray, 3));
+        const particlesMat = new THREE.PointsMaterial({
+            size: 0.03, color: 0x88ccff, transparent: true, opacity: 0.4,
+            blending: THREE.AdditiveBlending, sizeAttenuation: true
+        });
+        const particleSystem = new THREE.Points(particlesGeo, particlesMat);
+        scene.add(particleSystem);
+
+        const geometry = new THREE.PlaneGeometry(80, 80, 400, 400); 
+        const material = new THREE.MeshStandardMaterial({
+            color: 0x1a1a1a, roughness: 0.1, metalness: 0.9, flatShading: false,
+        });
+        const plane = new THREE.Mesh(geometry, material);
+        plane.rotation.x = -0.2; 
+        scene.add(plane);
+
+        const simplex = new SimplexNoise();
+        const posAttribute = geometry.attributes.position;
+        const originalPositions = posAttribute.array.slice();
+
+        const raycaster = new THREE.Raycaster();
+        const interactionPlane = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshBasicMaterial({ visible: false }));
+        interactionPlane.rotation.x = -0.2;
+        scene.add(interactionPlane);
+
+        let blobRenderer, blobScene, blobCamera, blobMesh;
+        function initExperienceBlob() {
+            const container = document.getElementById('experience-blob-container');
+            if(!container) return;
+            blobScene = new THREE.Scene();
+            blobRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            blobRenderer.setSize(container.clientWidth, container.clientHeight);
+            blobRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(blobRenderer.domElement);
+            blobCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+            blobCamera.position.z = 4;
+            const dirLight = new THREE.DirectionalLight(0xffffff, 2); 
+            dirLight.position.set(2, 2, 5);
+            blobScene.add(dirLight);
+            const ambLight = new THREE.AmbientLight(0x404040, 1); 
+            blobScene.add(ambLight);
+            const rimLight = new THREE.SpotLight(0x0088ff, 5); 
+            rimLight.position.set(-5, 0, 0);
+            blobScene.add(rimLight);
+            const pointLight = new THREE.PointLight(0xffffff, 2);
+            pointLight.position.set(3, 3, 3);
+            blobScene.add(pointLight);
+            const geo = new THREE.IcosahedronGeometry(1.2, 4);
+            const mat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.2, metalness: 0.8, flatShading: false });
+            blobMesh = new THREE.Mesh(geo, mat);
+            blobScene.add(blobMesh);
+            blobMesh.userData.originalPos = geo.attributes.position.array.slice();
+        }
+
+        let modalScene, modalCamera, modalRenderer, modalControls;
+        let currentModel = null;
+        let loadingAnim = null;
+        let isModalOpen = false;
+        const modelWarningMessage = document.getElementById('model-warning-message');
+        
+        function initModal() {
+            const container = document.getElementById('modal-canvas-container');
+            modalScene = new THREE.Scene();
+            modalScene.background = new THREE.Color(0x050505); 
+            modalCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            modalCamera.position.set(0, 2, 5);
+            modalRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            modalRenderer.setSize(container.clientWidth / container.clientHeight);
+            modalRenderer.physicallyCorrectLights = true;
+            modalRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+            modalRenderer.toneMappingExposure = 1.0; 
+            modalRenderer.outputEncoding = THREE.sRGBEncoding;
+            container.appendChild(modalRenderer.domElement);
+            const pmremGenerator = new THREE.PMREMGenerator(modalRenderer);
+            pmremGenerator.compileEquirectangularShader();
+            const roomEnvironment = new THREE.RoomEnvironment();
+            modalScene.environment = pmremGenerator.fromScene(roomEnvironment).texture;
+            
+            const dirLight = new THREE.DirectionalLight(0xffffff, 3.5); 
+            dirLight.position.set(5, 10, 7);
+            modalScene.add(dirLight);
+            const fillLight = new THREE.DirectionalLight(0xffeedd, 2.0); 
+            fillLight.position.set(-5, 2, -5);
+            modalScene.add(fillLight);
+            
+            modalControls = new THREE.OrbitControls(modalCamera, modalRenderer.domElement);
+            modalControls.enableDamping = true;
+            modalControls.dampingFactor = 0.05;
+        }
+
+        window.openModal = function(type) {
+            if(!modalRenderer) initModal();
+            document.getElementById('model-modal').classList.add('active');
+            modelWarningMessage.classList.remove('visible'); 
+            lastScrollY = window.scrollY; // SAVE SCROLL POSITION
+            isModalOpen = true;
+            resizeModalCanvas(); 
+            if(currentModel) { modalScene.remove(currentModel); currentModel = null; }
+            if(loadingAnim) { modalScene.remove(loadingAnim); loadingAnim = null; }
+            document.getElementById('modal-status').innerText = "LOADING MODEL...";
+            document.getElementById('modal-status').style.opacity = 1;
+            startLoadingAnimation(type);
+        }
+
+        window.closeModal = function() {
+            document.getElementById('model-modal').classList.remove('active');
+            isModalOpen = false;
+            modelWarningMessage.classList.remove('visible');
+            window.scrollTo(0, lastScrollY); // RESTORE SCROLL POSITION
+        }
+        
+        let modelLoadComplete = false;
+        
+        function startLoadingAnimation(type) {
+            modelLoadComplete = false;
+            let geo, mat;
+            
+            if(type === 'strom') {
+                const points = [];
+                for(let i=0; i<100; i++) points.push(new THREE.Vector3( (i-50)*0.1, Math.sin(i*0.2), 0 ));
+                geo = new THREE.BufferGeometry().setFromPoints(points);
+                mat = new THREE.LineBasicMaterial({ color: 0xffffff });
+                loadingAnim = new THREE.Line(geo, mat);
+            } else if(type === 'vag') {
+                geo = new THREE.RingGeometry(0.5, 0.55, 32);
+                mat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, side: THREE.DoubleSide });
+                loadingAnim = new THREE.Mesh(geo, mat);
+                loadingAnim.rotation.x = -Math.PI/2;
+            } else {
+                geo = new THREE.IcosahedronGeometry(0.5, 1);
+                mat = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.3 });
+                loadingAnim = new THREE.Mesh(geo, mat);
+            }
+            modalScene.add(loadingAnim);
+            
+            const loader = new THREE.GLTFLoader();
+            const modelPath = './' + type + '.glb'; 
+
+            loader.load(modelPath, function (gltf) {
+                if(!isModalOpen) return; 
+                
+                modelLoadComplete = true;
+                if (loadingAnim) {
+                    modalScene.remove(loadingAnim);
+                    loadingAnim = null;
+                }
+                document.getElementById('modal-status').style.opacity = 0;
+                
+                currentModel = gltf.scene;
+                
+                const box = new THREE.Box3().setFromObject(currentModel);
+                const size = box.getSize(new THREE.Vector3());
+                const center = box.getCenter(new THREE.Vector3());
+                
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 5.0 / maxDim;
+                currentModel.scale.set(scale, scale, scale);
+                
+                currentModel.position.x -= center.x * scale;
+                currentModel.position.y -= center.y * scale;
+                currentModel.position.z -= center.z * scale;
+
+                modalScene.add(currentModel);
+                fitCameraToObject(modalCamera, currentModel, modalControls);
+
+            }, undefined, function (error) {
+                console.error(error);
+                if (loadingAnim) {
+                    modalScene.remove(loadingAnim);
+                    loadingAnim = null;
+                }
+                document.getElementById('modal-status').innerText = "";
+                modelWarningMessage.classList.add('visible'); 
+                showPlaceholderModel(type); 
+            });
+        }
+
+        function showPlaceholderModel(type) {
+            if(currentModel) { modalScene.remove(currentModel); currentModel = null; }
+            let geo;
+            const meshMat = new THREE.MeshStandardMaterial({ color: 0x444444, metalness: 0.9, roughness: 0.2, emissive: 0x000000 });
+            const wireframeMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.8 });
+
+            if(type === 'strom') { geo = new THREE.TorusKnotGeometry(1.5, 0.4, 150, 20); } 
+            else if(type === 'vag') { geo = new THREE.CylinderGeometry(2.5, 2.5, 0.5, 64); } 
+            else { geo = new THREE.BoxGeometry(4.0, 1.0, 2.0); }
+            
+            const baseMesh = new THREE.Mesh(geo, meshMat);
+            const wireMesh = new THREE.Mesh(geo, wireframeMat);
+            currentModel = new THREE.Group();
+            currentModel.add(baseMesh);
+            currentModel.add(wireMesh);
+            modalScene.add(currentModel);
+            
+            modalControls.target.set(0, 0, 0);
+            modalCamera.position.set(5, 3, 7); 
+            modalControls.update();
+        }
+        
+        function fitCameraToObject(camera, object, controls) {
+            const box = new THREE.Box3().setFromObject(object);
+            const size = box.getSize(new THREE.Vector3());
+            const center = box.getCenter(new THREE.Vector3());
+            const maxSize = Math.max(size.x, size.y, size.z);
+            const fitHeightDistance = maxSize / (2 * Math.atan(Math.PI * camera.fov / 360));
+            const fitWidthDistance = fitHeightDistance / camera.aspect;
+            const distance = 1.5 * Math.max(fitHeightDistance, fitWidthDistance);
+            
+            controls.target.copy(center);
+            
+            const direction = camera.position.clone().sub(controls.target).normalize().multiplyScalar(distance);
+            camera.position.copy(controls.target).add(direction);
+            
+            controls.maxDistance = distance * 10;
+            camera.near = distance / 100;
+            camera.far = distance * 100;
+            camera.updateProjectionMatrix();
+            controls.update(); 
+        }
+
+        
+        let activeWaterArea = null; 
+        let isHoveringInteractionArea = false; 
+        
+        const waterAreas = document.querySelectorAll('.water-interaction-area');
+        waterAreas.forEach(area => {
+            area.addEventListener('mouseenter', () => { 
+                activeWaterArea = area; 
+                isHoveringInteractionArea = true; 
+                canvasContainer.style.pointerEvents = 'auto'; 
+            });
+            area.addEventListener('mouseleave', () => { 
+                isHoveringInteractionArea = false; 
+                canvasContainer.style.pointerEvents = 'none'; 
+            });
+        });
+
+        const currentMouse = new THREE.Vector2(); 
+        document.addEventListener('mousemove', (e) => {
+            currentMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            currentMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if(e.touches.length > 0) {
+                currentMouse.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+                currentMouse.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+                
+                targetX = currentMouse.x;
+                targetY = currentMouse.y;
+                
+                isHoveringInteractionArea = true;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', () => {
+             isHoveringInteractionArea = false;
+        });
+        
+        const clock = new THREE.Clock();
+        const smoothMouse = new THREE.Vector2(); 
+        let targetX = 0;
+        let targetY = 0;
+        document.addEventListener('mousemove', (e) => {
+            targetX = (e.clientX / window.innerWidth) * 2 - 1;
+            targetY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        function smoothstep(min, max, value) {
+            var x = Math.max(0, Math.min(1, (value-min)/(max-min)));
+            return x*x*(3 - 2*x);
+        }
+
+        function updateParallax() {
+            const images = document.querySelectorAll('.product-img');
+            images.forEach(img => {
+                const speed = img.getAttribute('data-speed');
+                const rect = img.parentElement.getBoundingClientRect();
+                const centerY = window.innerHeight / 2;
+                const dist = (rect.top + rect.height/2) - centerY;
+                let transform = `translateY(${dist * speed * 0.2}px)`;
+                img.style.transform = transform;
+            });
+        }
+        
+        let interactionWeight = 0.0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+            if (window.TWEEN) TWEEN.update();
+
+            // RENDER MODAL SCENE
+            if(isModalOpen && modalRenderer) {
+                modalControls.update();
+                if(loadingAnim) {
+                    loadingAnim.rotation.y += 0.05;
+                    if(loadingAnim.geometry.type === 'RingGeometry') {
+                        const s = 1 + Math.sin(Date.now()*0.003)*0.5;
+                        loadingAnim.scale.set(s,s,s);
+                        loadingAnim.material.opacity = 1 - (s-0.5);
+                    }
+                }
+                
+                if(currentModel && !modelLoadComplete) {
+                     currentModel.rotation.y += 0.005;
+                }
+                
+                modalRenderer.render(modalScene, modalCamera);
+            }
+
+            if(blobRenderer && blobScene && blobMesh) {
+                const positions = blobMesh.geometry.attributes.position;
+                const original = blobMesh.userData.originalPos;
+                for(let i=0; i<positions.count; i++) {
+                    const x = original[i*3];
+                    const y = original[i*3+1];
+                    const z = original[i*3+2];
+                    const noise = simplex.noise3D(x + time*0.5, y + time*0.5, z);
+                    const mDist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)); 
+                    let spike = 0;
+                    if(mDist < 0.5) spike = (0.5 - mDist) * 0.5 * Math.sin(time*2);
+                    const scale = 1 + (noise * 0.2) + spike;
+                    positions.setXYZ(i, x*scale, y*scale, z*scale);
+                }
+                positions.needsUpdate = true;
+                blobMesh.rotation.y = time * 0.1;
+                blobRenderer.render(blobScene, blobCamera);
+            }
+            
+            // --- UPDATED: Smooth scroll follow logic for fluid effects ---
+            scrollY += (targetScrollY - scrollY) * 0.05; 
+            
+            smoothMouse.x += (targetX - smoothMouse.x) * 0.08;
+            smoothMouse.y += (targetY - smoothMouse.y) * 0.08; 
+
+            updateParallax();
+            
+            const sectionHeight = window.innerHeight;
+            const absolutePos = scrollY / sectionHeight;
+
+            let interactionTarget = null;
+            let mouseToUse = currentMouse; 
+
+            // --- INTERACTION WEIGHT LOGIC (SMOOTH FADE) ---
+            if (isHoveringInteractionArea) {
+                interactionWeight += (1.0 - interactionWeight) * 0.2;
+                raycaster.setFromCamera(mouseToUse, camera);
+                const intersects = raycaster.intersectObject(interactionPlane);
+                if (intersects.length > 0) { interactionTarget = intersects[0].point; }
+            } else if (interactionWeight > 0.005) {
+                interactionWeight *= 0.85; 
+                raycaster.setFromCamera(mouseToUse, camera);
+                const intersects = raycaster.intersectObject(interactionPlane);
+                if (intersects.length > 0) { interactionTarget = intersects[0].point; }
+            } else {
+                 interactionWeight = 0.0;
+                 activeWaterArea = null; 
+                 interactionTarget = new THREE.Vector3(999,999,999);
+            }
+            
+            const hitPoint = interactionTarget || new THREE.Vector3(999,999,999);
+
+            const scrollVelocity = Math.abs(targetScrollY - scrollY);
+            let warpFactor = 0.05; 
+            if (scrollVelocity > 5) warpFactor += scrollVelocity * 0.002;
+            const positions = particleSystem.geometry.attributes.position.array;
+            for(let i=0; i < particlesCount; i++) {
+                positions[i*3 + 2] += (warpFactor * (1 + pSpeeds[i]));
+                if(positions[i*3 + 2] > 20) positions[i*3 + 2] = -80;
+            }
+            particleSystem.geometry.attributes.position.needsUpdate = true;
+            particleSystem.rotation.z = time * 0.05 + (scrollY * 0.0005);
+
+            let wIntro = 0, wSkills = 0, wExperience = 0, wCollection = 0, wStrom = 0, wVag = 0, wVila = 0;
+            let wOtherProjects = 0; 
+            
+            function getSectionWeight(id) {
+                const el = document.getElementById(id);
+                if (!el) return 0;
+                const rect = el.getBoundingClientRect();
+                const center = rect.top + rect.height / 2;
+                const dist = Math.abs(center - window.innerHeight / 2);
+                return Math.max(0, 1 - dist / (window.innerHeight * 0.6)); 
+            }
+
+            wStrom = getSectionWeight('section-strom');
+            wVag = getSectionWeight('section-vag');
+            wVila = getSectionWeight('section-vila');
+            wCollection = getSectionWeight('collection-hero');
+            wOtherProjects = getSectionWeight('other-projects');
+            
+            if (absolutePos < 1.0) wIntro = 1.0 - smoothstep(0.0, 1.0, absolutePos);
+            if (absolutePos > 0.5 && absolutePos < 2.0) { wSkills = smoothstep(0.5, 1.5, absolutePos); if (absolutePos > 1.5) wSkills = 1.0 - smoothstep(1.5, 2.0, absolutePos); }
+            if (absolutePos > 1.5 && absolutePos < 3.0) { wExperience = smoothstep(1.5, 2.5, absolutePos); if (absolutePos > 2.5) wExperience = 1.0 - smoothstep(2.5, 3.0, absolutePos); }
+
+            let dimFactor = 1.0;
+            if (wSkills > 0.01 || wExperience > 0.01 || wOtherProjects > 0.01) dimFactor = 1.0 - (Math.max(wSkills, wExperience, wOtherProjects) * 0.5); 
+            light1.intensity = 200 * dimFactor;
+            light2.intensity = 120 * dimFactor;
+            light3.intensity = 3.0 * dimFactor;
+
+            let cameraZ = 8, cameraY = 0, cameraRX = 0, cameraRZ = 0;
+            
+            cameraRX = -smoothMouse.y * 0.03;
+            cameraRZ = smoothMouse.x * 0.03;
+
+            camera.position.set(0, cameraY, cameraZ);
+            camera.rotation.set(cameraRX, 0, cameraRZ);
+            plane.position.y = -cameraY; 
+            plane.rotation.x = cameraRX - 0.2; 
+            
+            for (let i = 0; i < posAttribute.count; i++) {
+                const x = originalPositions[i * 3];
+                const y = originalPositions[i * 3 + 1];
+                let totalZ = 0;
+
+                let mask = 1.0;
+                let activeProductSection = (wStrom + wVag + wVila);
+                
+                if (activeProductSection > 0.01) {
+                    mask = smoothstep(5.0, -10.0, y); 
+                } else if (wIntro > 0.01 || wCollection > 0.01) {
+                    mask = 1.0;
+                } else {
+                    mask = 0.0;
+                }
+                
+                if (wIntro > 0.01 || activeProductSection > 0.01 || wOtherProjects > 0.01) {
+                    let w = Math.max(wIntro, wCollection, activeProductSection, wOtherProjects);
+                    let z = simplex.noise3D(x * 0.2, y * 0.2, time * 0.15) * 0.15;
+                    totalZ += z * w;
+                }
+
+                const dist = hitPoint.distanceTo(new THREE.Vector3(x, y, 0));
+                
+                let interactionZ = 0;
+                const flowSpeed = time * 1.2; 
+                const stillnessSpeed = time * 0.05;
+
+                if (wStrom > 0.01) {
+                    const directionalNoise = simplex.noise2D(x * 0.3 + flowSpeed, y * 0.4 + flowSpeed) * 0.8;
+                    const localizedWake = (dist < 12) 
+                        ? Math.exp(-(dist * dist) / 50) * 0.4 * Math.sin(dist * 4 - time * 12)
+                        : 0;
+                        
+                    interactionZ += (directionalNoise + localizedWake) * wStrom;
+
+                } else if (wVag > 0.01) {
+                    interactionZ += simplex.noise3D(x * 0.15, y * 0.15, time * 0.2) * 0.2 * wVag;
+                    
+                    if (dist < 25) { 
+                        const ripple = Math.sin(dist * 2.8 - time * 8.0); 
+                        const decay = Math.exp(-dist * 0.15); 
+                        interactionZ += ripple * decay * 1.5 * wVag; 
+                    }
+
+                } else if (wVila > 0.01) {
+                    let z1 = simplex.noise3D(x * 0.08, y * 0.08, stillnessSpeed) * 0.4; 
+                    interactionZ += z1 * wVila;
+                    
+                    if (dist < 5) {
+                        const dampenFactor = Math.exp(-(dist * dist) / 10);
+                        interactionZ *= (1 - dampenFactor * 0.8);
+                    }
+                } 
+                
+                else if (wIntro > 0.01 && hitPoint.x !== 999) {
+                     const distHero = hitPoint.distanceTo(new THREE.Vector3(x, y, 0));
+                     if(distHero < 12) { 
+                        const softFactor = Math.exp(-(distHero * distHero) / 20); 
+                        interactionZ += softFactor * 0.8 * Math.sin(time * 2); 
+                     }
+                }
+
+                totalZ += interactionZ * interactionWeight;
+
+                posAttribute.setZ(i, totalZ * mask); 
+            }
+            
+            posAttribute.needsUpdate = true;
+            geometry.computeVertexNormals();
+            renderer.render(scene, camera);
+        }
+
+        function animateHeroText() {
+            requestAnimationFrame(animateHeroText);
+            const textCol = document.querySelector('.hero-text-col');
+            if (textCol) {
+                textCol.style.transform = `rotateY(${targetX * 2}deg) rotateX(${-targetY * 1}deg)`;
+            }
+        }
+        
+        animateHeroText();
+        animate();
+    </script>
+</body>
+</html>
