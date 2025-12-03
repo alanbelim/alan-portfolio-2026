@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alan Belim P.S. | VATTEN</title>
+    <title>Alan Belim P.S.</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;800&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
 
@@ -241,6 +241,17 @@
             text-shadow: 0 0 1px #000000, 0 0 2px #000000; 
         }
 
+        /* FROSTED GLASS BOX STYLE */
+        .frosted-box {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+        
         /* 1. PERSONAL BRANDING HERO */
         #personal-hero {
             height: 100vh;
@@ -361,8 +372,8 @@
         }
         
         .skills-content {
-            flex: 0 0 450px; 
-            max-width: 50%; 
+            flex: 0 0 650px; 
+            max-width: 65%; 
             z-index: 2;
         }
         
@@ -378,7 +389,8 @@
 
         .skills-grid-container {
              display: flex;
-             gap: 40px;
+             flex-direction: column;
+             gap: 20px;
              align-items: flex-start; 
         }
 
@@ -412,18 +424,19 @@
         }
 
         .skill-category {
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
         .skill-cat-title {
             font-size: 0.9rem;
             color: #888;
             text-transform: uppercase;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #444;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: block;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 5px;
-            display: inline-block;
-            margin-bottom: 15px; 
+            width: 100%;
         }
 
         .skill-item {
@@ -648,6 +661,7 @@
             padding-left: 20px;
         }
 
+        /* --- FURNITURE LAYOUT FIXES --- */
         .product-section {
             display: flex;
             justify-content: space-between;
@@ -656,57 +670,87 @@
             padding-bottom: 150px;
             gap: 50px;
             position: relative; 
-            overflow: hidden; 
-        }
-
-        .product-text-col {
-            flex: 0 0 40%; 
-            display: flex; 
-            flex-direction: column;
-            z-index: 21; 
-            flex-shrink: 0;
+            overflow: visible; 
         }
         
+        .state-label {
+            position: absolute;
+            top: 50px;
+            left: 10%;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: #fff;
+            opacity: 0.4;
+            text-transform: uppercase;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .product-text-content-wrapper {
+             flex: 0 0 35%; 
+             z-index: 21;
+             text-align: left;
+             align-items: flex-start;
+        }
+        
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            margin: 10px 0;
+            color: #fff;
+            line-height: 1;
+        }
+
         .product-image-col {
-            flex: 0 0 50%; 
+            flex: 0 0 65%; 
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             isolation: isolate;
-            flex-shrink: 0;
             height: auto; 
             overflow: visible;
+            /* FIX: Z-index to be above the water layer */
+            z-index: 20; 
+        }
+        
+        .product-image-wrapper {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            width: fit-content;
+        }
+        
+        .product-img {
+            width: 100%;
+            max-width: 1100px; 
+            height: auto;
+            object-fit: cover;
+            display: block;
+            border-radius: 30px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 0.1s ease-out;
         }
 
-        /* --- SPECIFIC ALIGNMENT FIXES --- */
         .product-section.right-align {
             flex-direction: row-reverse;
         }
         
-        /* Force text column to LEFT align for better readability */
-        .product-section .product-text-col {
-             text-align: left;
-             align-items: flex-start;
-        }
-        
-        /* Ensure specs box starts on the left */
         .specs-box {
             margin-left: 0 !important;
             margin-right: auto !important;
         }
 
-        /* Specification Row Styling for spacing */
         .spec-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
-            gap: 20px; /* Space between key and value */
+            gap: 20px; 
         }
         
         .spec-key {
              display: inline-block; 
-             width: 100px; /* Give key a fixed width for alignment */
+             width: 100px; 
              box-sizing: border-box; 
              text-align: left; 
              flex-shrink: 0;
@@ -722,104 +766,54 @@
             text-align: right; 
         }
         
-        /* --- END SPECIFIC ALIGNMENT FIXES --- */
-
-
-        .product-img {
-            width: 100%;
-            height: auto; 
-            object-fit: contain; 
-            opacity: 1;
-            border-radius: 30px; 
-            box-shadow: 0 40px 100px rgba(0,0,0,0.9); 
-            transform: translateY(50px); 
-            transition: transform 0.1s linear;
-            mix-blend-mode: normal; 
-            border: 1px solid rgba(255,255,255,0.1);
-            z-index: 20; 
-        }
-
-        .brightness-fix {
-            filter: brightness(0.85); 
-        }
-
-        .state-label {
-            font-size: 4rem;
-            font-family: 'Playfair Display', serif;
-            color: rgba(255,255,255,0.15); 
-            position: absolute;
-            top: 10%;
-            left: 5%;
-            pointer-events: none;
-            z-index: 5; 
-        }
-        
         .water-interaction-area {
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 300px; 
-            pointer-events: all; 
-            z-index: 2; 
-        }
-
-        .product-number {
-            font-size: 0.9rem;
-            color: #aa8877;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .product-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 4.5rem;
-            margin: 0;
-            color: #fff;
-            line-height: 1;
-        }
-
-        .product-subtitle {
-            font-size: 1.2rem;
-            font-weight: 300;
-            color: #ccc;
-            margin-bottom: 30px;
-            font-style: italic;
-            margin-top: 10px;
-        }
-
-        .product-desc {
-            font-size: 1rem;
-            line-height: 1.7;
-            color: #aaa;
-            margin-bottom: 30px;
-            max-width: 400px;
-        }
-
-        .specs-box {
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 20px;
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: #888;
-            max-width: 300px;
-            display: flex;
-            flex-direction: column;
+            height: 100%;
+            z-index: 10; 
+            pointer-events: auto; 
         }
         
-        /* Existing mobile fix */
+        /* Mobile Overrides */
         @media (max-width: 480px) {
-            .product-section .product-text-col {
+            .product-section, .product-section.right-align {
+                 flex-direction: column-reverse;
+                 gap: 30px;
+            }
+            .product-text-content-wrapper {
                  align-items: center;
                  text-align: center;
+                 flex: 0 0 100%;
+            }
+            .product-image-col {
+                flex: 0 0 100%;
+                width: 100%;
+            }
+            .product-title {
+                font-size: 3rem;
+            }
+            .state-label {
+                position: relative;
+                top: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                margin-bottom: 10px;
+                opacity: 0.3;
+                width: 100%;
+                text-align: center;
+            }
+            .view-3d-btn {
+                position: absolute; /* Keep absolute within wrapper */
+                bottom: 20px;
+                right: 20px;
+                margin-top: 0;
+                transform: none;
+                opacity: 1;
             }
         }
 
-
-        /* --- END SPECIFIC ALIGNMENT FIXES (REPEATED FOR MOBILE SAFETY) --- */
-        
-        
         .family-img-container {
             width: 90%;
             max-width: 1400px;
@@ -841,7 +835,6 @@
             mix-blend-mode: normal;
         }
 
-        /* SCROLL HINT */
         .scroll-hint {
             position: absolute;
             bottom: 40px;
@@ -865,40 +858,37 @@
             background: linear-gradient(to bottom, #fff, transparent);
         }
 
-        /* 3D TRIGGER BUTTON */
+        /* 3D BUTTON ALIGNMENT FIX */
         .view-3d-btn {
             position: absolute;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(0,0,0,0.6);
+            bottom: 30px; 
+            right: 30px;  
+            background: rgba(0,0,0,0.7); 
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
             color: #fff;
-            padding: 15px 25px;
+            padding: 12px 25px;
             border-radius: 50px;
             font-family: 'Manrope', sans-serif;
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             cursor: pointer;
-            z-index: 30;
-            opacity: 0;
-            transform: translateY(10px);
+            z-index: 30; /* Above interaction area */
+            opacity: 1; 
+            transform: translateY(0); 
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
-
-        .product-image-col:hover .view-3d-btn {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         .view-3d-btn:hover {
             background: #fff;
             color: #000;
+            transform: translateY(-2px);
         }
+
 
         /* 3D MODAL STYLES */
         #model-modal {
@@ -907,7 +897,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #050505;
+            background: rgba(0, 0, 0, 0.95);
             z-index: 200;
             opacity: 0;
             pointer-events: none;
@@ -1073,7 +1063,6 @@
             transition: opacity 0.3s ease;
         }
         
-        /* HOVER EFFECTS FOR GALLERY ITEMS (Moved to global CSS to fix errors) */
         .project-ad:hover img {
              transform: scale(1.05); 
              filter: brightness(1.0); 
@@ -1091,9 +1080,7 @@
             transform: scale(1.05);
         }
         
-        /* Grid Layout */
         .project-grid {
-            /* Standard 3-column grid for stability */
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
@@ -1105,7 +1092,6 @@
             position: relative;
             display: block;
             overflow: hidden;
-            /* Uniform height for a consistent grid */
             height: 350px; 
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
@@ -1121,7 +1107,6 @@
             filter: brightness(0.85);
         }
 
-        /* Responsive handling for the large ad item (Now treated as a standard item) */
         .project-ad {
             position: relative;
             display: block;
@@ -1132,11 +1117,6 @@
             text-decoration: none;
         }
 
-        @media (min-width: 769px) {
-            /* We remove the column span rule to keep the grid uniform and stable */
-            /* .project-ad { grid-column: span 2; } */
-        }
-        
         .project-title-overlay {
             position: absolute;
             bottom: 0;
@@ -1173,7 +1153,6 @@
             .product-image-col { flex: 0 0 100%; width: 100%; height: auto; }
             .product-text-col { flex: 0 0 100%; width: 100%; align-items: flex-start; text-align: left; }
             .specs-box, .product-section.right-align .specs-box { margin-left: 0; margin-right: 0; }
-            /* Tablet Grid - 2 columns */
             .project-grid { grid-template-columns: 1fr 1fr; }
             .project-ad { grid-column: span 1; }
             .family-img-container { width: 100%; }
@@ -1185,87 +1164,83 @@
             .experience-visual { width: 100%; height: 300px; }
         }
 
-        /* --- MOBILE PORTRAIT RESPONSIVE STYLES (Targeted Fixes) --- */
+        /* --- MOBILE PORTRAIT RESPONSIVE STYLES --- */
         @media (max-width: 480px) {
-            /* Navbar adjustments */
             .nav-bar { 
                 padding: 15px 20px;
-                height: auto; /* Allow height to grow with content */
-                flex-direction: column; /* Stack elements vertically */
-                align-items: center; /* Center elements */
+                height: auto; 
+                flex-direction: column; 
+                align-items: center; 
                 background: rgba(5,5,5,0.98);
                 gap: 10px;
-                position: fixed; /* Ensure it sticks */
+                position: fixed; 
                 top: 0;
                 left: 0;
                 width: 100%;
-                z-index: 9999; /* Top z-index */
-                box-sizing: border-box; /* Include padding in width */
+                z-index: 9999; 
+                box-sizing: border-box; 
             }
             
             .brand { 
                 font-size: 1.2rem; 
-                height: auto; /* Reset height */
-                white-space: normal; /* Allow wrapping if needed */
+                height: auto; 
+                white-space: normal; 
                 text-align: center;
-                margin-bottom: 0; /* Reset margin */
-                width: 100%; /* Full width for centering */
+                margin-bottom: 0; 
+                width: 100%; 
             }
             .role { 
-                display: none; /* Hide role to reduce clutter */
+                display: none; 
             } 
             
             .menu-links {
-                gap: 15px; /* Reduced gap */
+                gap: 15px; 
                 width: 100%;
-                justify-content: center; /* Center links */
-                font-size: 0.7rem; /* Smaller font size */
-                flex-wrap: wrap; /* Allow wrapping on very small screens */
+                justify-content: center; 
+                font-size: 0.7rem; 
+                flex-wrap: wrap; 
             }
 
-            /* Typography Scaling (Aggressively reduced) */
-            h1.main-name { font-size: 2rem; line-height: 1.1; margin-bottom: 10px; } /* Further reduced */
+            h1.main-name { font-size: 2rem; line-height: 1.1; margin-bottom: 10px; } 
             h2.collection-title { font-size: 2.5rem; }
             .product-title { font-size: 2rem; }
-            .skills-heading { font-size: 1.6rem; text-align: center; margin-bottom: 20px; } /* Further reduced */
+            .skills-heading { font-size: 1.6rem; text-align: center; margin-bottom: 20px; } 
             .massive-title { font-size: 18vw; }
-            .hero-subtitle { font-size: 0.9rem; line-height: 1.4; max-width: 100%; margin: 10px auto 0; } /* Full width */
+            .hero-subtitle { font-size: 0.9rem; line-height: 1.4; max-width: 100%; margin: 10px auto 0; } 
             .greeting { font-size: 0.9rem; margin-bottom: 5px; }
-            .product-desc { font-size: 0.9rem; max-width: 100%; } /* Full width */
+            .product-desc { font-size: 0.9rem; max-width: 100%; } 
             
-            /* Global Section Styling */
             section { 
                 padding: 40px 20px; 
                 min-height: auto; 
                 align-items: center;
                 text-align: center;
-                width: 100%; /* Ensure full width */
-                box-sizing: border-box; /* Include padding */
+                width: 100%; 
+                box-sizing: border-box; 
             }
             
-            /* Hero Section Mobile */
             #personal-hero { 
                 flex-direction: column; 
-                justify-content: flex-start; /* Align to top */
-                padding-top: 110px; /* Spacing for fixed nav */
+                justify-content: flex-start; 
+                padding-top: 110px; 
                 gap: 20px;
                 min-height: 100vh; 
             }
             
             .hero-text-col {
-                order: 1; /* Text first */
+                order: 1; 
                 width: 100%;
                 padding-top: 0;
                 margin-bottom: 10px;
             }
             
             .hero-image-col {
-                order: 2; /* Image second */
+                order: 2; 
                 width: 100%;
-                height: 350px; /* Fixed height for image container */
+                height: 350px; 
                 position: relative;
                 justify-content: center;
-                align-items: center; /* Center image */
+                align-items: center; 
                 padding-top: 0;
                 margin-bottom: 20px;
             }
@@ -1273,20 +1248,19 @@
             .portrait-img {
                 position: relative;
                 width: auto; 
-                max-width: 100%; /* Allow full width */
-                height: 100%; /* Fill container height */
+                max-width: 100%; 
+                height: 100%; 
                 object-fit: contain; 
                 transform: none !important;
                 box-shadow: none; 
-                background-color: transparent; /* Remove background */
+                background-color: transparent; 
                 border: none;
             }
 
-            /* Skills Section Mobile (Overlapping Fix) */
             #skills {
                 flex-direction: column;
-                padding-top: 40px; /* Reduced padding */
-                min-height: auto; /* Remove fixed height constraint */
+                padding-top: 40px; 
+                min-height: auto; 
                 padding-bottom: 40px;
                 gap: 30px; 
             }
@@ -1304,11 +1278,10 @@
                 padding-top: 20px;
                 margin-top: 0; 
                 font-size: 0.9rem; 
-                margin-bottom: 30px; /* Space before grid */
+                margin-bottom: 30px; 
             }
             
             .skills-grid-container {
-                /* CRITICAL FIX: Force single column stacking */
                 flex-direction: column; 
                 gap: 30px; 
                 align-items: center;
@@ -1322,7 +1295,7 @@
             }
             
             .skill-item {
-                font-size: 1.8rem; /* Further reduced */
+                font-size: 1.8rem; 
                 text-align: center; 
             }
             
@@ -1336,7 +1309,7 @@
             }
             
             .skills-visual {
-                height: 150px; /* Further reduced height */
+                height: 150px; 
                 width: 100%;
                 margin-top: 0;
                 display: flex;
@@ -1345,11 +1318,10 @@
             }
             
             .skill-logo-placeholder {
-                width: 120px; /* Smaller placeholder */
+                width: 120px; 
                 height: 120px;
             }
 
-            /* Experience Section Mobile (Broken alignment fix) */
             #experience {
                 flex-direction: column-reverse;
                 gap: 30px;
@@ -1372,21 +1344,12 @@
                 font-size: 1.5rem;
             }
 
-            /* VATTEN Intro */
             #collection-hero {
                 padding-top: 60px;
                 padding-bottom: 60px;
             }
 
-            /* Product Sections Mobile (VATTEN - Text/Specs Fix) */
-            .product-section, 
-            .product-section.right-align { 
-                flex-direction: column-reverse; 
-                text-align: center; 
-                padding-top: 40px; 
-                padding-bottom: 40px;
-                gap: 20px; 
-            }
+            
             
             .product-image-col { 
                 width: 100%; 
@@ -1394,13 +1357,13 @@
                 flex: 0 0 auto;
                 margin-bottom: 10px; 
                 display: flex;
-                flex-direction: column; /* Stack image and button */
+                flex-direction: column; 
                 align-items: center;
             }
             
             .product-img {
                 transform: none !important; 
-                max-height: 250px; /* Further constrained */
+                max-height: 250px; 
                 width: auto;
                 max-width: 100%;
                 background-color: transparent;
@@ -1415,7 +1378,6 @@
                 flex: 0 0 auto;
             }
             
-            /* Reset alignment for mobile text */
             .product-section.right-align .product-text-col {
                 align-items: center;
                 text-align: center;
@@ -1426,33 +1388,17 @@
                 margin-left: auto; 
                 margin-right: auto; 
                 width: 100%;
-                max-width: 100%; /* Full width box */
+                max-width: 100%; 
                 margin-top: 20px;
                 padding-top: 15px; 
-                align-items: stretch; /* FIX: Resetting to stretch for spec rows */
+                align-items: stretch; 
             }
             
-            /* FIX: Ensure spec rows justify correctly even when centered */
             .spec-row {
                 width: 100%;
                 justify-content: space-between;
             }
 
-
-            .state-label {
-                font-size: 1.5rem; /* Slightly larger for readability */
-                top: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                opacity: 0.2; /* More subtle */
-                white-space: nowrap;
-                position: relative; /* Move relative to flow */
-                margin-bottom: 10px;
-                width: 100%;
-                text-align: center;
-            }
-
-            /* Gallery Mobile */
             #other-projects {
                 padding-top: 60px;
                 padding-bottom: 60px;
@@ -1465,7 +1411,7 @@
             }
             
             .project-ad { 
-                height: 250px; /* Slight increase for better visibility */
+                height: 250px; 
                 grid-column: span 1;
             }
             
@@ -1475,21 +1421,7 @@
 
             .family-img-container { width: 100%; margin: 30px 0; }
             
-            .view-3d-btn {
-                padding: 10px 20px;
-                font-size: 0.8rem;
-                position: relative;
-                bottom: auto;
-                right: auto;
-                margin-top: 15px;
-                transform: none;
-                opacity: 1;
-                justify-content: center;
-                width: auto; /* Auto width */
-                display: inline-flex; /* Keep content centered */
-            }
             
-            /* Adjust Contact Form */
             #contact-section {
                 padding-top: 60px;
                 min-height: auto;
@@ -1512,7 +1444,6 @@
             }
         }
         
-        /* --- NEW IMAGE MODAL STYLES --- */
         #image-modal {
             position: fixed;
             top: 0;
@@ -1578,9 +1509,7 @@
             background: #fff;
             color: #000;
         }
-        /* --- END IMAGE MODAL STYLES --- */
         
-        /* --- CONTACT FORM STYLES (NEW SECTION 9) --- */
         #contact-section {
             padding-top: 150px;
             min-height: 80vh;
@@ -1658,10 +1587,7 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(255, 255, 255, 0.5);
         }
-        /* --- END CONTACT FORM STYLES --- */
 
-
-        /* ANIMATIONS Classes */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -1693,10 +1619,8 @@
         <div class="scroll-prompt">SCROLL TO ENTER</div>
     </div>
     
-    <!-- FIXED Canvas Background -->
     <div id="canvas-container"></div>
     
-    <!-- 3D MODAL -->
     <div id="model-modal">
         <div id="modal-canvas-container"></div>
         <button class="modal-close" onclick="closeModal()">✕</button>
@@ -1709,18 +1633,14 @@
 
     </div>
     
-    <!-- NEW: Video Modal for iPhone Ad -->
     <div id="video-modal">
         <div class="video-container">
             <button class="video-modal-close" onclick="closeVideoModal()">✕</button>
-            <!-- CRITICAL FIX: Added playsinline attribute -->
             <video id="video-player" controls loop playsinline>
-                <!-- Source will be dynamically added in JS via videoPlayer.src = videoSrc -->
             </video>
         </div>
     </div>
     
-    <!-- NEW: Image Modal for Renders -->
     <div id="image-modal">
         <div class="image-container">
             <button class="image-modal-close" onclick="closeImageModal()">✕</button>
@@ -1751,7 +1671,6 @@
 
         <div class="ui-layer">
             
-            <!-- 0. PERSONAL BRANDING HERO (Index 0) -->
             <section id="personal-hero">
                 <div class="hero-text-col">
                     <div class="greeting blend-text">Hello, I am</div>
@@ -1761,7 +1680,6 @@
                     </p>
                 </div>
                 <div class="hero-image-col">
-                    <!-- PATH: ME.png in the root folder -->
                     <img src="ME.png" 
                          onerror="this.onerror=null;this.src='ME.png';" 
                          alt="Alan Belim Portrait" 
@@ -1774,9 +1692,8 @@
                 </div>
             </section>
 
-            <!-- 1. SKILLS / TOOLBOX (Index 1) -->
             <section id="skills">
-                <div class="skills-content">
+                <div class="skills-content frosted-box">
                     <h2 class="skills-heading blend-text">My Philosophy & Toolbox</h2>
                     <span class="section-label blend-text">Skills & Software</span>
                     
@@ -1785,6 +1702,9 @@
                     </p>
                     
                     <div class="skills-grid-container blend-text">
+                        <!-- Added Missing Heading -->
+                        <span class="skill-cat-title">Software Toolbox</span>
+                        
                         <div class="skill-category">
                             <div class="skill-item" data-tool="Blender">Blender</div>
                             <div class="skill-item" data-tool="Rhino">Rhino</div>
@@ -1799,7 +1719,6 @@
                 <div class="skills-visual" id="experience-blob-container"></div>
             </section>
 
-            <!-- 2. EXPERIENCE SECTION (Index 2) -->
             <section id="experience">
                 <div class="experience-content">
                     <span class="section-label blend-text" style="margin-bottom: 20px;">Experience</span>
@@ -1819,7 +1738,6 @@
                             <p class="exp-desc">
                                 Key role in digitizing the bedding furniture catalog for the online configurator using Blender. Responsible for precision modeling, UV unwrapping, and ensuring asset optimization for real-time web deployment.
                             </p>
-                            <!-- PATH: alan_certificate.pdf in the root folder -->
                             <a href="alan_certificate.pdf" target="_blank" class="certificate-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award">
                                     <circle cx="12" cy="8" r="7"/>
@@ -1833,21 +1751,19 @@
                 <div class="experience-visual" id="experience-blob-container"></div>
             </section>
 
-            <!-- 3. VATTEN INTRO HERO (Index 3) -->
             <section id="collection-hero">
                 <div class="collection-tag blend-text">Featured Collection</div>
                 <h2 class="collection-title blend-text">VATTEN</h2>
-                <p class="concept-text blend-text">
+                <p class="concept-text frosted-box blend-text">
                     Exploring the physical and emotional states of water: Flow, Expansion, and Stillness. 
                     Bridging the gap between organic chaos and Scandinavian rigidity.
                 </p>
                 <button class="explore-btn" onclick="scrollToElement('section-strom')">Explore the Journey</button>
             </section>
 
-            <!-- 4. STRÖM (FLOW) (Index 4) -->
             <section class="product-section right-align" id="section-strom">
                 <div class="state-label">THE STREAM / FLOW</div>
-                <div class="product-text-col">
+                <div class="product-text-content-wrapper">
                     <span class="product-number">01 — FLOW</span>
                     <h2 class="product-title">Ström</h2>
                     <div class="product-subtitle">The Continuous Current</div>
@@ -1866,22 +1782,25 @@
                     </div>
                 </div>
                 <div class="product-image-col">
-                    <!-- PATH: strom.png in the root folder -->
-                    <img src="strom.png" 
-                         onerror="this.onerror=null;this.src='strom.png';" 
-                         alt="Strom Chair" 
-                         class="product-img brightness-fix" 
-                         data-speed="0.5"
-                         loading="lazy">
-                    <button class="view-3d-btn" onclick="openModal('strom')"><span>360° View</span></button>
+                    <div class="product-image-wrapper">
+                        <img src="strom.png" 
+                             onerror="this.onerror=null;this.src='strom.png';" 
+                             alt="Strom Chair" 
+                             class="product-img brightness-fix" 
+                             data-speed="0.5"
+                             loading="lazy">
+                        <button class="view-3d-btn" onclick="openModal('strom')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-cw"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-7.3 3.37L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 7.3-3.37L21 16"/><path d="M21 21v-5h-5"/></svg>
+                            <span>360° View</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="water-interaction-area" data-water-type="flow" id="water-area-strom"></div>
             </section>
 
-            <!-- 5. VÅG (RIPPLE) (Index 5) -->
             <section class="product-section right-align" id="section-vag">
                 <div class="state-label">THE RIPPLE / IMPACT</div>
-                <div class="product-text-col">
+                <div class="product-text-content-wrapper">
                     <span class="product-number">02 — IMPACT</span>
                     <h2 class="product-title">Våg</h2>
                     <div class="product-subtitle">The Point of Resonance</div>
@@ -1900,22 +1819,25 @@
                     </div>
                 </div>
                 <div class="product-image-col">
-                    <!-- PATH: vag.png in the root folder -->
-                    <img src="vag.png" 
-                         onerror="this.onerror=null;this.src='vag.png';" 
-                         alt="Vag Table" 
-                         class="product-img" 
-                         data-speed="0.3"
-                         loading="lazy">
-                    <button class="view-3d-btn" onclick="openModal('vag')"><span>360° View</span></button>
+                    <div class="product-image-wrapper">
+                        <img src="vag.png" 
+                             onerror="this.onerror=null;this.src='vag.png';" 
+                             alt="Vag Table" 
+                             class="product-img" 
+                             data-speed="0.3"
+                             loading="lazy">
+                        <button class="view-3d-btn" onclick="openModal('vag')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-cw"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-7.3 3.37L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 7.3-3.37L21 16"/><path d="M21 21v-5h-5"/></svg>
+                            <span>360° View</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="water-interaction-area" data-water-type="ripple" id="water-area-vag"></div>
             </section>
 
-            <!-- 6. VILA (STILLNESS) (Index 6) -->
             <section class="product-section right-align" id="section-vila">
                 <div class="state-label" style="left: 3%;">THE POOL / STILLNESS</div>
-                <div class="product-text-col">
+                <div class="product-text-content-wrapper">
                     <span class="product-number">03 — STILLNESS</span>
                     <h2 class="product-title">Vila</h2>
                     <div class="product-subtitle">The Final Calm</div>
@@ -1934,24 +1856,27 @@
                     </div>
                 </div>
                 <div class="product-image-col">
-                    <!-- PATH: vila.png in the root folder -->
-                    <img src="vila.png" 
-                         onerror="this.onerror=null;this.src='vila.png';" 
-                         alt="Vila Daybed" 
-                         class="product-img" 
-                         data-speed="0.4"
-                         loading="lazy">
-                    <button class="view-3d-btn" onclick="openModal('vila')"><span>360° View</span></button>
+                    <div class="product-image-wrapper">
+                        <img src="vila.png" 
+                             onerror="this.onerror=null;this.src='vila.png';" 
+                             alt="Vila Daybed" 
+                             class="product-img" 
+                             data-speed="0.4"
+                             loading="lazy">
+                        <button class="view-3d-btn" onclick="openModal('vila')">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-cw"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-7.3 3.37L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 7.3-3.37L21 16"/><path d="M21 21v-5h-5"/></svg>
+                            <span>360° View</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="water-interaction-area" data-water-type="stillness" id="water-area-vila"></div>
             </section>
 
-            <!-- 7. FAMILY / CONCLUSION (Index 7) -->
             <section id="family-section">
-                <h2 class="product-title blend-text" style="font-size: 3rem;">The Vatten Collection</h2>
+                <!-- Center aligned title -->
+                <h2 class="product-title blend-text" style="font-size: 3rem; text-align: center; width: 100%;">The Vatten Collection</h2>
                 <p class="product-desc blend-text" style="margin: 20px auto;">A unified study in fluid dynamics and the complete journey of VATTEN.</p>
                 <div class="family-img-container">
-                     <!-- PATH: family.png in the root folder -->
                     <img src="family.png" 
                          onerror="this.onerror=null;this.src='family.png';" 
                          alt="Vatten Collection" 
@@ -1960,14 +1885,12 @@
                 </div>
             </section>
             
-            <!-- 8. REBUILT: OTHER PROJECTS GALLERY (Index 8) -->
             <section id="other-projects" style="min-height: 100vh; padding-top: 150px; padding-bottom: 100px;">
                 <span class="section-label blend-text">Design & Visualization</span>
                 <h2 class="product-title blend-text" style="font-size: 3rem; margin-bottom: 50px;">Selected Works</h2>
                 
                 <div class="project-grid">
                     
-                    <!-- 8.1 FEATURED: iPhone 16e 3D Ad (Video - Standard Item) -->
                     <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/iphone_ad.mp4');" class="project-item">
                          <img src="works/iphone_ad_poster.png" 
                               onerror="this.onerror=null;this.src='works/iphone_ad_poster.png';"
@@ -1987,7 +1910,6 @@
                          </div>
                     </a>
 
-                    <!-- 8.2 MARSHALL SPEAKER AD (Video Project) -->
                     <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/marshall_speaker_ad.mp4');" class="project-item">
                         <img src="works/marshall_speaker_poster.png" onerror="this.onerror=null;this.src='works/marshall_speaker_poster.png'" alt="Marshall Speaker Ad" loading="lazy">
                         <div class="play-icon-overlay">
@@ -2002,7 +1924,6 @@
                         </div>
                     </a>
 
-                    <!-- 8.3 SOMETHING SLIPPER AD (Video Project) -->
                     <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/something_slipper_ad.mp4');" class="project-item">
                         <img src="works/something_slipper_poster.png" onerror="this.onerror=null;this.src='works/something_slipper_poster.png'" alt="Something Slipper Ad" loading="lazy">
                         <div class="play-icon-overlay">
@@ -2017,7 +1938,6 @@
                         </div>
                     </a>
                     
-                    <!-- 8.4 CYBERMOUSE CONCEPT (VIDEO FIX) -->
                     <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/cybermouse_concept.mp4');" class="project-item">
                         <img src="works/cybermouse_poster.png" onerror="this.onerror=null;this.src='works/cybermouse_poster.png'" alt="Cybermouse Concept" loading="lazy">
                          <div class="play-icon-overlay">
@@ -2032,7 +1952,6 @@
                         </div>
                     </a>
 
-                    <!-- 8.5 WALKMAN ANIMATION (Video) -->
                     <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/walkman_animation.mp4');" class="project-item">
                         <img src="works/walkman_animation_poster.png" onerror="this.onerror=null;this.src='works/walkman_animation_poster.png'" alt="Walkman Animation Poster" loading="lazy">
                         <div class="play-icon-overlay">
@@ -2047,7 +1966,6 @@
                         </div>
                     </a>
                     
-                    <!-- 8.6 BOAT IN OCEAN ANIMATION (Video) -->
                     <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/boat_ocean_animation.mp4');" class="project-item">
                         <img src="works/boat_ocean_poster.png" onerror="this.onerror=null;this.src='works/boat_ocean_poster.png'" alt="Boat Ocean Animation Poster" loading="lazy">
                         <div class="play-icon-overlay">
@@ -2062,7 +1980,6 @@
                         </div>
                     </a>
 
-                    <!-- 8.7 iPhone 17 Pro Max (Shot 1) -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/iphone_17_pro_max_1.png');" class="project-item">
                         <img src="works/iphone_17_pro_max_1.png" onerror="this.onerror=null;this.src='works/iphone_17_pro_max_1.png'" alt="iPhone 17 Pro Max Render 1" loading="lazy">
                          <div class="project-title-overlay">
@@ -2071,7 +1988,6 @@
                         </div>
                     </a>
                     
-                    <!-- 8.8 iPhone 17 Pro Max (Shot 2) -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/iphone_17_pro_max_2.png');" class="project-item">
                         <img src="works/iphone_17_pro_max_2.png" onerror="this.onerror=null;this.src='works/iphone_17_pro_max_2.png'" alt="iPhone 17 Pro Max Render 2" loading="lazy">
                         <div class="project-title-overlay">
@@ -2080,7 +1996,6 @@
                         </div>
                     </a>
 
-                    <!-- 8.9 Daily Objects Powerbank (Shot 1) -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/powerbank_daily_objects_1.png');" class="project-item">
                         <img src="works/powerbank_daily_objects_1.png" onerror="this.onerror=null;this.src='works/powerbank_daily_objects_1.png'" alt="Daily Objects Powerbank 1" loading="lazy">
                         <div class="project-title-overlay">
@@ -2089,7 +2004,6 @@
                         </div>
                     </a>
                     
-                    <!-- 8.10 Daily Objects Powerbank (Shot 2) -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/powerbank_daily_objects_2.png');" class="project-item">
                         <img src="works/powerbank_daily_objects_2.png" onerror="this.onerror=null;this.src='works/powerbank_daily_objects_2.png'" alt="Daily Objects Powerbank 2" loading="lazy">
                         <div class="project-title-overlay">
@@ -2098,7 +2012,6 @@
                         </div>
                     </a>
 
-                    <!-- 8.11 LARQ Water Bottle (Shot 1) -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/larq_bottle_1.png');" class="project-item">
                         <img src="works/larq_bottle_1.png" onerror="this.onerror=null;this.src='works/larq_bottle_1.png'" alt="LARQ Bottle 1" loading="lazy">
                         <div class="project-title-overlay">
@@ -2107,7 +2020,6 @@
                         </div>
                     </a>
                     
-                    <!-- 8.12 LARQ Water Bottle (Shot 2) -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/larq_bottle_2.png');" class="project-item">
                         <img src="works/larq_bottle_2.png" onerror="this.onerror=null;this.src='works/larq_bottle_2.png'" alt="LARQ Bottle 2" loading="lazy">
                         <div class="project-title-overlay">
@@ -2116,7 +2028,6 @@
                         </div>
                     </a>
 
-                    <!-- 8.13 Springer Pet Bottle -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/springer_pet_bottle.png');" class="project-item">
                         <img src="works/springer_pet_bottle.png" onerror="this.onerror=null;this.src='works/springer_pet_bottle.png'" alt="Springer Pet Bottle" loading="lazy">
                          <div class="project-title-overlay">
@@ -2125,7 +2036,6 @@
                         </div>
                     </a>
                     
-                    <!-- 8.14 Ptron Power Bank -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/ptron_mobile_power_bank.png');" class="project-item">
                         <img src="works/ptron_mobile_power_bank.png" onerror="this.onerror=null;this.src='works/ptron_mobile_power_bank.png'" alt="Ptron Mobile Power Bank" loading="lazy">
                          <div class="project-title-overlay">
@@ -2134,7 +2044,6 @@
                         </div>
                     </a>
 
-                    <!-- 8.15 Perfume Bottle Study (1) -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/perfume_render_1.png');" class="project-item">
                         <img src="works/perfume_render_1.png" onerror="this.onerror=null;this.src='works/perfume_render_1.png'" alt="Perfume Render 1" loading="lazy">
                          <div class="project-title-overlay">
@@ -2143,7 +2052,6 @@
                         </div>
                     </a>
                     
-                    <!-- 8.16 Perfume Bottle Study (2) -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/perfume_render_2.png');" class="project-item">
                         <img src="works/perfume_render_2.png" onerror="this.onerror=null;this.src='works/perfume_render_2.png'" alt="Perfume Render 2" loading="lazy">
                         <div class="project-title-overlay">
@@ -2152,7 +2060,6 @@
                         </div>
                     </a>
 
-                    <!-- 8.17 Perfume Bottle Study (3) -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/perfume_render_3.png');" class="project-item">
                         <img src="works/perfume_render_3.png" onerror="this.onerror=null;this.src='works/perfume_render_3.png'" alt="Perfume Render 3" loading="lazy">
                         <div class="project-title-overlay">
@@ -2161,7 +2068,6 @@
                         </div>
                     </a>
 
-                    <!-- 8.18 Roger Pradier Light Render -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/roger_pradier_light.png');" class="project-item">
                         <img src="works/roger_pradier_light.png" onerror="this.onerror=null;this.src='works/roger_pradier_light.png'" alt="Roger Pradier Light Render" loading="lazy">
                         <div class="project-title-overlay">
@@ -2170,7 +2076,6 @@
                         </div>
                     </a>
 
-                    <!-- 8.19 Studio Microphone Render -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/studio_microphone.png');" class="project-item">
                         <img src="works/studio_microphone.png" onerror="this.onerror=null;this.src='works/studio_microphone.png'" alt="Studio Microphone Render" loading="lazy">
                         <div class="project-title-overlay">
@@ -2179,7 +2084,6 @@
                         </div>
                     </a>
                     
-                    <!-- 8.20 Walkman Renders (Static) -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_1.png');" class="project-item">
                         <img src="works/walkman_render_1.png" onerror="this.onerror=null;this.src='works/walkman_render_1.png'" alt="Walkman Render 1" loading="lazy">
                         <div class="project-title-overlay">
@@ -2225,9 +2129,7 @@
                     
                 </div>
             </section>
-            <!-- END GALLERY SECTION -->
             
-            <!-- 9. NEW CONTACT SECTION (Index 9) -->
             <section id="contact-section">
                 <span class="section-label blend-text">Get in Touch</span>
                 <h2 class="product-title blend-text" style="font-size: 3rem; margin-bottom: 20px;">Contact Me</h2>
@@ -2237,8 +2139,7 @@
                     *(Note: This form uses Formspree to ensure reliable delivery to your email address.)
                 </p>
 
-                <div class="contact-form-container">
-                    <!-- Formspree Endpoint Integrated: https://formspree.io/f/xnnejgdy -->
+                <div class="contact-form-container frosted-box">
                     <form action="https://formspree.io/f/xnnejgdy" method="post" id="contact-form">
                         
                         <div class="form-group">
@@ -2258,7 +2159,6 @@
 
                         <div class="form-group">
                             <label for="message">Message</label>
-                            <!-- Changed name="body" to name="message" for Formspree compatibility -->
                             <textarea id="message" name="message" required placeholder="I saw your work on VATTEN and would love to discuss..."></textarea>
                         </div>
                         
@@ -2268,7 +2168,6 @@
             </section>
 
 
-            <!-- 10. FOOTER SECTION (Index 10 - Updated index) -->
             <section style="height: 30vh; min-height: 30vh; align-items: center; text-align: center; justify-content: center;">
                 <p class="blend-text" style="opacity: 0.5; letter-spacing: 2px;">ALAN BELIM P.S. © 2025</p>
             </section>
@@ -2276,7 +2175,6 @@
         </div>
     </div> 
 
-    <!-- DEPENDENCIES -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -2285,15 +2183,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.min.js"></script>
 
     <script>
-        // --- SCROLL JUMP FIX VARIABLES ---
-        let lastScrollY = 0; // Global variable to store scroll position before modal opens
+        let lastScrollY = 0; 
         
         const ALL_SECTIONS = document.querySelectorAll('section');
         let currentPage = 0;
         const GALLERY_SECTION_INDEX = 8; 
         const CONTACT_SECTION_INDEX = 9; 
 
-        // --- TITLE SCREEN LOGIC ---
         let titleDismissed = false;
         const titleScreen = document.getElementById('title-screen');
         let scrollY = 0; 
@@ -2310,7 +2206,6 @@
         }
         updateTarget(window.scrollY);
         
-        // Add Native Scroll Listener to update the 3D scene target
         window.addEventListener('scroll', () => {
              updateTarget(window.scrollY);
         });
@@ -2335,14 +2230,12 @@
             }, 800);
         }
 
-        // --- UPDATED: Handle initial interaction solely to dismiss title screen ---
         function handleInitialInteraction(e) {
             if (!titleDismissed) {
                 dismissTitle();
             }
         }
         
-        // We keep listeners but only for the first interaction check
         window.addEventListener('wheel', handleInitialInteraction, { passive: false });
         window.addEventListener('touchmove', handleInitialInteraction, { passive: false });
         
@@ -2353,7 +2246,6 @@
             if (!titleDismissed && !e.target.closest('#title-screen')) { dismissTitle(); e.preventDefault(); }
         }, true);
 
-        // --- NEW: ROBUST SCROLL TO ELEMENT FUNCTION ---
         window.scrollToElement = function(elementId) {
             if (!titleDismissed) dismissTitle();
             const element = document.getElementById(elementId);
@@ -2362,7 +2254,6 @@
             }
         };
 
-        // --- PATHS: Now pointing to the logos/ folder ---
         const LOGO_DATA = {
             'Blender': { src: 'logos/blender.png' },      
             'Rhino': { src: 'logos/rhino.png' },          
@@ -2379,7 +2270,6 @@
                 const logo = LOGO_DATA[tool];
                 
                 if (logo) {
-                    // Inject only the <img> tag
                     logoPlaceholder.innerHTML = `<img src="${logo.src}" alt="${tool} Logo" onerror="this.onerror=null;this.src='https://placehold.co/100x100/333/fff?text=${tool}';" >`;
                 } else {
                     logoPlaceholder.innerHTML = '';
@@ -2395,13 +2285,12 @@
             });
         });
         
-        // --- IMAGE MODAL LOGIC (UPDATED to accept event e) ---
         const imageModal = document.getElementById('image-modal');
         const modalImageDisplay = document.getElementById('modal-image-display');
 
         window.openImageModal = function(e, imageSrc) {
-            e.preventDefault(); // CRITICAL FIX: Stop navigation
-            lastScrollY = window.scrollY; // SAVE SCROLL POSITION
+            e.preventDefault(); 
+            lastScrollY = window.scrollY; 
             currentPage = GALLERY_SECTION_INDEX;
             modalImageDisplay.src = imageSrc;
             imageModal.classList.add('active');
@@ -2412,32 +2301,26 @@
             imageModal.classList.remove('active');
             modalImageDisplay.src = ''; 
             document.body.classList.remove('locked');
-            window.scrollTo(0, lastScrollY); // RESTORE SCROLL POSITION
+            window.scrollTo(0, lastScrollY); 
         };
-        // --- END IMAGE MODAL LOGIC ---
         
-        // --- VIDEO MODAL LOGIC (UPDATED to accept event e) ---
         const videoModal = document.getElementById('video-modal');
         const videoPlayer = document.getElementById('video-player');
         
         window.openVideoModal = function(e, videoSrc) {
-            e.preventDefault(); // CRITICAL FIX: Stop navigation
-            lastScrollY = window.scrollY; // SAVE SCROLL POSITION
+            e.preventDefault(); 
+            lastScrollY = window.scrollY; 
             currentPage = GALLERY_SECTION_INDEX;
             
-            // Set the video source
             videoPlayer.src = videoSrc;
 
             videoModal.classList.add('active');
             
-            // Play the video on interaction
             videoPlayer.muted = false; 
             videoPlayer.loop = true; 
             
-            // CRITICAL: Force playback on click, required by most browsers
             videoPlayer.play().catch(error => {
                 console.error("Video playback failed:", error);
-                // Fallback: If play() fails (e.g., due to strict mobile policies), keep it muted and show controls
                 videoPlayer.muted = true;
                 videoPlayer.play();
             });
@@ -2447,15 +2330,13 @@
         
         window.closeVideoModal = function() {
             videoPlayer.pause();
-            videoPlayer.src = ''; // Clear source to stop download
+            videoPlayer.src = ''; 
             videoModal.classList.remove('active');
             document.body.classList.remove('locked');
-            window.scrollTo(0, lastScrollY); // RESTORE SCROLL POSITION
+            window.scrollTo(0, lastScrollY); 
         };
-        // --- END VIDEO MODAL LOGIC ---
 
         
-        // --- RESIZE HANDLERS ---
         function resizeModalCanvas() {
             if (modalRenderer && modalCamera) {
                 const container = document.getElementById('modal-canvas-container');
@@ -2482,7 +2363,6 @@
         window.addEventListener('resize', handleWindowResize);
 
 
-        // --- MAIN BACKGROUND SCENE (FLUID) ---
         const canvasContainer = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x050505, 0.01); 
@@ -2817,7 +2697,6 @@
             const time = clock.getElapsedTime();
             if (window.TWEEN) TWEEN.update();
 
-            // RENDER MODAL SCENE
             if(isModalOpen && modalRenderer) {
                 modalControls.update();
                 if(loadingAnim) {
@@ -2855,7 +2734,6 @@
                 blobRenderer.render(blobScene, blobCamera);
             }
             
-            // --- UPDATED: Smooth scroll follow logic for fluid effects ---
             scrollY += (targetScrollY - scrollY) * 0.05; 
             
             smoothMouse.x += (targetX - smoothMouse.x) * 0.08;
@@ -2869,7 +2747,6 @@
             let interactionTarget = null;
             let mouseToUse = currentMouse; 
 
-            // --- INTERACTION WEIGHT LOGIC (SMOOTH FADE) ---
             if (isHoveringInteractionArea) {
                 interactionWeight += (1.0 - interactionWeight) * 0.2;
                 raycaster.setFromCamera(mouseToUse, camera);
