@@ -679,28 +679,51 @@
             overflow: visible;
         }
 
+        /* --- SPECIFIC ALIGNMENT FIXES --- */
         .product-section.right-align {
             flex-direction: row-reverse;
         }
         
-        .product-section:not(.right-align) .product-text-col {
+        /* Force text column to LEFT align for better readability */
+        .product-section .product-text-col {
              text-align: left;
              align-items: flex-start;
         }
-        .product-section.right-align .product-text-col {
-             text-align: right;
-             align-items: flex-end;
+        
+        /* Ensure specs box starts on the left */
+        .specs-box {
+            margin-left: 0 !important;
+            margin-right: auto !important;
+        }
+
+        /* Specification Row Styling for spacing */
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            gap: 20px; /* Space between key and value */
         }
         
-        .product-section.right-align .specs-box {
-            margin-left: auto; 
-            margin-right: 0;
+        .spec-key {
+             display: inline-block; 
+             width: 100px; /* Give key a fixed width for alignment */
+             box-sizing: border-box; 
+             text-align: left; 
+             flex-shrink: 0;
+             color: #888; 
+             font-weight: 400;
+        }
+
+        .spec-value {
+            flex-grow: 1;
+            width: auto;
+            color: #ccc; 
+            font-weight: 500;
+            text-align: right; 
         }
         
-        .product-section:not(.right-align) .specs-box {
-            margin-left: 0;
-            margin-right: auto;
-        }
+        /* --- END SPECIFIC ALIGNMENT FIXES --- */
+
 
         .product-img {
             width: 100%;
@@ -784,45 +807,18 @@
             display: flex;
             flex-direction: column;
         }
-
-        .spec-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
         
-        .spec-row span {
-            display: inline-block; 
-            width: auto; 
-            box-sizing: border-box; 
-            text-align: left; 
-            flex-grow: 1;
-            color: #888; 
+        /* Existing mobile fix */
+        @media (max-width: 480px) {
+            .product-section .product-text-col {
+                 align-items: center;
+                 text-align: center;
+            }
         }
 
-        .spec-row span:last-child {
-            flex-grow: 0;
-            width: auto;
-            color: #ccc; 
-            font-weight: 500;
-            text-align: right; 
-        }
 
-        .product-section.right-align .spec-row span {
-             text-align: left;
-        }
+        /* --- END SPECIFIC ALIGNMENT FIXES (REPEATED FOR MOBILE SAFETY) --- */
         
-        .product-section.right-align .spec-row span:last-child {
-            text-align: right; 
-        }
-
-        #family-section {
-            min-height: 100vh; 
-            align-items: center;
-            text-align: center;
-            justify-content: flex-start; 
-            padding-top: 150px; 
-        }
         
         .family-img-container {
             width: 90%;
@@ -1859,8 +1855,14 @@
                         The Journey Begins: Embodying the fast, directional energy of a river current. Ström is a study in continuous movement, defined by a single, uninterrupted loop of steam-bent Ash, urging the eye forward.
                     </p>
                     <div class="specs-box">
-                        <div class="spec-row"><span>Material</span> <span>Steam-bent Ash</span></div>
-                        <div class="spec-row"><span>Finish</span> <span>Smoked Matte Oil</span></div>
+                        <div class="spec-row">
+                            <span class="spec-key">Material</span> 
+                            <span class="spec-value">Steam-bent Ash</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Finish</span> 
+                            <span class="spec-value">Smoked Matte Oil</span>
+                        </div>
                     </div>
                 </div>
                 <div class="product-image-col">
@@ -1887,8 +1889,14 @@
                         A Moment of Force: Capturing the impact that breaks the surface. The design features deep, concentric reliefs mimicking the radial energy of a powerful water drop, spreading outward in measured resonance.
                     </p>
                     <div class="specs-box">
-                        <div class="spec-row"><span>Material</span> <span>Solid Ash Block</span></div>
-                        <div class="spec-row"><span>Weight</span> <span>Heavy Base Anchor</span></div>
+                        <div class="spec-row">
+                            <span class="spec-key">Material</span> 
+                            <span class="spec-value">Solid Ash Block</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Weight</span> 
+                            <span class="spec-value">Heavy Base Anchor</span>
+                        </div>
                     </div>
                 </div>
                 <div class="product-image-col">
@@ -1915,8 +1923,14 @@
                         The Destination of Reflection: An island of calm reached after the flow and impact. The organic oak base cradles a soft bouclé landscape, mirroring the silent, perfect surface of a deep, undisturbed pool.
                     </p>
                     <div class="specs-box">
-                        <div class="spec-row"><span>Material</span> <span>Smoked Ash / Bouclé</span></div>
-                        <div class="spec-row"><span>Function</span> <span>Push-to-open Storage</span></div>
+                        <div class="spec-row">
+                            <span class="spec-key">Material</span> 
+                            <span class="spec-value">Smoked Ash / Bouclé</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-key">Function</span> 
+                            <span class="spec-value">Push-to-open Storage</span>
+                        </div>
                     </div>
                 </div>
                 <div class="product-image-col">
