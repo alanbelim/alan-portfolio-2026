@@ -829,44 +829,44 @@
         
         /* Mobile Overrides */
         @media (max-width: 480px) {
-            /* 1. HERO SPACING FIX */
+            /* 1. HERO SPACING FIX (Further Reduced) */
             #personal-hero { 
                 flex-direction: column; 
                 justify-content: flex-start; 
-                padding-top: 90px; /* Reduced from 110px */
-                gap: 10px; /* Reduced gap */
+                padding-top: 70px; /* Adjusted for better fit */
+                gap: 0; /* Eliminated gap */
                 min-height: auto; 
-                padding-bottom: 40px;
+                padding-bottom: 20px;
             }
             
             .hero-text-col {
                 order: 1; 
                 width: 100%;
                 padding-top: 0;
-                margin-bottom: 5px; /* Minimal margin */
+                margin-bottom: 0;
             }
             
             .hero-image-col {
                 order: 2; 
                 width: 100%;
-                height: auto; /* Let image define height */
+                height: auto; 
                 min-height: 250px;
                 position: relative;
                 justify-content: center;
-                align-items: flex-start; /* Align closer to text */
+                align-items: flex-start; 
                 padding-top: 0;
-                margin-bottom: 10px;
+                margin-bottom: 0;
             }
 
             /* 2. FURNITURE LAYOUT FIX (Label -> Image -> Text) */
             .product-section, .product-section.right-align {
                  display: flex;
-                 flex-direction: column; /* Normal column flow */
+                 flex-direction: column; /* Standard Column */
                  gap: 30px;
                  padding-top: 60px;
             }
             
-            /* State Label (Order 1) */
+            /* Order 1: Label (The Stream / Flow) */
             .state-label {
                 position: relative;
                 top: auto;
@@ -879,39 +879,72 @@
                 order: 1;
             }
             
-            /* Image (Order 2) */
-            .product-image-col {
+            /* Order 2: Image */
+            .product-image-col { 
+                width: 100%; 
+                height: auto; 
                 flex: 0 0 auto;
-                width: 100%;
+                margin-bottom: 20px; 
+                display: flex;
+                flex-direction: column; 
+                align-items: center;
                 order: 2;
-                margin-bottom: 20px;
             }
             
-            /* Text (Order 3) */
+            .product-img {
+                transform: none !important; 
+                max-height: 250px; 
+                width: auto;
+                max-width: 100%;
+                background-color: transparent;
+                border: none;
+                box-shadow: none;
+            }
+            
+            /* Order 3: Text Content (Name, Details, Specs) */
             .product-text-content-wrapper {
                  align-items: center;
                  text-align: center;
-                 flex: 0 0 auto;
+                 flex: 0 0 100%;
                  order: 3;
             }
             
-            /* Button fix for this layout */
-            .view-3d-btn {
-                position: absolute; 
-                bottom: 20px;
-                right: 20px;
-                margin-top: 0;
-                transform: none;
-                opacity: 1;
+            .product-text-col { 
+                width: 100%; 
+                align-items: center; 
+                text-align: center; 
+                flex: 0 0 auto;
             }
             
-            /* 3. PARKINSYNC GAP FIX */
+            .product-section.right-align .product-text-col {
+                align-items: center;
+                text-align: center;
+            }
+            
+            .specs-box,
+            .product-section.right-align .specs-box { 
+                margin-left: auto; 
+                margin-right: auto; 
+                width: 100%;
+                max-width: 100%; 
+                margin-top: 20px;
+                padding-top: 15px; 
+                align-items: stretch; 
+            }
+            
+            .spec-row {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            /* 3. PARKINSYNC TWEAKS */
             #parkinsync-visual {
-                padding-bottom: 60px; /* Reduced from 150px */
+                padding-bottom: 40px; /* Minimized padding */
             }
-            
+
             #other-projects {
-                padding-top: 40px; /* Slight reduction for visual connection */
+                padding-top: 20px; /* Tighter visual connection */
+                padding-bottom: 60px;
             }
 
             .two-col-grid {
@@ -924,6 +957,23 @@
             
             .product-title {
                 font-size: 3rem;
+            }
+            
+            /* Reduced ParkinSync Heading on Mobile */
+            #parkinsync-intro .collection-title {
+                font-size: 3.5rem !important; 
+            }
+            
+            /* 3D Button Position Mobile */
+            .view-3d-btn {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                margin-top: 0;
+                transform: none;
+                opacity: 1;
+                padding: 8px 16px;
+                font-size: 0.7rem;
             }
         }
 
@@ -1279,7 +1329,7 @@
 
         /* --- MOBILE PORTRAIT RESPONSIVE STYLES --- */
         @media (max-width: 480px) {
-            /* 1. HERO SPACING FIX */
+            /* 1. HERO SPACING FIX (Further Reduced) */
             .nav-bar { 
                 padding: 15px 20px;
                 height: auto; 
@@ -1336,17 +1386,17 @@
             #personal-hero { 
                 flex-direction: column; 
                 justify-content: flex-start; 
-                padding-top: 90px; /* Reduced padding */
-                gap: 10px;
+                padding-top: 70px; /* Adjusted for better fit */
+                gap: 0; /* Eliminated gap */
                 min-height: auto; 
-                padding-bottom: 40px;
+                padding-bottom: 20px;
             }
             
             .hero-text-col {
                 order: 1; 
                 width: 100%;
                 padding-top: 0;
-                margin-bottom: 5px;
+                margin-bottom: 0;
             }
             
             .hero-image-col {
@@ -1358,19 +1408,113 @@
                 justify-content: center;
                 align-items: flex-start; 
                 padding-top: 0;
-                margin-bottom: 10px;
+                margin-bottom: 0;
+            }
+
+            /* 2. FURNITURE LAYOUT FIX (Label -> Image -> Text) */
+            .product-section, .product-section.right-align {
+                 display: flex;
+                 flex-direction: column; /* Standard Column */
+                 gap: 30px;
+                 padding-top: 60px;
             }
             
-            .portrait-img {
+            /* Order 1: Label (The Stream / Flow) */
+            .state-label {
                 position: relative;
-                width: auto; 
-                max-width: 100%; 
-                height: 100%; 
-                object-fit: contain; 
-                transform: none !important;
-                box-shadow: none; 
-                background-color: transparent; 
+                top: auto;
+                left: auto;
+                transform: none;
+                margin-bottom: 15px;
+                opacity: 0.5;
+                width: 100%;
+                text-align: center;
+                order: 1;
+            }
+            
+            /* Order 2: Image */
+            .product-image-col { 
+                width: 100%; 
+                height: auto; 
+                flex: 0 0 auto;
+                margin-bottom: 20px; 
+                display: flex;
+                flex-direction: column; 
+                align-items: center;
+                order: 2;
+            }
+            
+            .product-img {
+                transform: none !important; 
+                max-height: 250px; 
+                width: auto;
+                max-width: 100%;
+                background-color: transparent;
                 border: none;
+                box-shadow: none;
+            }
+            
+            /* Order 3: Text Content (Name, Details, Specs) */
+            .product-text-content-wrapper {
+                 align-items: center;
+                 text-align: center;
+                 flex: 0 0 100%;
+                 order: 3;
+            }
+            
+            .product-text-col { 
+                width: 100%; 
+                align-items: center; 
+                text-align: center; 
+                flex: 0 0 auto;
+            }
+            
+            .product-section.right-align .product-text-col {
+                align-items: center;
+                text-align: center;
+            }
+            
+            .specs-box,
+            .product-section.right-align .specs-box { 
+                margin-left: auto; 
+                margin-right: auto; 
+                width: 100%;
+                max-width: 100%; 
+                margin-top: 20px;
+                padding-top: 15px; 
+                align-items: stretch; 
+            }
+            
+            .spec-row {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            /* 3. PARKINSYNC TWEAKS */
+            #parkinsync-visual {
+                padding-bottom: 40px; /* Minimized padding */
+            }
+            
+            #other-projects {
+                padding-top: 20px; /* Tighter visual connection */
+                padding-bottom: 60px;
+            }
+
+            /* Reduced ParkinSync Heading on Mobile */
+            #parkinsync-intro .collection-title {
+                font-size: 3.5rem !important; 
+            }
+            
+            /* 3D Button Position Mobile */
+            .view-3d-btn {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                margin-top: 0;
+                transform: none;
+                opacity: 1;
+                padding: 8px 16px;
+                font-size: 0.7rem;
             }
 
             #skills {
@@ -1465,95 +1609,6 @@
                 padding-bottom: 60px;
             }
 
-            /* 2. FURNITURE LAYOUT FIX */
-            .product-section, .product-section.right-align {
-                 display: flex;
-                 flex-direction: column; /* Use Standard Column */
-                 gap: 30px;
-                 padding-top: 60px;
-            }
-            
-            /* Order 1: Label */
-            .state-label {
-                position: relative;
-                top: auto;
-                left: auto;
-                transform: none;
-                margin-bottom: 15px;
-                opacity: 0.5;
-                width: 100%;
-                text-align: center;
-                order: 1;
-            }
-            
-            /* Order 2: Image */
-            .product-image-col { 
-                width: 100%; 
-                height: auto; 
-                flex: 0 0 auto;
-                margin-bottom: 20px; 
-                display: flex;
-                flex-direction: column; 
-                align-items: center;
-                order: 2;
-            }
-            
-            .product-img {
-                transform: none !important; 
-                max-height: 250px; 
-                width: auto;
-                max-width: 100%;
-                background-color: transparent;
-                border: none;
-                box-shadow: none;
-            }
-            
-            /* Order 3: Text */
-            .product-text-content-wrapper {
-                 align-items: center;
-                 text-align: center;
-                 flex: 0 0 100%;
-                 order: 3;
-            }
-            
-            .product-text-col { 
-                width: 100%; 
-                align-items: center; 
-                text-align: center; 
-                flex: 0 0 auto;
-            }
-            
-            .product-section.right-align .product-text-col {
-                align-items: center;
-                text-align: center;
-            }
-            
-            .specs-box,
-            .product-section.right-align .specs-box { 
-                margin-left: auto; 
-                margin-right: auto; 
-                width: 100%;
-                max-width: 100%; 
-                margin-top: 20px;
-                padding-top: 15px; 
-                align-items: stretch; 
-            }
-            
-            .spec-row {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            /* 3. PARKINSYNC GAP FIX */
-            #parkinsync-visual {
-                padding-bottom: 60px; /* Reduced from 150px */
-            }
-
-            #other-projects {
-                padding-top: 40px; /* Reduced padding */
-                padding-bottom: 60px;
-            }
-
             .project-grid { 
                 grid-template-columns: 1fr; 
                 gap: 20px; 
@@ -1570,15 +1625,6 @@
             }
 
             .family-img-container { width: 100%; margin: 30px 0; }
-            
-            .view-3d-btn {
-                position: absolute;
-                bottom: 20px;
-                right: 20px;
-                margin-top: 0;
-                transform: none;
-                opacity: 1;
-            }
             
             #contact-section {
                 padding-top: 60px;
@@ -2104,7 +2150,7 @@
                 </div>
             </section>
 
-            <section id="parkinsync-visual" style="padding-top: 0; padding-bottom: 60px; justify-content: center; align-items: center; min-height: auto;">
+            <section id="parkinsync-visual" style="padding-top: 0; padding-bottom: 150px; justify-content: center; align-items: center; min-height: auto;">
                 <h3 class="product-title blend-text" style="font-size: 3rem; text-align: center; margin-bottom: 40px;">Concept Overview & Interface</h3>
                 <div class="family-img-container" style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
                     <!-- UPDATED: Pointing to .png file with fallback placeholder -->
@@ -2115,7 +2161,7 @@
                 </div>
             </section>
             
-            <section id="other-projects" style="min-height: 100vh; padding-top: 40px; padding-bottom: 100px;">
+            <section id="other-projects" style="min-height: 100vh; padding-top: 150px; padding-bottom: 100px;">
                 <span class="section-label blend-text">Design & Visualization</span>
                 <h2 class="product-title blend-text" style="font-size: 3rem; margin-bottom: 50px;">Selected Works</h2>
                 
