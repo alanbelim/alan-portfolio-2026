@@ -829,45 +829,101 @@
         
         /* Mobile Overrides */
         @media (max-width: 480px) {
-            .product-section, .product-section.right-align {
-                 flex-direction: column-reverse;
-                 gap: 30px;
+            /* 1. HERO SPACING FIX */
+            #personal-hero { 
+                flex-direction: column; 
+                justify-content: flex-start; 
+                padding-top: 90px; /* Reduced from 110px */
+                gap: 10px; /* Reduced gap */
+                min-height: auto; 
+                padding-bottom: 40px;
             }
-            .product-text-content-wrapper {
-                 align-items: center;
-                 text-align: center;
-                 flex: 0 0 100%;
-            }
-            .product-image-col {
-                flex: 0 0 100%;
+            
+            .hero-text-col {
+                order: 1; 
                 width: 100%;
+                padding-top: 0;
+                margin-bottom: 5px; /* Minimal margin */
             }
-            .product-title {
-                font-size: 3rem;
+            
+            .hero-image-col {
+                order: 2; 
+                width: 100%;
+                height: auto; /* Let image define height */
+                min-height: 250px;
+                position: relative;
+                justify-content: center;
+                align-items: flex-start; /* Align closer to text */
+                padding-top: 0;
+                margin-bottom: 10px;
             }
+
+            /* 2. FURNITURE LAYOUT FIX (Label -> Image -> Text) */
+            .product-section, .product-section.right-align {
+                 display: flex;
+                 flex-direction: column; /* Normal column flow */
+                 gap: 30px;
+                 padding-top: 60px;
+            }
+            
+            /* State Label (Order 1) */
             .state-label {
                 position: relative;
                 top: auto;
-                left: 50%;
-                transform: translateX(-50%);
-                margin-bottom: 10px;
-                opacity: 0.3;
+                left: auto;
+                transform: none;
+                margin-bottom: 15px;
+                opacity: 0.5;
                 width: 100%;
                 text-align: center;
+                order: 1;
             }
+            
+            /* Image (Order 2) */
+            .product-image-col {
+                flex: 0 0 auto;
+                width: 100%;
+                order: 2;
+                margin-bottom: 20px;
+            }
+            
+            /* Text (Order 3) */
+            .product-text-content-wrapper {
+                 align-items: center;
+                 text-align: center;
+                 flex: 0 0 auto;
+                 order: 3;
+            }
+            
+            /* Button fix for this layout */
             .view-3d-btn {
-                position: absolute; /* Keep absolute within wrapper */
+                position: absolute; 
                 bottom: 20px;
                 right: 20px;
                 margin-top: 0;
                 transform: none;
                 opacity: 1;
             }
+            
+            /* 3. PARKINSYNC GAP FIX */
+            #parkinsync-visual {
+                padding-bottom: 60px; /* Reduced from 150px */
+            }
+            
+            #other-projects {
+                padding-top: 40px; /* Slight reduction for visual connection */
+            }
+
             .two-col-grid {
                 grid-template-columns: 1fr;
             }
+            
             .software-note {
                 justify-content: center;
+            }
+            
+            .product-title {
+                font-size: 3rem;
             }
         }
 
@@ -1223,6 +1279,7 @@
 
         /* --- MOBILE PORTRAIT RESPONSIVE STYLES --- */
         @media (max-width: 480px) {
+            /* 1. HERO SPACING FIX */
             .nav-bar { 
                 padding: 15px 20px;
                 height: auto; 
@@ -1279,27 +1336,29 @@
             #personal-hero { 
                 flex-direction: column; 
                 justify-content: flex-start; 
-                padding-top: 110px; 
-                gap: 20px;
-                min-height: 100vh; 
+                padding-top: 90px; /* Reduced padding */
+                gap: 10px;
+                min-height: auto; 
+                padding-bottom: 40px;
             }
             
             .hero-text-col {
                 order: 1; 
                 width: 100%;
                 padding-top: 0;
-                margin-bottom: 10px;
+                margin-bottom: 5px;
             }
             
             .hero-image-col {
                 order: 2; 
                 width: 100%;
-                height: 350px; 
+                height: auto; 
+                min-height: 250px;
                 position: relative;
                 justify-content: center;
-                align-items: center; 
+                align-items: flex-start; 
                 padding-top: 0;
-                margin-bottom: 20px;
+                margin-bottom: 10px;
             }
             
             .portrait-img {
@@ -1406,16 +1465,37 @@
                 padding-bottom: 60px;
             }
 
+            /* 2. FURNITURE LAYOUT FIX */
+            .product-section, .product-section.right-align {
+                 display: flex;
+                 flex-direction: column; /* Use Standard Column */
+                 gap: 30px;
+                 padding-top: 60px;
+            }
             
+            /* Order 1: Label */
+            .state-label {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                margin-bottom: 15px;
+                opacity: 0.5;
+                width: 100%;
+                text-align: center;
+                order: 1;
+            }
             
+            /* Order 2: Image */
             .product-image-col { 
                 width: 100%; 
                 height: auto; 
                 flex: 0 0 auto;
-                margin-bottom: 10px; 
+                margin-bottom: 20px; 
                 display: flex;
                 flex-direction: column; 
                 align-items: center;
+                order: 2;
             }
             
             .product-img {
@@ -1426,6 +1506,14 @@
                 background-color: transparent;
                 border: none;
                 box-shadow: none;
+            }
+            
+            /* Order 3: Text */
+            .product-text-content-wrapper {
+                 align-items: center;
+                 text-align: center;
+                 flex: 0 0 100%;
+                 order: 3;
             }
             
             .product-text-col { 
@@ -1456,8 +1544,13 @@
                 justify-content: space-between;
             }
 
+            /* 3. PARKINSYNC GAP FIX */
+            #parkinsync-visual {
+                padding-bottom: 60px; /* Reduced from 150px */
+            }
+
             #other-projects {
-                padding-top: 60px;
+                padding-top: 40px; /* Reduced padding */
                 padding-bottom: 60px;
             }
 
@@ -1478,6 +1571,14 @@
 
             .family-img-container { width: 100%; margin: 30px 0; }
             
+            .view-3d-btn {
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+                margin-top: 0;
+                transform: none;
+                opacity: 1;
+            }
             
             #contact-section {
                 padding-top: 60px;
@@ -1498,6 +1599,14 @@
             .submit-btn {
                 padding: 12px 20px;
                 font-size: 0.9rem;
+            }
+            
+            .two-col-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .software-note {
+                justify-content: center;
             }
         }
         
@@ -1995,7 +2104,7 @@
                 </div>
             </section>
 
-            <section id="parkinsync-visual" style="padding-top: 0; padding-bottom: 150px; justify-content: center; align-items: center; min-height: auto;">
+            <section id="parkinsync-visual" style="padding-top: 0; padding-bottom: 60px; justify-content: center; align-items: center; min-height: auto;">
                 <h3 class="product-title blend-text" style="font-size: 3rem; text-align: center; margin-bottom: 40px;">Concept Overview & Interface</h3>
                 <div class="family-img-container" style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
                     <!-- UPDATED: Pointing to .png file with fallback placeholder -->
@@ -2006,7 +2115,7 @@
                 </div>
             </section>
             
-            <section id="other-projects" style="min-height: 100vh; padding-top: 150px; padding-bottom: 100px;">
+            <section id="other-projects" style="min-height: 100vh; padding-top: 40px; padding-bottom: 100px;">
                 <span class="section-label blend-text">Design & Visualization</span>
                 <h2 class="product-title blend-text" style="font-size: 3rem; margin-bottom: 50px;">Selected Works</h2>
                 
