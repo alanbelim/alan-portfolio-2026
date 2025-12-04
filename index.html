@@ -776,6 +776,57 @@
             pointer-events: auto; 
         }
         
+        /* TWO COLUMN GRID FOR PARKINSYNC */
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+        }
+        
+        /* --- NEW ELEMENTS STYLES --- */
+        .software-note {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .software-note::before {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            background-color: #ea7600; /* Blender Orange ish */
+            border-radius: 50%;
+        }
+
+        .project-doc-btn {
+            display: inline-block;
+            margin-top: 0;
+            margin-bottom: 40px;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .project-doc-btn:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        
         /* Mobile Overrides */
         @media (max-width: 480px) {
             .product-section, .product-section.right-align {
@@ -811,6 +862,12 @@
                 margin-top: 0;
                 transform: none;
                 opacity: 1;
+            }
+            .two-col-grid {
+                grid-template-columns: 1fr;
+            }
+            .software-note {
+                justify-content: center;
             }
         }
 
@@ -1779,6 +1836,8 @@
                             <span class="spec-key">Finish</span> 
                             <span class="spec-value">Smoked Matte Oil</span>
                         </div>
+                        <!-- Note added here -->
+                        <div class="software-note">Made in Blender</div>
                     </div>
                 </div>
                 <div class="product-image-col">
@@ -1816,6 +1875,8 @@
                             <span class="spec-key">Weight</span> 
                             <span class="spec-value">Heavy Base Anchor</span>
                         </div>
+                        <!-- Note added here -->
+                        <div class="software-note">Made in Blender</div>
                     </div>
                 </div>
                 <div class="product-image-col">
@@ -1853,6 +1914,8 @@
                             <span class="spec-key">Function</span> 
                             <span class="spec-value">Push-to-open Storage</span>
                         </div>
+                        <!-- Note added here -->
+                        <div class="software-note">Made in Blender</div>
                     </div>
                 </div>
                 <div class="product-image-col">
@@ -1872,16 +1935,74 @@
                 <div class="water-interaction-area" data-water-type="stillness" id="water-area-vila"></div>
             </section>
 
-            <section id="family-section">
-                <!-- Center aligned title -->
-                <h2 class="product-title blend-text" style="font-size: 3rem; text-align: center; width: 100%;">The Vatten Collection</h2>
+            <section id="family-section" style="align-items: center; text-align: center;">
+                <h2 class="product-title blend-text" style="font-size: 3rem; width: 100%;">The Vatten Collection</h2>
                 <p class="product-desc blend-text" style="margin: 20px auto;">A unified study in fluid dynamics and the complete journey of VATTEN.</p>
+                
+                <!-- Moved Button Here -->
+                <a href="vatten_project.pdf" target="_blank" class="project-doc-btn" style="margin-top: 0; margin-bottom: 40px; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.5);">
+                    View Full Documentation
+                </a>
+
                 <div class="family-img-container">
                     <img src="family.png" 
                          onerror="this.onerror=null;this.src='family.png';" 
                          alt="Vatten Collection" 
                          class="family-img"
                          loading="lazy">
+                </div>
+                
+                <!-- Note remains below -->
+                <div class="software-note" style="margin-top: 20px;">Made in Blender</div>
+            </section>
+            
+            <!-- NEW PARKINSYNC SECTION -->
+            <section id="parkinsync-intro" style="padding-top: 150px; padding-bottom: 60px; min-height: auto;">
+                <div class="collection-tag blend-text">Digital Product Design</div>
+                <h2 class="collection-title blend-text" style="font-size: 6rem;">ParkinSync</h2>
+                <p class="concept-text frosted-box blend-text">
+                    A smart rhythmic cueing app designed to support Parkinson's patients experiencing Freezing of Gait (FoG). 
+                    Providing personalized, adaptive mobility support without the need for external wearables.
+                </p>
+            </section>
+
+            <section class="product-section" id="parkinsync-details" style="padding-top: 0; padding-bottom: 60px; min-height: auto;">
+                <div class="product-text-content-wrapper frosted-box" style="flex: 0 0 100%; max-width: 100%; text-align: left;">
+                    <div class="two-col-grid">
+                        <div>
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 20px; color: #fff;">The Challenge</h3>
+                            <p style="color: #aaa; line-height: 1.6; margin-bottom: 20px;">
+                                Over 60% of people with Parkinson's experience Freezing of Gait (FoG)—a sudden inability to move. Traditional cueing methods are often static and lack personalization.
+                            </p>
+                            <ul style="color: #aaa; line-height: 1.6; padding-left: 20px;">
+                                <li>Sudden inability to move (FoG)</li>
+                                <li>Happens during turns, starts, or stress</li>
+                                <li>Need for real-time recovery support</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 20px; color: #fff;">The Solution</h3>
+                            <p style="color: #aaa; line-height: 1.6; margin-bottom: 20px;">
+                                ParkinSync utilizes the smartphone's built-in accelerometer to detect step irregularities and deploys timed rhythmic cues to assist motion recovery.
+                            </p>
+                            <div class="specs-box" style="margin-top: 0;">
+                                <div class="spec-row"><span class="spec-key">Tech</span> <span class="spec-value">Accelerometer & Gyroscope</span></div>
+                                <div class="spec-row"><span class="spec-key">Feedback</span> <span class="spec-value">Audio / Haptic / Visual</span></div>
+                                <div class="spec-row"><span class="spec-key">Platform</span> <span class="spec-value">iOS / Android</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="parkinsync-visual" style="padding-top: 0; padding-bottom: 150px; justify-content: center; align-items: center; min-height: auto;">
+                <h3 class="product-title blend-text" style="font-size: 3rem; text-align: center; margin-bottom: 40px;">Concept Overview & Interface</h3>
+                <div class="family-img-container" style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                    <!-- UPDATED: Pointing to .png file with fallback placeholder -->
+                    <img src="ParkinSync.png" 
+                         onerror="this.onerror=null;this.src='https://placehold.co/1200x800/101010/CCCCCC?text=ParkinSync+Poster';" 
+                         alt="ParkinSync Project Poster" 
+                         class="family-img">
                 </div>
             </section>
             
