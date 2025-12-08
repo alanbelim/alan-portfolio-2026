@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alan Belim P.S.</title>
+    
+    <!-- PERFORMANCE: Preload the Hero Image so it appears instantly -->
+    <link rel="preload" as="image" href="ME.png">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;800&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
 
@@ -683,7 +687,8 @@
                     </p>
                 </div>
                 <div class="hero-image-col">
-                    <img src="ME.png" onerror="this.onerror=null;this.src='ME.png';" alt="Alan Belim Portrait" class="portrait-img">
+                    <!-- PRELOAD & FETCH PRIORITY APPLIED -->
+                    <img src="ME.png" fetchpriority="high" onerror="this.onerror=null;this.src='ME.png';" alt="Alan Belim Portrait" class="portrait-img">
                 </div>
                 
                 <div class="scroll-hint" style="opacity: 0.7; animation: pulse 2s infinite;">
@@ -771,7 +776,8 @@
                 </div>
                 <div class="product-image-col">
                     <div class="product-image-wrapper">
-                        <img src="strom.png" onerror="this.onerror=null;this.src='strom.png';" alt="Strom Chair" class="product-img brightness-fix" data-speed="0.5" loading="lazy">
+                        <!-- LAZY LOAD & ASYNC DECODE -->
+                        <img src="strom.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='strom.png';" alt="Strom Chair" class="product-img brightness-fix" data-speed="0.5">
                         <button class="view-3d-btn" onclick="openModal('strom')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-cw"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-7.3 3.37L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 7.3-3.37L21 16"/><path d="M21 21v-5h-5"/></svg>
                             <span>360° View</span>
@@ -796,7 +802,7 @@
                 </div>
                 <div class="product-image-col">
                     <div class="product-image-wrapper">
-                        <img src="vag.png" onerror="this.onerror=null;this.src='vag.png';" alt="Vag Table" class="product-img" data-speed="0.3" loading="lazy">
+                        <img src="vag.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='vag.png';" alt="Vag Table" class="product-img" data-speed="0.3">
                         <button class="view-3d-btn" onclick="openModal('vag')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-cw"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-7.3 3.37L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 7.3-3.37L21 16"/><path d="M21 21v-5h-5"/></svg>
                             <span>360° View</span>
@@ -821,7 +827,7 @@
                 </div>
                 <div class="product-image-col">
                     <div class="product-image-wrapper">
-                        <img src="vila.png" onerror="this.onerror=null;this.src='vila.png';" alt="Vila Daybed" class="product-img" data-speed="0.4" loading="lazy">
+                        <img src="vila.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='vila.png';" alt="Vila Daybed" class="product-img" data-speed="0.4">
                         <button class="view-3d-btn" onclick="openModal('vila')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-cw"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-7.3 3.37L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 7.3-3.37L21 16"/><path d="M21 21v-5h-5"/></svg>
                             <span>360° View</span>
@@ -840,7 +846,7 @@
                 </a>
 
                 <div class="family-img-container">
-                    <img src="family.png" onerror="this.onerror=null;this.src='family.png';" alt="Vatten Collection" class="family-img" loading="lazy">
+                    <img src="family.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='family.png';" alt="Vatten Collection" class="family-img">
                 </div>
                 <div class="software-note" style="margin-top: 20px; justify-content: center;">Made in Blender</div>
             </section>
@@ -883,7 +889,7 @@
             <section id="parkinsync-visual" style="padding-top: 0; padding-bottom: 150px; justify-content: center; align-items: center; min-height: auto;">
                 <h3 class="product-title blend-text" style="font-size: 3rem; text-align: center; margin-bottom: 40px;">Concept Overview & Interface</h3>
                 <div class="family-img-container" style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-width: 1000px;">
-                    <img src="ParkinSync.png" onerror="this.onerror=null;this.src='https://placehold.co/1200x800/101010/CCCCCC?text=ParkinSync+Poster';" alt="ParkinSync Project Poster" class="family-img">
+                    <img src="ParkinSync.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://placehold.co/1200x800/101010/CCCCCC?text=ParkinSync+Poster';" alt="ParkinSync Project Poster" class="family-img">
                 </div>
             </section>
             
@@ -894,7 +900,7 @@
                 <div class="project-grid">
                     <!-- Example item -->
                     <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/iphone_ad.mp4');" class="project-item">
-                         <img src="works/iphone_ad_poster.png" onerror="this.onerror=null;this.src='works/iphone_ad_poster.png';" alt="iPhone Ad Cinematic Thumbnail" loading="lazy">
+                         <img src="works/iphone_ad_poster.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/iphone_ad_poster.png';" alt="iPhone Ad Cinematic Thumbnail">
                          <div class="play-icon-overlay">
                             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="m15.5 12-5-3v6z"/></svg>
                          </div>
@@ -902,105 +908,105 @@
                     </a>
                     <!-- Add remaining items here (abbreviated for length but full structure preserved) -->
                      <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/marshall_speaker_ad.mp4');" class="project-item">
-                        <img src="works/marshall_speaker_poster.png" onerror="this.onerror=null;this.src='works/marshall_speaker_poster.png'" alt="Marshall Speaker Ad" loading="lazy">
+                        <img src="works/marshall_speaker_poster.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/marshall_speaker_poster.png'" alt="Marshall Speaker Ad">
                         <div class="play-icon-overlay"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="m15.5 12-5-3v6z"/></svg></div>
                         <div class="project-title-overlay"><span>COMMERCIAL VISUAL</span><h4>Marshall Speaker Ad</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/something_slipper_ad.mp4');" class="project-item">
-                        <img src="works/something_slipper_poster.png" onerror="this.onerror=null;this.src='works/something_slipper_poster.png'" alt="Something Slipper Ad" loading="lazy">
+                        <img src="works/something_slipper_poster.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/something_slipper_poster.png'" alt="Something Slipper Ad">
                         <div class="play-icon-overlay"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="m15.5 12-5-3v6z"/></svg></div>
                         <div class="project-title-overlay"><span>CONCEPT DESIGN</span><h4>Something Slipper Ad</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/cybermouse_concept.mp4');" class="project-item">
-                        <img src="works/cybermouse_poster.png" onerror="this.onerror=null;this.src='works/cybermouse_poster.png'" alt="Cybermouse Concept" loading="lazy">
+                        <img src="works/cybermouse_poster.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/cybermouse_poster.png'" alt="Cybermouse Concept">
                          <div class="play-icon-overlay"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="m15.5 12-5-3v6z"/></svg></div>
                         <div class="project-title-overlay"><span>HARD SURFACE MODELLING</span><h4>Cybermouse Concept</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/walkman_animation.mp4');" class="project-item">
-                        <img src="works/walkman_animation_poster.png" onerror="this.onerror=null;this.src='works/walkman_animation_poster.png'" alt="Walkman Animation Poster" loading="lazy">
+                        <img src="works/walkman_animation_poster.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/walkman_animation_poster.png'" alt="Walkman Animation Poster">
                         <div class="play-icon-overlay"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="m15.5 12-5-3v6z"/></svg></div>
                         <div class="project-title-overlay"><span>PRODUCT ANIMATION</span><h4>Walkman - Cinematic</h4></div>
                     </a>
                      <a href="javascript:void(0)" onclick="openVideoModal(event, 'works/boat_ocean_animation.mp4');" class="project-item">
-                        <img src="works/boat_ocean_poster.png" onerror="this.onerror=null;this.src='works/boat_ocean_poster.png'" alt="Boat Ocean Animation Poster" loading="lazy">
+                        <img src="works/boat_ocean_poster.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/boat_ocean_poster.png'" alt="Boat Ocean Animation Poster">
                         <div class="play-icon-overlay"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" style="color: #fff; filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="m15.5 12-5-3v6z"/></svg></div>
                         <div class="project-title-overlay"><span>ENVIRONMENTAL STUDY</span><h4>Ocean Boat Simulation</h4></div>
                     </a>
                     <!-- IMAGES -->
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/iphone_17_pro_max_1.png');" class="project-item">
-                        <img src="works/iphone_17_pro_max_1.png" onerror="this.onerror=null;this.src='works/iphone_17_pro_max_1.png'" alt="iPhone 17 Pro Max Render 1" loading="lazy">
+                        <img src="works/iphone_17_pro_max_1.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/iphone_17_pro_max_1.png'" alt="iPhone 17 Pro Max Render 1">
                          <div class="project-title-overlay"><span>PRODUCT RENDER</span><h4>iPhone 17 Pro Max (1)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/iphone_17_pro_max_2.png');" class="project-item">
-                        <img src="works/iphone_17_pro_max_2.png" onerror="this.onerror=null;this.src='works/iphone_17_pro_max_2.png'" alt="iPhone 17 Pro Max Render 2" loading="lazy">
+                        <img src="works/iphone_17_pro_max_2.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/iphone_17_pro_max_2.png'" alt="iPhone 17 Pro Max Render 2">
                         <div class="project-title-overlay"><span>PRODUCT RENDER</span><h4>iPhone 17 Pro Max (2)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/powerbank_daily_objects_1.png');" class="project-item">
-                        <img src="works/powerbank_daily_objects_1.png" onerror="this.onerror=null;this.src='works/powerbank_daily_objects_1.png'" alt="Daily Objects Powerbank 1" loading="lazy">
+                        <img src="works/powerbank_daily_objects_1.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/powerbank_daily_objects_1.png'" alt="Daily Objects Powerbank 1">
                         <div class="project-title-overlay"><span>PRODUCT RENDER</span><h4>Powerbank Study (1)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/powerbank_daily_objects_2.png');" class="project-item">
-                        <img src="works/powerbank_daily_objects_2.png" onerror="this.onerror=null;this.src='works/powerbank_daily_objects_2.png'" alt="Daily Objects Powerbank 2" loading="lazy">
+                        <img src="works/powerbank_daily_objects_2.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/powerbank_daily_objects_2.png'" alt="Daily Objects Powerbank 2">
                         <div class="project-title-overlay"><span>PRODUCT RENDER</span><h4>Powerbank Study (2)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/larq_bottle_1.png');" class="project-item">
-                        <img src="works/larq_bottle_1.png" onerror="this.onerror=null;this.src='works/larq_bottle_1.png'" alt="LARQ Bottle 1" loading="lazy">
+                        <img src="works/larq_bottle_1.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/larq_bottle_1.png'" alt="LARQ Bottle 1">
                         <div class="project-title-overlay"><span>PRODUCT RENDER</span><h4>LARQ Bottle (1)</h4></div>
                     </a>
                      <a href="javascript:void(0)" onclick="openImageModal(event, 'works/larq_bottle_2.png');" class="project-item">
-                        <img src="works/larq_bottle_2.png" onerror="this.onerror=null;this.src='works/larq_bottle_2.png'" alt="LARQ Bottle 2" loading="lazy">
+                        <img src="works/larq_bottle_2.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/larq_bottle_2.png'" alt="LARQ Bottle 2">
                         <div class="project-title-overlay"><span>PRODUCT RENDER</span><h4>LARQ Bottle (2)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/springer_pet_bottle.png');" class="project-item">
-                        <img src="works/springer_pet_bottle.png" onerror="this.onerror=null;this.src='works/springer_pet_bottle.png'" alt="Springer Pet Bottle" loading="lazy">
+                        <img src="works/springer_pet_bottle.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/springer_pet_bottle.png'" alt="Springer Pet Bottle">
                          <div class="project-title-overlay"><span>PRODUCT RENDER</span><h4>Springer Pet Bottle</h4></div>
                     </a>
                      <a href="javascript:void(0)" onclick="openImageModal(event, 'works/ptron_mobile_power_bank.png');" class="project-item">
-                        <img src="works/ptron_mobile_power_bank.png" onerror="this.onerror=null;this.src='works/ptron_mobile_power_bank.png'" alt="Ptron Mobile Power Bank" loading="lazy">
+                        <img src="works/ptron_mobile_power_bank.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/ptron_mobile_power_bank.png'" alt="Ptron Mobile Power Bank">
                          <div class="project-title-overlay"><span>PRODUCT RENDER</span><h4>Ptron Power Bank</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/perfume_render_1.png');" class="project-item">
-                        <img src="works/perfume_render_1.png" onerror="this.onerror=null;this.src='works/perfume_render_1.png'" alt="Perfume Render 1" loading="lazy">
+                        <img src="works/perfume_render_1.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/perfume_render_1.png'" alt="Perfume Render 1">
                          <div class="project-title-overlay"><span>VISUAL STUDY</span><h4>Perfume Study (1)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/perfume_render_2.png');" class="project-item">
-                        <img src="works/perfume_render_2.png" onerror="this.onerror=null;this.src='works/perfume_render_2.png'" alt="Perfume Render 2" loading="lazy">
+                        <img src="works/perfume_render_2.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/perfume_render_2.png'" alt="Perfume Render 2">
                         <div class="project-title-overlay"><span>VISUAL STUDY</span><h4>Perfume Study (2)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/perfume_render_3.png');" class="project-item">
-                        <img src="works/perfume_render_3.png" onerror="this.onerror=null;this.src='works/perfume_render_3.png'" alt="Perfume Render 3" loading="lazy">
+                        <img src="works/perfume_render_3.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/perfume_render_3.png'" alt="Perfume Render 3">
                         <div class="project-title-overlay"><span>VISUAL STUDY</span><h4>Perfume Study (3)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/roger_pradier_light.png');" class="project-item">
-                        <img src="works/roger_pradier_light.png" onerror="this.onerror=null;this.src='works/roger_pradier_light.png'" alt="Roger Pradier Light Render" loading="lazy">
+                        <img src="works/roger_pradier_light.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/roger_pradier_light.png'" alt="Roger Pradier Light Render">
                         <div class="project-title-overlay"><span>ARCHITECTURAL VIS.</span><h4>Pradier Light Render</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/studio_microphone.png');" class="project-item">
-                        <img src="works/studio_microphone.png" onerror="this.onerror=null;this.src='works/studio_microphone.png'" alt="Studio Microphone Render" loading="lazy">
+                        <img src="works/studio_microphone.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/studio_microphone.png'" alt="Studio Microphone Render">
                         <div class="project-title-overlay"><span>PRODUCT RENDER</span><h4>Studio Microphone</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_1.png');" class="project-item">
-                        <img src="works/walkman_render_1.png" onerror="this.onerror=null;this.src='works/walkman_render_1.png'" alt="Walkman Render 1" loading="lazy">
+                        <img src="works/walkman_render_1.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/walkman_render_1.png'" alt="Walkman Render 1">
                         <div class="project-title-overlay"><span>HARD SURFACE</span><h4>Walkman Study (1)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_2.png');" class="project-item">
-                        <img src="works/walkman_render_2.png" onerror="this.onerror=null;this.src='works/walkman_render_2.png'" alt="Walkman Render 2" loading="lazy">
+                        <img src="works/walkman_render_2.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/walkman_render_2.png'" alt="Walkman Render 2">
                         <div class="project-title-overlay"><span>HARD SURFACE</span><h4>Walkman Study (2)</h4></div>
                     </a>
                      <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_3.png');" class="project-item">
-                        <img src="works/walkman_render_3.png" onerror="this.onerror=null;this.src='works/walkman_render_3.png'" alt="Walkman Render 3" loading="lazy">
+                        <img src="works/walkman_render_3.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/walkman_render_3.png'" alt="Walkman Render 3">
                         <div class="project-title-overlay"><span>HARD SURFACE</span><h4>Walkman Study (3)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_4.png');" class="project-item">
-                        <img src="works/walkman_render_4.png" onerror="this.onerror=null;this.src='works/walkman_render_4.png'" alt="Walkman Render 4" loading="lazy">
+                        <img src="works/walkman_render_4.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/walkman_render_4.png'" alt="Walkman Render 4">
                         <div class="project-title-overlay"><span>HARD SURFACE</span><h4>Walkman Study (4)</h4></div>
                     </a>
                     <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_5.png');" class="project-item">
-                        <img src="works/walkman_render_5.png" onerror="this.onerror=null;this.src='works/walkman_render_5.png'" alt="Walkman Render 5" loading="lazy">
+                        <img src="works/walkman_render_5.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/walkman_render_5.png'" alt="Walkman Render 5">
                         <div class="project-title-overlay"><span>HARD SURFACE</span><h4>Walkman Study (5)</h4></div>
                     </a>
                      <a href="javascript:void(0)" onclick="openImageModal(event, 'works/walkman_render_6.png');" class="project-item">
-                        <img src="works/walkman_render_6.png" onerror="this.onerror=null;this.src='works/walkman_render_6.png'" alt="Walkman Render 6" loading="lazy">
+                        <img src="works/walkman_render_6.png" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='works/walkman_render_6.png'" alt="Walkman Render 6">
                         <div class="project-title-overlay"><span>HARD SURFACE</span><h4>Walkman Study (6)</h4></div>
                     </a>
 
@@ -1551,6 +1557,15 @@
                  camera.updateProjectionMatrix();
              }
         });
+        
+        // Hero Text Parallax (Fallback animation if Three.js not running)
+        function animateHeroText() {
+            requestAnimationFrame(animateHeroText);
+            const textCol = document.querySelector('.hero-text-col');
+            // Safe access to global variables
+            if (textCol) { textCol.style.transform = `rotateY(${targetX * 2}deg) rotateX(${-targetY * 1}deg)`; }
+        }
+        animateHeroText();
 
     </script>
 </body>
