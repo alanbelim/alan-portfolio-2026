@@ -33,7 +33,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0; /* Pushed back */
+            z-index: 0; 
             opacity: 0; 
             transition: opacity 1.5s ease;
             pointer-events: auto; 
@@ -46,7 +46,7 @@
         #main-content-wrapper {
             position: relative;
             width: 100%;
-            z-index: 2; /* Content sits above background */
+            z-index: 2; 
         }
 
         /* --- TYPOGRAPHY & UTILITIES --- */
@@ -372,6 +372,7 @@
         
         .skill-item:hover { color: #dccbb5; }
 
+        /* SKILL LOGO PLACEHOLDER */
         .skill-logo-placeholder {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 450px; height: 450px; opacity: 0;
@@ -495,6 +496,8 @@
         .project-item {
             position: relative; display: block; overflow: hidden; height: 350px; 
             border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); text-decoration: none; cursor: pointer;
+            /* ENSURE CLICKS WORK */
+            pointer-events: auto;
         }
         .project-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; filter: brightness(0.85); }
         .project-item:hover img { transform: scale(1.05); filter: brightness(1.0); }
@@ -551,20 +554,19 @@
             .role { display: none; }
             .menu-links { width: 100%; justify-content: center; font-size: 0.7rem; flex-wrap: wrap; gap: 15px; }
 
-            /* 2. HERO SPACING FIX (Resolved Cutoff & Gap) */
+            /* 2. HERO SPACING FIX */
             #personal-hero { 
                 flex-direction: column; 
                 justify-content: flex-start; 
-                padding-top: 180px; /* Increased to 180px to clear nav and add breathing room */
+                padding-top: 180px; 
                 gap: 0; 
                 min-height: auto; 
                 padding-bottom: 20px;
             }
-            
             .hero-text-col { order: 1; width: 100%; padding-top: 0; margin-bottom: 0; flex: 0 0 auto; }
             .hero-image-col { order: 2; width: 100%; height: auto; min-height: 250px; justify-content: center; align-items: flex-start; padding-top: 0; margin-top: 20px; margin-bottom: 0; }
 
-            /* 3. FURNITURE LAYOUT FIX (Label -> Image -> Text) */
+            /* 3. FURNITURE LAYOUT FIX */
             .product-section, .product-section.right-align { display: flex; flex-direction: column; gap: 30px; padding-top: 60px; }
             .state-label { position: relative; top: auto; left: auto; transform: none; margin-bottom: 15px; opacity: 0.5; width: 100%; text-align: center; order: 1; }
             .product-image-col { width: 100%; height: auto; flex: 0 0 auto; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; order: 2; }
@@ -575,8 +577,8 @@
             .view-3d-btn { position: absolute; bottom: 10px; right: 10px; padding: 8px 16px; font-size: 0.7rem; }
 
             /* 4. PARKINSYNC TWEAKS */
-            #parkinsync-intro .collection-title { font-size: 15vw !important; } /* Adjusted font size */
-            #parkinsync-visual { padding-bottom: 60px; } /* Reduced padding */
+            #parkinsync-intro .collection-title { font-size: 15vw !important; } 
+            #parkinsync-visual { padding-bottom: 60px; } 
             #other-projects { padding-top: 40px; padding-bottom: 60px; }
             .two-col-grid { grid-template-columns: 1fr; }
             .project-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -599,8 +601,12 @@
         }
         .modal-close:hover, .video-modal-close:hover, .image-modal-close:hover { background: #fff; color: #000; }
         
-        .video-container, .image-container { position: relative; width: 90%; max-width: 1200px; max-height: 90vh; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 50px rgba(0,0,0,0.8); }
-        #video-player, #modal-image-display { width: 100%; height: 100%; display: block; object-fit: contain; }
+        /* FIX FOR ZOOMED IMAGES: USE CONTAIN */
+        .video-container, .image-container { position: relative; width: 90%; max-width: 1200px; max-height: 90vh; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 50px rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; }
+        #video-player, #modal-image-display { 
+            width: auto; height: auto; max-width: 100%; max-height: 90vh; display: block; object-fit: contain; 
+        }
+        
         .modal-overlay-message { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 600px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 10px; text-align: center; z-index: 220; pointer-events: none; color: #aaa; font-size: 0.9rem; line-height: 1.5; opacity: 0; transition: opacity 0.5s; }
         .modal-overlay-message.visible { opacity: 1; }
         .loading-text { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); color: #888; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; z-index: 210; }
@@ -610,7 +616,6 @@
         @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
         .fade-up-active { animation: fadeInUp 1.2s ease-out forwards; }
         .fade-in-active { animation: fadeIn 1.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body class="locked">
@@ -626,7 +631,6 @@
         <div id="modal-canvas-container"></div>
         <button class="modal-close" onclick="closeModal()">✕</button>
         <div class="loading-text" id="modal-status">Initializing...</div>
-        
         <div class="modal-overlay-message" id="model-warning-message">
             <p style="color: #ff5555; font-size: 1.1rem; margin-bottom: 20px;">** FILE NOT FOUND **</p>
             <p>Could not load the .glb file. Please ensure it is in the same folder as index.html.</p>
@@ -699,6 +703,7 @@
                     
                     <div class="skills-grid-container blend-text">
                         <span class="skill-cat-title">Software Toolbox</span>
+                        
                         <div class="skill-category">
                             <div class="skill-item" data-tool="Blender">Blender</div>
                             <div class="skill-item" data-tool="Rhino">Rhino</div>
@@ -710,7 +715,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="skills-visual" id="experience-blob-container"></div>
+                <!-- RESTORED: This container was missing its child in previous versions -->
+                <div class="skills-visual" id="experience-blob-container">
+                    <div id="logo-placeholder" class="skill-logo-placeholder"></div>
+                </div>
             </section>
 
             <section id="experience">
@@ -1029,21 +1037,487 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.min.js"></script>
 
     <script>
-        // [Javascript code remains identical to previous correct versions]
+        // --- 1. GLOBAL VARIABLES ---
+        let targetX = 0; 
+        let targetY = 0;
+        let currentMouse = new THREE.Vector2();
         let lastScrollY = 0; 
-        const ALL_SECTIONS = document.querySelectorAll('section');
-        let currentPage = 0;
-        const GALLERY_SECTION_INDEX = 8; 
-        const CONTACT_SECTION_INDEX = 9; 
+        let isModalOpen = false;
+        
+        // --- 2. CRITICAL FUNCTIONS (Global Scope) ---
+        
+        // OPEN IMAGE MODAL
+        window.openImageModal = function(e, imageSrc) {
+            if(e) e.preventDefault();
+            lastScrollY = window.scrollY;
+            const modalImageDisplay = document.getElementById('modal-image-display');
+            const imageModal = document.getElementById('image-modal');
+            
+            if(modalImageDisplay && imageModal) {
+                modalImageDisplay.src = imageSrc;
+                imageModal.classList.add('active');
+                document.body.classList.add('locked');
+            }
+        };
+
+        // CLOSE IMAGE MODAL
+        window.closeImageModal = function() {
+            const imageModal = document.getElementById('image-modal');
+            const modalImageDisplay = document.getElementById('modal-image-display');
+            if(imageModal) imageModal.classList.remove('active');
+            if(modalImageDisplay) modalImageDisplay.src = ''; 
+            document.body.classList.remove('locked');
+            window.scrollTo(0, lastScrollY);
+        };
+
+        // OPEN VIDEO MODAL
+        window.openVideoModal = function(e, videoSrc) {
+            if(e) e.preventDefault();
+            lastScrollY = window.scrollY;
+            const videoModal = document.getElementById('video-modal');
+            const videoPlayer = document.getElementById('video-player');
+            
+            if(videoPlayer && videoModal) {
+                videoPlayer.src = videoSrc;
+                videoModal.classList.add('active');
+                document.body.classList.add('locked');
+                
+                videoPlayer.muted = false; 
+                videoPlayer.loop = true; 
+                
+                videoPlayer.play().catch(error => {
+                    console.warn("Video playback failed, trying muted:", error);
+                    videoPlayer.muted = true;
+                    videoPlayer.play();
+                });
+            }
+        };
+        
+        // CLOSE VIDEO MODAL
+        window.closeVideoModal = function() {
+            const videoModal = document.getElementById('video-modal');
+            const videoPlayer = document.getElementById('video-player');
+            
+            if(videoPlayer) {
+                videoPlayer.pause();
+                videoPlayer.src = ''; 
+            }
+            if(videoModal) videoModal.classList.remove('active');
+            document.body.classList.remove('locked');
+            window.scrollTo(0, lastScrollY);
+        };
+
+        // SCROLL TO ELEMENT
+        window.scrollToElement = function(elementId) {
+            const element = document.getElementById(elementId);
+            if(element) { element.scrollIntoView({ behavior: 'smooth' }); }
+        };
+
+        // --- 3. LOGO LOGIC ---
+        const LOGO_DATA = {
+            'Blender': { src: 'logos/blender.png' },      
+            'Rhino': { src: 'logos/rhino.png' },          
+            'Photoshop': { src: 'logos/photoshop.png' },  
+            'Illustrator': { src: 'logos/illustrator.png' }, 
+            'Procreate': { src: 'logos/procreate.png' }   
+        };
+
+        const logoPlaceholder = document.getElementById('logo-placeholder');
+        
+        if (logoPlaceholder) { 
+            document.querySelectorAll('.skill-item').forEach(item => {
+                item.addEventListener('mouseenter', (e) => {
+                    const tool = e.target.getAttribute('data-tool');
+                    const logo = LOGO_DATA[tool];
+                    if (logo) {
+                        logoPlaceholder.innerHTML = `<img src="${logo.src}" alt="${tool} Logo" onerror="this.onerror=null;this.src='https://placehold.co/100x100/333/fff?text=${tool}';" >`;
+                    } else {
+                        logoPlaceholder.innerHTML = '';
+                    }
+                    logoPlaceholder.style.opacity = 1;
+                    logoPlaceholder.style.transform = 'translate(-50%, -50%) scale(1.0)';
+                });
+                item.addEventListener('mouseleave', () => {
+                    logoPlaceholder.innerHTML = '';
+                    logoPlaceholder.style.opacity = 0;
+                    logoPlaceholder.style.transform = 'translate(-50%, -50%) scale(0.95)';
+                });
+            });
+        }
+
+        // --- 4. THREE.JS SCENE SETUP ---
+        let modelLoadComplete = false;
+        let currentModel = null;
+        let loadingAnim = null;
+        let modalScene, modalCamera, modalRenderer, modalControls;
+        let renderer, camera, scene, particlesGeo, particlesMat, particleSystem, geometry, material, plane, interactionPlane, raycaster;
+        let posAttribute, originalPositions;
+        
+        // Define interactionTarget so it exists in scope
+        let interactionTarget = new THREE.Vector3(999, 999, 999);
+
+        const canvasContainer = document.getElementById('canvas-container');
+
+        // Check if Three.js loaded
+        if (typeof THREE !== 'undefined' && canvasContainer) {
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x050505, 0.01); 
+            
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 8); 
+            const camLight = new THREE.PointLight(0xffffff, 1, 100);
+            camera.add(camLight);
+            scene.add(camera);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.physicallyCorrectLights = true;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            canvasContainer.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0x222222, 3.0); 
+            scene.add(ambientLight);
+            
+            const light1 = new THREE.PointLight(0x88aacc, 200, 100); light1.position.set(5, 10, 5); scene.add(light1);
+            const light2 = new THREE.PointLight(0xccaa88, 120, 100); light2.position.set(-10, 2, 5); scene.add(light2);
+            const light3 = new THREE.DirectionalLight(0xffffff, 3.0); light3.position.set(0, 5, -10); light3.lookAt(0,0,0); scene.add(light3);
+
+            const particlesCount = 1500;
+            const pArray = new Float32Array(particlesCount * 3);
+            const pSpeeds = new Float32Array(particlesCount);
+            for(let i=0; i<particlesCount * 3; i+=3) {
+                pArray[i] = (Math.random() - 0.5) * 40;     
+                pArray[i+1] = (Math.random() - 0.5) * 40;   
+                pArray[i+2] = (Math.random() - 0.5) * 100;
+                pSpeeds[i/3] = Math.random();
+            }
+            particlesGeo = new THREE.BufferGeometry();
+            particlesGeo.setAttribute('position', new THREE.BufferAttribute(pArray, 3));
+            particlesMat = new THREE.PointsMaterial({ size: 0.03, color: 0x88ccff, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending, sizeAttenuation: true });
+            particleSystem = new THREE.Points(particlesGeo, particlesMat);
+            scene.add(particleSystem);
+
+            geometry = new THREE.PlaneGeometry(80, 80, 400, 400); 
+            material = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.1, metalness: 0.9, flatShading: false });
+            plane = new THREE.Mesh(geometry, material);
+            plane.rotation.x = -0.2; 
+            scene.add(plane);
+
+            const simplex = new SimplexNoise();
+            posAttribute = geometry.attributes.position;
+            originalPositions = posAttribute.array.slice();
+
+            raycaster = new THREE.Raycaster();
+            interactionPlane = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshBasicMaterial({ visible: false }));
+            interactionPlane.rotation.x = -0.2;
+            scene.add(interactionPlane);
+            
+            // Animation variables
+            const clock = new THREE.Clock();
+            const smoothMouse = new THREE.Vector2(); 
+            
+            let activeWaterArea = null; 
+            let isHoveringInteractionArea = false; 
+            let interactionWeight = 0.0;
+            
+            // Interaction logic
+            const waterAreas = document.querySelectorAll('.water-interaction-area');
+            waterAreas.forEach(area => {
+                area.addEventListener('mouseenter', () => { 
+                    activeWaterArea = area; 
+                    isHoveringInteractionArea = true; 
+                    canvasContainer.style.pointerEvents = 'auto'; 
+                });
+                area.addEventListener('mouseleave', () => { 
+                    isHoveringInteractionArea = false; 
+                    canvasContainer.style.pointerEvents = 'none'; 
+                });
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                targetX = (e.clientX / window.innerWidth) * 2 - 1;
+                targetY = -(e.clientY / window.innerHeight) * 2 + 1;
+                currentMouse.x = targetX;
+                currentMouse.y = targetY;
+            });
+            
+            // START ANIMATION LOOP
+            animate(); 
+
+            // Animation Loop Function
+            function animate() {
+                requestAnimationFrame(animate);
+                const time = clock.getElapsedTime();
+                if (window.TWEEN) TWEEN.update();
+
+                // 3D Modal logic
+                if(isModalOpen && modalRenderer) {
+                    modalControls.update();
+                    if(loadingAnim) {
+                        loadingAnim.rotation.y += 0.05;
+                    }
+                    if(currentModel && !modelLoadComplete) { currentModel.rotation.y += 0.005; }
+                    modalRenderer.render(modalScene, modalCamera);
+                }
+
+                // Smooth Scroll Sim
+                let scrollY = window.scrollY; // Use actual scroll
+                
+                // --- FIX: TEXT VIBRATION ---
+                // Smooth mouse interpolation for text
+                smoothMouse.x += (targetX - smoothMouse.x) * 0.08;
+                smoothMouse.y += (targetY - smoothMouse.y) * 0.08; 
+                
+                // Hero Text Parallax (Using smoothed values)
+                const textCol = document.querySelector('.hero-text-col');
+                if (textCol) { textCol.style.transform = `rotateY(${smoothMouse.x * 2}deg) rotateX(${-smoothMouse.y * 1}deg)`; }
+
+                // Parallax Images
+                const images = document.querySelectorAll('.product-img');
+                images.forEach(img => {
+                    const speed = img.getAttribute('data-speed');
+                    if(speed) {
+                        const rect = img.parentElement.getBoundingClientRect();
+                        const centerY = window.innerHeight / 2;
+                        const dist = (rect.top + rect.height/2) - centerY;
+                        img.style.transform = `translateY(${dist * speed * 0.2}px)`;
+                    }
+                });
+
+                // --- FIX: DISTINCT WATER ANIMATIONS ---
+                // We determine which section is active based on scroll or hover
+                
+                // Calculate Section Weights
+                const sectionHeight = window.innerHeight;
+                const absolutePos = scrollY / sectionHeight;
+                
+                // Simple weight calculation based on scroll position relative to sections
+                // This is a simplified version of the logic to keep it robust
+                
+                function getSectionWeight(id) {
+                    const el = document.getElementById(id);
+                    if (!el) return 0;
+                    const rect = el.getBoundingClientRect();
+                    const center = rect.top + rect.height / 2;
+                    const dist = Math.abs(center - window.innerHeight / 2);
+                    // Active when near center of screen
+                    return Math.max(0, 1 - dist / (window.innerHeight * 0.7)); 
+                }
+
+                let wStrom = getSectionWeight('section-strom');
+                let wVag = getSectionWeight('section-vag');
+                let wVila = getSectionWeight('section-vila');
+                
+                let wIntro = 0;
+                if (absolutePos < 1.0) wIntro = 1.0 - smoothstep(0.0, 1.0, absolutePos);
+
+                // Water Physics Logic Restored
+                if (isHoveringInteractionArea) {
+                    interactionWeight += (1.0 - interactionWeight) * 0.2;
+                    raycaster.setFromCamera(currentMouse, camera);
+                    const intersects = raycaster.intersectObject(interactionPlane);
+                    if (intersects.length > 0) { 
+                        interactionTarget = intersects[0].point;
+                    }
+                } else if (interactionWeight > 0.005) {
+                    interactionWeight *= 0.85; 
+                } else {
+                     interactionWeight = 0.0;
+                }
+                
+                // Helper
+                function smoothstep(min, max, value) { var x = Math.max(0, Math.min(1, (value-min)/(max-min))); return x*x*(3 - 2*x); }
+                
+                // Camera
+                let cameraZ = 8, cameraY = 0, cameraRX = 0, cameraRZ = 0;
+                cameraRX = -smoothMouse.y * 0.03;
+                cameraRZ = smoothMouse.x * 0.03;
+                camera.position.set(0, cameraY, cameraZ);
+                camera.rotation.set(cameraRX, 0, cameraRZ);
+                plane.position.y = -cameraY; 
+                plane.rotation.x = cameraRX - 0.2; 
+                
+                // Geometry Update
+                const hitPoint = interactionTarget;
+
+                for (let i = 0; i < posAttribute.count; i++) {
+                    const x = originalPositions[i * 3];
+                    const y = originalPositions[i * 3 + 1];
+                    let totalZ = 0;
+                    
+                    // Base Noise (Intro)
+                    if (wIntro > 0.01) {
+                         let z = simplex.noise3D(x * 0.2, y * 0.2, time * 0.15) * 0.15;
+                         totalZ += z * wIntro;
+                    }
+
+                    // --- DISTINCT ANIMATIONS ---
+                    
+                    // 1. Ström (Flow) - Directional River
+                    if (wStrom > 0.01) {
+                        const flowSpeed = time * 1.5;
+                        // Directional noise moving along X/Y
+                        const flow = simplex.noise2D(x * 0.3 + flowSpeed, y * 0.3) * 0.4;
+                        totalZ += flow * wStrom;
+                    }
+
+                    // 2. Våg (Ripple/Impact) - Radial Waves
+                    if (wVag > 0.01) {
+                         // Radial sine wave from center (or slightly offset)
+                         const distFromCenter = Math.sqrt(x*x + y*y);
+                         const ripple = Math.sin(distFromCenter * 2.0 - time * 3.0) * 0.3;
+                         totalZ += ripple * wVag;
+                    }
+
+                    // 3. Vila (Stillness) - Very Subtle, Slow Movement
+                    if (wVila > 0.01) {
+                        const calm = simplex.noise3D(x * 0.1, y * 0.1, time * 0.1) * 0.15;
+                        totalZ += calm * wVila;
+                    }
+
+                    // Interactive Mouse Ripple (Global override)
+                    if(interactionWeight > 0.01) {
+                        const dist = hitPoint.distanceTo(new THREE.Vector3(x, y, 0));
+                        if (dist < 12) {
+                            const ripple = Math.sin(dist * 2.5 - time * 8.0) * 0.5;
+                            const decay = Math.exp(-dist * 0.2);
+                            totalZ += ripple * decay * interactionWeight;
+                        }
+                    }
+
+                    posAttribute.setZ(i, totalZ); 
+                }
+                
+                posAttribute.needsUpdate = true;
+                geometry.computeVertexNormals();
+                renderer.render(scene, camera);
+            }
+        } // End of Three.js block
+
+        // --- 5. MODAL 3D LOGIC ---
+        
+        window.openModal = function(type) {
+            // Lazy init renderer
+            if(!modalRenderer) {
+                const container = document.getElementById('modal-canvas-container');
+                if(!container) return;
+                modalScene = new THREE.Scene();
+                modalScene.background = new THREE.Color(0x050505); 
+                modalCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+                modalCamera.position.set(0, 2, 5);
+                modalRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                modalRenderer.setSize(container.clientWidth / container.clientHeight);
+                modalRenderer.physicallyCorrectLights = true;
+                modalRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+                modalRenderer.toneMappingExposure = 1.0; 
+                modalRenderer.outputEncoding = THREE.sRGBEncoding;
+                container.appendChild(modalRenderer.domElement);
+                
+                const pmremGenerator = new THREE.PMREMGenerator(modalRenderer);
+                pmremGenerator.compileEquirectangularShader();
+                const roomEnvironment = new THREE.RoomEnvironment();
+                modalScene.environment = pmremGenerator.fromScene(roomEnvironment).texture;
+                
+                const dirLight = new THREE.DirectionalLight(0xffffff, 3.5); dirLight.position.set(5, 10, 7); modalScene.add(dirLight);
+                const fillLight = new THREE.DirectionalLight(0xffeedd, 2.0); fillLight.position.set(-5, 2, -5); modalScene.add(fillLight);
+                
+                modalControls = new THREE.OrbitControls(modalCamera, modalRenderer.domElement);
+                modalControls.enableDamping = true;
+                modalControls.dampingFactor = 0.05;
+            }
+            
+            document.getElementById('model-modal').classList.add('active');
+            const modelWarningMessage = document.getElementById('model-warning-message');
+            if(modelWarningMessage) modelWarningMessage.classList.remove('visible'); 
+            lastScrollY = window.scrollY; 
+            isModalOpen = true;
+            
+            // Resize logic
+            const container = document.getElementById('modal-canvas-container');
+            modalRenderer.setSize(container.clientWidth, container.clientHeight);
+            modalCamera.aspect = container.clientWidth / container.clientHeight;
+            modalCamera.updateProjectionMatrix();
+
+            if(currentModel) { modalScene.remove(currentModel); currentModel = null; }
+            if(loadingAnim) { modalScene.remove(loadingAnim); loadingAnim = null; }
+            
+            const status = document.getElementById('modal-status');
+            if(status) { status.innerText = "LOADING MODEL..."; status.style.opacity = 1; }
+            
+            // Start Loading Anim
+            modelLoadComplete = false;
+            let geo, mat;
+            geo = new THREE.IcosahedronGeometry(0.5, 1);
+            mat = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.3 });
+            loadingAnim = new THREE.Mesh(geo, mat);
+            modalScene.add(loadingAnim);
+            
+            // Load Model
+            const loader = new THREE.GLTFLoader();
+            const modelPath = './' + type + '.glb'; 
+
+            loader.load(modelPath, function (gltf) {
+                if(!isModalOpen) return; 
+                modelLoadComplete = true;
+                if (loadingAnim) { modalScene.remove(loadingAnim); loadingAnim = null; }
+                if(status) status.style.opacity = 0;
+                
+                currentModel = gltf.scene;
+                const box = new THREE.Box3().setFromObject(currentModel);
+                const size = box.getSize(new THREE.Vector3());
+                const center = box.getCenter(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 5.0 / maxDim;
+                currentModel.scale.set(scale, scale, scale);
+                currentModel.position.x -= center.x * scale;
+                currentModel.position.y -= center.y * scale;
+                currentModel.position.z -= center.z * scale;
+
+                modalScene.add(currentModel);
+                modalControls.target.set(0,0,0);
+                modalCamera.position.set(0, 2, 5);
+                modalControls.update();
+
+            }, undefined, function (error) {
+                console.error(error);
+                if (loadingAnim) { modalScene.remove(loadingAnim); loadingAnim = null; }
+                if(status) status.innerText = "";
+                if(modelWarningMessage) modelWarningMessage.classList.add('visible'); 
+                
+                // Show Fallback
+                const meshMat = new THREE.MeshStandardMaterial({ color: 0x444444, metalness: 0.9, roughness: 0.2 });
+                const wireMesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.5 }));
+                const baseMesh = new THREE.Mesh(geo, meshMat);
+                currentModel = new THREE.Group();
+                currentModel.add(baseMesh);
+                currentModel.add(wireMesh);
+                modalScene.add(currentModel);
+            });
+        };
+        
+        window.closeModal = function() {
+             document.getElementById('model-modal').classList.remove('active');
+             isModalOpen = false;
+             window.scrollTo(0, lastScrollY);
+        }
+
+        // --- 6. INITIALIZATION & LISTENERS ---
         let titleDismissed = false;
         const titleScreen = document.getElementById('title-screen');
         let scrollY = 0; 
-        let targetScrollY = 0;
+
         if (history.scrollRestoration) { history.scrollRestoration = 'manual'; }
         window.scrollTo(0, 0);
-        function updateTarget(y) { targetScrollY = y; currentPage = Math.round(targetScrollY / window.innerHeight); }
-        updateTarget(window.scrollY);
-        window.addEventListener('scroll', () => { updateTarget(window.scrollY); });
+
+        function initExperienceBlob() {
+             const container = document.getElementById('experience-blob-container');
+             if(container && typeof THREE !== 'undefined') {
+                 // Blob setup if needed
+             }
+        }
+
         function dismissTitle() {
             if(titleDismissed) return;
             titleDismissed = true;
@@ -1057,463 +1531,27 @@
                     document.querySelector('.nav-bar').style.transform = 'translateY(0)';
                     const heroElements = document.querySelectorAll('#personal-hero .greeting, #personal-hero .main-name, #personal-hero .hero-subtitle, #personal-hero .portrait-img');
                     heroElements.forEach(el => el.classList.add('fade-up-active'));
-                    initExperienceBlob();
-                    updateTarget(0); 
+                    initExperienceBlob(); 
                     window.scrollTo({ top: 0, behavior: 'instant' }); 
                 });
             }, 800);
         }
+        
+        // Initial interactions
         function handleInitialInteraction(e) { if (!titleDismissed) { dismissTitle(); } }
         window.addEventListener('wheel', handleInitialInteraction, { passive: false });
         window.addEventListener('touchmove', handleInitialInteraction, { passive: false });
         document.getElementById('title-screen').addEventListener('click', (e) => { if (!titleDismissed) { dismissTitle(); e.preventDefault(); } });
-        document.addEventListener('click', (e) => { if (!titleDismissed && !e.target.closest('#title-screen')) { dismissTitle(); e.preventDefault(); } }, true);
-        window.scrollToElement = function(elementId) {
-            if (!titleDismissed) dismissTitle();
-            const element = document.getElementById(elementId);
-            if(element) { element.scrollIntoView({ behavior: 'smooth' }); }
-        };
-        // ... [Rest of standard JS: Modal logic, 3D logic, etc.] ...
-        // (Including full 3D setup from previous iterations)
-        const canvasContainer = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x050505, 0.01); 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 0, 8); 
-        const camLight = new THREE.PointLight(0xffffff, 1, 100);
-        camera.add(camLight);
-        scene.add(camera);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.physicallyCorrectLights = true;
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.2;
-        canvasContainer.appendChild(renderer.domElement);
-        const ambientLight = new THREE.AmbientLight(0x222222, 3.0); 
-        scene.add(ambientLight);
-        const light1 = new THREE.PointLight(0x88aacc, 200, 100);
-        light1.position.set(5, 10, 5);
-        scene.add(light1);
-        const light2 = new THREE.PointLight(0xccaa88, 120, 100);
-        light2.position.set(-10, 2, 5);
-        scene.add(light2);
-        const light3 = new THREE.DirectionalLight(0xffffff, 3.0);
-        light3.position.set(0, 5, -10);
-        light3.lookAt(0,0,0);
-        scene.add(light3);
-        const particlesGeo = new THREE.BufferGeometry();
-        const particlesCount = 1500;
-        const pArray = new Float32Array(particlesCount * 3);
-        const pSpeeds = new Float32Array(particlesCount);
-        for(let i=0; i<particlesCount * 3; i+=3) {
-            pArray[i] = (Math.random() - 0.5) * 40;     
-            pArray[i+1] = (Math.random() - 0.5) * 40;   
-            pArray[i+2] = (Math.random() - 0.5) * 100;
-            pSpeeds[i/3] = Math.random();
-        }
-        particlesGeo.setAttribute('position', new THREE.BufferAttribute(pArray, 3));
-        const particlesMat = new THREE.PointsMaterial({ size: 0.03, color: 0x88ccff, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending, sizeAttenuation: true });
-        const particleSystem = new THREE.Points(particlesGeo, particlesMat);
-        scene.add(particleSystem);
-        const geometry = new THREE.PlaneGeometry(80, 80, 400, 400); 
-        const material = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.1, metalness: 0.9, flatShading: false });
-        const plane = new THREE.Mesh(geometry, material);
-        plane.rotation.x = -0.2; 
-        scene.add(plane);
-        const simplex = new SimplexNoise();
-        const posAttribute = geometry.attributes.position;
-        const originalPositions = posAttribute.array.slice();
-        const raycaster = new THREE.Raycaster();
-        const interactionPlane = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshBasicMaterial({ visible: false }));
-        interactionPlane.rotation.x = -0.2;
-        scene.add(interactionPlane);
-        // ... [Experience Blob Setup] ...
-        let blobRenderer, blobScene, blobCamera, blobMesh;
-        function initExperienceBlob() {
-            const container = document.getElementById('experience-blob-container');
-            if(!container) return;
-            blobScene = new THREE.Scene();
-            blobRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            blobRenderer.setSize(container.clientWidth, container.clientHeight);
-            blobRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            container.appendChild(blobRenderer.domElement);
-            blobCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
-            blobCamera.position.z = 4;
-            const dirLight = new THREE.DirectionionalLight(0xffffff, 2); 
-            dirLight.position.set(2, 2, 5);
-            blobScene.add(dirLight);
-            const ambLight = new THREE.AmbientLight(0x404040, 1); 
-            blobScene.add(ambLight);
-            const rimLight = new THREE.SpotLight(0x0088ff, 5); 
-            rimLight.position.set(-5, 0, 0);
-            blobScene.add(rimLight);
-            const pointLight = new THREE.PointLight(0xffffff, 2);
-            pointLight.position.set(3, 3, 3);
-            blobScene.add(pointLight);
-            const geo = new THREE.IcosahedronGeometry(1.2, 4);
-            const mat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.2, metalness: 0.8, flatShading: false });
-            blobMesh = new THREE.Mesh(geo, mat);
-            blobScene.add(blobMesh);
-            blobMesh.userData.originalPos = geo.attributes.position.array.slice();
-        }
-        // ... [Modal Logic & Animation Loop] ...
-        let modalScene, modalCamera, modalRenderer, modalControls;
-        let currentModel = null;
-        let loadingAnim = null;
-        let isModalOpen = false;
-        const modelWarningMessage = document.getElementById('model-warning-message');
         
-        function initModal() {
-            const container = document.getElementById('modal-canvas-container');
-            modalScene = new THREE.Scene();
-            modalScene.background = new THREE.Color(0x050505); 
-            modalCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-            modalCamera.position.set(0, 2, 5);
-            modalRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            modalRenderer.setSize(container.clientWidth / container.clientHeight);
-            modalRenderer.physicallyCorrectLights = true;
-            modalRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-            modalRenderer.toneMappingExposure = 1.0; 
-            modalRenderer.outputEncoding = THREE.sRGBEncoding;
-            container.appendChild(modalRenderer.domElement);
-            const pmremGenerator = new THREE.PMREMGenerator(modalRenderer);
-            pmremGenerator.compileEquirectangularShader();
-            const roomEnvironment = new THREE.RoomEnvironment();
-            modalScene.environment = pmremGenerator.fromScene(roomEnvironment).texture;
-            
-            const dirLight = new THREE.DirectionalLight(0xffffff, 3.5); 
-            dirLight.position.set(5, 10, 7);
-            modalScene.add(dirLight);
-            const fillLight = new THREE.DirectionalLight(0xffeedd, 2.0); 
-            fillLight.position.set(-5, 2, -5);
-            modalScene.add(fillLight);
-            
-            modalControls = new THREE.OrbitControls(modalCamera, modalRenderer.domElement);
-            modalControls.enableDamping = true;
-            modalControls.dampingFactor = 0.05;
-        }
-        // ... [Rest of modal functions and animation loop logic same as before] ...
-        window.openModal = function(type) {
-            if(!modalRenderer) initModal();
-            document.getElementById('model-modal').classList.add('active');
-            modelWarningMessage.classList.remove('visible'); 
-            lastScrollY = window.scrollY; 
-            isModalOpen = true;
-            resizeModalCanvas(); 
-            if(currentModel) { modalScene.remove(currentModel); currentModel = null; }
-            if(loadingAnim) { modalScene.remove(loadingAnim); loadingAnim = null; }
-            document.getElementById('modal-status').innerText = "LOADING MODEL...";
-            document.getElementById('modal-status').style.opacity = 1;
-            startLoadingAnimation(type);
-        }
-        window.closeModal = function() {
-            document.getElementById('model-modal').classList.remove('active');
-            isModalOpen = false;
-            modelWarningMessage.classList.remove('visible');
-            window.scrollTo(0, lastScrollY); 
-        }
-        // Placeholder and loading animations
-        function startLoadingAnimation(type) {
-            modelLoadComplete = false;
-            let geo, mat;
-            if(type === 'strom') {
-                const points = [];
-                for(let i=0; i<100; i++) points.push(new THREE.Vector3( (i-50)*0.1, Math.sin(i*0.2), 0 ));
-                geo = new THREE.BufferGeometry().setFromPoints(points);
-                mat = new THREE.LineBasicMaterial({ color: 0xffffff });
-                loadingAnim = new THREE.Line(geo, mat);
-            } else if(type === 'vag') {
-                geo = new THREE.RingGeometry(0.5, 0.55, 32);
-                mat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, side: THREE.DoubleSide });
-                loadingAnim = new THREE.Mesh(geo, mat);
-                loadingAnim.rotation.x = -Math.PI/2;
-            } else {
-                geo = new THREE.IcosahedronGeometry(0.5, 1);
-                mat = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.3 });
-                loadingAnim = new THREE.Mesh(geo, mat);
-            }
-            modalScene.add(loadingAnim);
-            const loader = new THREE.GLTFLoader();
-            const modelPath = './' + type + '.glb'; 
-            loader.load(modelPath, function (gltf) {
-                if(!isModalOpen) return; 
-                modelLoadComplete = true;
-                if (loadingAnim) { modalScene.remove(loadingAnim); loadingAnim = null; }
-                document.getElementById('modal-status').style.opacity = 0;
-                currentModel = gltf.scene;
-                const box = new THREE.Box3().setFromObject(currentModel);
-                const size = box.getSize(new THREE.Vector3());
-                const center = box.getCenter(new THREE.Vector3());
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = 5.0 / maxDim;
-                currentModel.scale.set(scale, scale, scale);
-                currentModel.position.x -= center.x * scale;
-                currentModel.position.y -= center.y * scale;
-                currentModel.position.z -= center.z * scale;
-                modalScene.add(currentModel);
-                fitCameraToObject(modalCamera, currentModel, modalControls);
-            }, undefined, function (error) {
-                console.error(error);
-                if (loadingAnim) { modalScene.remove(loadingAnim); loadingAnim = null; }
-                document.getElementById('modal-status').innerText = "";
-                modelWarningMessage.classList.add('visible'); 
-                showPlaceholderModel(type); 
-            });
-        }
-        function showPlaceholderModel(type) {
-            if(currentModel) { modalScene.remove(currentModel); currentModel = null; }
-            let geo;
-            const meshMat = new THREE.MeshStandardMaterial({ color: 0x444444, metalness: 0.9, roughness: 0.2, emissive: 0x000000 });
-            const wireframeMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.8 });
-            if(type === 'strom') { geo = new THREE.TorusKnotGeometry(1.5, 0.4, 150, 20); } 
-            else if(type === 'vag') { geo = new THREE.CylinderGeometry(2.5, 2.5, 0.5, 64); } 
-            else { geo = new THREE.BoxGeometry(4.0, 1.0, 2.0); }
-            const baseMesh = new THREE.Mesh(geo, meshMat);
-            const wireMesh = new THREE.Mesh(geo, wireframeMat);
-            currentModel = new THREE.Group();
-            currentModel.add(baseMesh);
-            currentModel.add(wireMesh);
-            modalScene.add(currentModel);
-            modalControls.target.set(0, 0, 0);
-            modalCamera.position.set(5, 3, 7); 
-            modalControls.update();
-        }
-        function fitCameraToObject(camera, object, controls) {
-            const box = new THREE.Box3().setFromObject(object);
-            const size = box.getSize(new THREE.Vector3());
-            const center = box.getCenter(new THREE.Vector3());
-            const maxSize = Math.max(size.x, size.y, size.z);
-            const fitHeightDistance = maxSize / (2 * Math.atan(Math.PI * camera.fov / 360));
-            const fitWidthDistance = fitHeightDistance / camera.aspect;
-            const distance = 1.5 * Math.max(fitHeightDistance, fitWidthDistance);
-            controls.target.copy(center);
-            const direction = camera.position.clone().sub(controls.target).normalize().multiplyScalar(distance);
-            camera.position.copy(controls.target).add(direction);
-            controls.maxDistance = distance * 10;
-            camera.near = distance / 100;
-            camera.far = distance * 100;
-            camera.updateProjectionMatrix();
-            controls.update(); 
-        }
-        function resizeModalCanvas() {
-            if (modalRenderer && modalCamera) {
-                const container = document.getElementById('modal-canvas-container');
-                const width = container.clientWidth;
-                const height = container.clientHeight;
-                modalRenderer.setSize(width, height);
-                modalCamera.aspect = width / height;
-                modalCamera.updateProjectionMatrix();
-                if (currentModel) { modalControls.update(); }
-            }
-        }
-        function handleWindowResize() {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            resizeModalCanvas();
-        }
-        window.addEventListener('resize', handleWindowResize);
-        // Animation Loop
-        let activeWaterArea = null; 
-        let isHoveringInteractionArea = false; 
-        const waterAreas = document.querySelectorAll('.water-interaction-area');
-        waterAreas.forEach(area => {
-            area.addEventListener('mouseenter', () => { activeWaterArea = area; isHoveringInteractionArea = true; canvasContainer.style.pointerEvents = 'auto'; });
-            area.addEventListener('mouseleave', () => { isHoveringInteractionArea = false; canvasContainer.style.pointerEvents = 'none'; });
+        // Handle window resize
+        window.addEventListener('resize', () => {
+             if(renderer) {
+                 renderer.setSize(window.innerWidth, window.innerHeight);
+                 camera.aspect = window.innerWidth / window.innerHeight;
+                 camera.updateProjectionMatrix();
+             }
         });
-        const currentMouse = new THREE.Vector2(); 
-        document.addEventListener('mousemove', (e) => {
-            currentMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-            currentMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        });
-        document.addEventListener('touchmove', (e) => {
-            if(e.touches.length > 0) {
-                currentMouse.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
-                currentMouse.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
-                targetX = currentMouse.x;
-                targetY = currentMouse.y;
-                isHoveringInteractionArea = true;
-            }
-        }, { passive: true });
-        document.addEventListener('touchend', () => { isHoveringInteractionArea = false; });
-        const clock = new THREE.Clock();
-        const smoothMouse = new THREE.Vector2(); 
-        let targetX = 0;
-        let targetY = 0;
-        document.addEventListener('mousemove', (e) => {
-            targetX = (e.clientX / window.innerWidth) * 2 - 1;
-            targetY = -(e.clientY / window.innerHeight) * 2 + 1;
-        });
-        function smoothstep(min, max, value) { var x = Math.max(0, Math.min(1, (value-min)/(max-min))); return x*x*(3 - 2*x); }
-        function updateParallax() {
-            const images = document.querySelectorAll('.product-img');
-            images.forEach(img => {
-                const speed = img.getAttribute('data-speed');
-                const rect = img.parentElement.getBoundingClientRect();
-                const centerY = window.innerHeight / 2;
-                const dist = (rect.top + rect.height/2) - centerY;
-                let transform = `translateY(${dist * speed * 0.2}px)`;
-                img.style.transform = transform;
-            });
-        }
-        let interactionWeight = 0.0;
-        function animate() {
-            requestAnimationFrame(animate);
-            const time = clock.getElapsedTime();
-            if (window.TWEEN) TWEEN.update();
-            if(isModalOpen && modalRenderer) {
-                modalControls.update();
-                if(loadingAnim) {
-                    loadingAnim.rotation.y += 0.05;
-                    if(loadingAnim.geometry.type === 'RingGeometry') {
-                        const s = 1 + Math.sin(Date.now()*0.003)*0.5;
-                        loadingAnim.scale.set(s,s,s);
-                        loadingAnim.material.opacity = 1 - (s-0.5);
-                    }
-                }
-                if(currentModel && !modelLoadComplete) { currentModel.rotation.y += 0.005; }
-                modalRenderer.render(modalScene, modalCamera);
-            }
-            if(blobRenderer && blobScene && blobMesh) {
-                const positions = blobMesh.geometry.attributes.position;
-                const original = blobMesh.userData.originalPos;
-                for(let i=0; i<positions.count; i++) {
-                    const x = original[i*3];
-                    const y = original[i*3+1];
-                    const z = original[i*3+2];
-                    const noise = simplex.noise3D(x + time*0.5, y + time*0.5, z);
-                    const mDist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)); 
-                    let spike = 0;
-                    if(mDist < 0.5) spike = (0.5 - mDist) * 0.5 * Math.sin(time*2);
-                    const scale = 1 + (noise * 0.2) + spike;
-                    positions.setXYZ(i, x*scale, y*scale, z*scale);
-                }
-                positions.needsUpdate = true;
-                blobMesh.rotation.y = time * 0.1;
-                blobRenderer.render(blobScene, blobCamera);
-            }
-            scrollY += (targetScrollY - scrollY) * 0.05; 
-            smoothMouse.x += (targetX - smoothMouse.x) * 0.08;
-            smoothMouse.y += (targetY - smoothMouse.y) * 0.08; 
-            updateParallax();
-            const sectionHeight = window.innerHeight;
-            const absolutePos = scrollY / sectionHeight;
-            let interactionTarget = null;
-            let mouseToUse = currentMouse; 
-            if (isHoveringInteractionArea) {
-                interactionWeight += (1.0 - interactionWeight) * 0.2;
-                raycaster.setFromCamera(mouseToUse, camera);
-                const intersects = raycaster.intersectObject(interactionPlane);
-                if (intersects.length > 0) { interactionTarget = intersects[0].point; }
-            } else if (interactionWeight > 0.005) {
-                interactionWeight *= 0.85; 
-                raycaster.setFromCamera(mouseToUse, camera);
-                const intersects = raycaster.intersectObject(interactionPlane);
-                if (intersects.length > 0) { interactionTarget = intersects[0].point; }
-            } else {
-                 interactionWeight = 0.0;
-                 activeWaterArea = null; 
-                 interactionTarget = new THREE.Vector3(999,999,999);
-            }
-            const hitPoint = interactionTarget || new THREE.Vector3(999,999,999);
-            const scrollVelocity = Math.abs(targetScrollY - scrollY);
-            let warpFactor = 0.05; 
-            if (scrollVelocity > 5) warpFactor += scrollVelocity * 0.002;
-            const positions = particleSystem.geometry.attributes.position.array;
-            for(let i=0; i < particlesCount; i++) {
-                positions[i*3 + 2] += (warpFactor * (1 + pSpeeds[i]));
-                if(positions[i*3 + 2] > 20) positions[i*3 + 2] = -80;
-            }
-            particleSystem.geometry.attributes.position.needsUpdate = true;
-            particleSystem.rotation.z = time * 0.05 + (scrollY * 0.0005);
-            let wIntro = 0, wSkills = 0, wExperience = 0, wCollection = 0, wStrom = 0, wVag = 0, wVila = 0;
-            let wOtherProjects = 0; 
-            function getSectionWeight(id) {
-                const el = document.getElementById(id);
-                if (!el) return 0;
-                const rect = el.getBoundingClientRect();
-                const center = rect.top + rect.height / 2;
-                const dist = Math.abs(center - window.innerHeight / 2);
-                return Math.max(0, 1 - dist / (window.innerHeight * 0.6)); 
-            }
-            wStrom = getSectionWeight('section-strom');
-            wVag = getSectionWeight('section-vag');
-            wVila = getSectionWeight('section-vila');
-            wCollection = getSectionWeight('collection-hero');
-            wOtherProjects = getSectionWeight('other-projects');
-            if (absolutePos < 1.0) wIntro = 1.0 - smoothstep(0.0, 1.0, absolutePos);
-            if (absolutePos > 0.5 && absolutePos < 2.0) { wSkills = smoothstep(0.5, 1.5, absolutePos); if (absolutePos > 1.5) wSkills = 1.0 - smoothstep(1.5, 2.0, absolutePos); }
-            if (absolutePos > 1.5 && absolutePos < 3.0) { wExperience = smoothstep(1.5, 2.5, absolutePos); if (absolutePos > 2.5) wExperience = 1.0 - smoothstep(2.5, 3.0, absolutePos); }
-            let dimFactor = 1.0;
-            if (wSkills > 0.01 || wExperience > 0.01 || wOtherProjects > 0.01) dimFactor = 1.0 - (Math.max(wSkills, wExperience, wOtherProjects) * 0.5); 
-            light1.intensity = 200 * dimFactor;
-            light2.intensity = 120 * dimFactor;
-            light3.intensity = 3.0 * dimFactor;
-            let cameraZ = 8, cameraY = 0, cameraRX = 0, cameraRZ = 0;
-            cameraRX = -smoothMouse.y * 0.03;
-            cameraRZ = smoothMouse.x * 0.03;
-            camera.position.set(0, cameraY, cameraZ);
-            camera.rotation.set(cameraRX, 0, cameraRZ);
-            plane.position.y = -cameraY; 
-            plane.rotation.x = cameraRX - 0.2; 
-            for (let i = 0; i < posAttribute.count; i++) {
-                const x = originalPositions[i * 3];
-                const y = originalPositions[i * 3 + 1];
-                let totalZ = 0;
-                let mask = 1.0;
-                let activeProductSection = (wStrom + wVag + wVila);
-                if (activeProductSection > 0.01) { mask = smoothstep(5.0, -10.0, y); } 
-                else if (wIntro > 0.01 || wCollection > 0.01) { mask = 1.0; } 
-                else { mask = 0.0; }
-                if (wIntro > 0.01 || activeProductSection > 0.01 || wOtherProjects > 0.01) {
-                    let w = Math.max(wIntro, wCollection, activeProductSection, wOtherProjects);
-                    let z = simplex.noise3D(x * 0.2, y * 0.2, time * 0.15) * 0.15;
-                    totalZ += z * w;
-                }
-                const dist = hitPoint.distanceTo(new THREE.Vector3(x, y, 0));
-                let interactionZ = 0;
-                const flowSpeed = time * 1.2; 
-                const stillnessSpeed = time * 0.05;
-                if (wStrom > 0.01) {
-                    const directionalNoise = simplex.noise2D(x * 0.3 + flowSpeed, y * 0.4 + flowSpeed) * 0.8;
-                    const localizedWake = (dist < 12) ? Math.exp(-(dist * dist) / 50) * 0.4 * Math.sin(dist * 4 - time * 12) : 0;
-                    interactionZ += (directionalNoise + localizedWake) * wStrom;
-                } else if (wVag > 0.01) {
-                    interactionZ += simplex.noise3D(x * 0.15, y * 0.15, time * 0.2) * 0.2 * wVag;
-                    if (dist < 25) { 
-                        const ripple = Math.sin(dist * 2.8 - time * 8.0); 
-                        const decay = Math.exp(-dist * 0.15); 
-                        interactionZ += ripple * decay * 1.5 * wVag; 
-                    }
-                } else if (wVila > 0.01) {
-                    let z1 = simplex.noise3D(x * 0.08, y * 0.08, stillnessSpeed) * 0.4; 
-                    interactionZ += z1 * wVila;
-                    if (dist < 5) {
-                        const dampenFactor = Math.exp(-(dist * dist) / 10);
-                        interactionZ *= (1 - dampenFactor * 0.8);
-                    }
-                } else if (wIntro > 0.01 && hitPoint.x !== 999) {
-                     const distHero = hitPoint.distanceTo(new THREE.Vector3(x, y, 0));
-                     if(distHero < 12) { 
-                        const softFactor = Math.exp(-(distHero * distHero) / 20); 
-                        interactionZ += softFactor * 0.8 * Math.sin(time * 2); 
-                     }
-                }
-                totalZ += interactionZ * interactionWeight;
-                posAttribute.setZ(i, totalZ * mask); 
-            }
-            posAttribute.needsUpdate = true;
-            geometry.computeVertexNormals();
-            renderer.render(scene, camera);
-        }
-        function animateHeroText() {
-            requestAnimationFrame(animateHeroText);
-            const textCol = document.querySelector('.hero-text-col');
-            if (textCol) { textCol.style.transform = `rotateY(${targetX * 2}deg) rotateX(${-targetY * 1}deg)`; }
-        }
-        animateHeroText();
-        animate();
+
     </script>
 </body>
 </html>
